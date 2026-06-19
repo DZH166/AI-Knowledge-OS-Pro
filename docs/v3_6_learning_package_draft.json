@@ -1,0 +1,494 @@
+{
+  "version_name": "V3.6: unified multimodal tasks and source-based learning artifacts",
+  "slug": "v3-6-unified-media-learning",
+  "summary": "Upgrade the multimodal prototype into a stable, unified and demo-friendly knowledge learning system.",
+  "implemented_features": [
+    "Added source/document IDs and deep links for RAG citations.",
+    "Clarified upload workflows for document, image, audio and video sources.",
+    "Generated traceable learning artifacts from real source chunks.",
+    "Improved multi-keyframe extraction and video visual processing.",
+    "Improved task progress, event visibility and recovery controls.",
+    "Linked media player, transcript, keyframes and learning actions.",
+    "Unified media processing tasks in Task Center.",
+    "Updated .env.example.",
+    "Updated .gitignore.",
+    "Updated README.md.",
+    "Updated backend/.env.example.",
+    "Updated backend/app/__init__.py.",
+    "Updated backend/app/api/__init__.py.",
+    "Updated backend/app/api/router.py.",
+    "Updated backend/app/api/routes_chat.py.",
+    "Updated backend/app/api/routes_dashboard.py.",
+    "Updated backend/app/api/routes_documents.py.",
+    "Updated backend/app/api/routes_errors.py.",
+    "Updated backend/app/api/routes_ingestion_jobs.py.",
+    "Updated backend/app/api/routes_knowledge_spaces.py.",
+    "Updated backend/app/api/routes_learning.py.",
+    "Updated backend/app/api/routes_onboarding.py.",
+    "Updated backend/app/api/routes_system.py.",
+    "Updated backend/app/core/config.py.",
+    "Updated backend/app/core/errors.py.",
+    "Updated backend/app/core/logging.py.",
+    "Updated backend/app/core/responses.py.",
+    "Updated backend/app/db/session.py.",
+    "Updated backend/app/main.py.",
+    "Updated backend/app/models/__init__.py.",
+    "Updated backend/app/models/chat_session.py.",
+    "Updated backend/app/models/chunk.py.",
+    "Updated backend/app/models/document.py.",
+    "Updated backend/app/models/error_archive.py.",
+    "Updated backend/app/models/ingestion_job.py.",
+    "Updated backend/app/models/knowledge_space.py.",
+    "Updated backend/app/models/learning_log.py.",
+    "Updated backend/app/models/learning_note.py.",
+    "Updated backend/app/models/learning_system.py.",
+    "Updated backend/app/models/onboarding.py.",
+    "Updated backend/app/models/qa_log.py.",
+    "Updated backend/app/models/source.py.",
+    "Updated backend/app/schemas/__init__.py.",
+    "Updated backend/app/schemas/dashboard_schema.py.",
+    "Updated backend/app/schemas/document_schema.py.",
+    "Updated backend/app/schemas/error_schema.py.",
+    "Updated backend/app/schemas/knowledge_schema.py.",
+    "Updated backend/app/schemas/learning_schema.py.",
+    "Updated backend/app/schemas/media_schema.py.",
+    "Updated backend/app/schemas/onboarding_schema.py.",
+    "Updated backend/app/schemas/system_schema.py.",
+    "Updated backend/app/services/__init__.py.",
+    "Updated backend/app/services/chat_session_service.py.",
+    "Updated backend/app/services/chunker.py.",
+    "Updated backend/app/services/document_parser.py.",
+    "Updated backend/app/services/embedding_service.py.",
+    "Updated backend/app/services/error_archive_service.py.",
+    "Updated backend/app/services/ingestion_service.py.",
+    "Updated backend/app/services/learning_log_service.py.",
+    "Updated backend/app/services/learning_package_service.py.",
+    "Updated backend/app/services/llm_service.py.",
+    "Updated backend/app/services/media_service.py.",
+    "Updated backend/app/services/ocr_service.py.",
+    "Updated backend/app/services/onboarding_service.py.",
+    "Updated backend/app/services/prompt_builder.py.",
+    "Updated backend/app/services/providers.py.",
+    "Updated backend/app/services/system_service.py.",
+    "Updated backend/app/services/task_broker.py.",
+    "Updated backend/app/services/transcription_service.py.",
+    "Updated backend/app/services/vector_store.py.",
+    "Updated backend/app/tasks/__init__.py.",
+    "Updated backend/app/tasks/ingestion_tasks.py.",
+    "Updated backend/app/worker.py.",
+    "Updated backend/requirements.txt.",
+    "Updated backend/tests/conftest.py.",
+    "Updated backend/tests/test_document_deduplication.py.",
+    "Updated backend/tests/test_document_delete.py.",
+    "Updated backend/tests/test_document_metadata.py.",
+    "Updated backend/tests/test_document_upload.py.",
+    "Updated backend/tests/test_embedding_batches.py.",
+    "Updated backend/tests/test_health.py.",
+    "Updated backend/tests/test_index_compatibility.py.",
+    "Updated backend/tests/test_knowledge_spaces.py.",
+    "Updated backend/tests/test_learning_cards.py.",
+    "Updated backend/tests/test_learning_log_immutability.py.",
+    "Updated backend/tests/test_learning_packages.py.",
+    "Updated backend/tests/test_onboarding.py.",
+    "Updated backend/tests/test_rag_refusal.py.",
+    "Updated backend/tests/test_reindex.py.",
+    "Updated backend/tests/test_v2_5_citation_validation.py.",
+    "Updated backend/tests/test_v3_5_video_transcription.py.",
+    "Updated backend/tests/test_v3_6_media_tasks.py.",
+    "Updated backend/tests/test_v3_audio_transcription.py.",
+    "Updated backend/tests/test_v3_error_archive.py.",
+    "Updated backend/tests/test_v3_image_ocr.py.",
+    "Updated backend/tests/test_v3_image_upload.py.",
+    "Updated backend/tests/test_v3_system_status.py.",
+    "Updated backend/tests/test_v3_task_engine.py.",
+    "Updated database schema migration coverage.",
+    "Updated docker-compose.yml.",
+    "Updated docs/architecture.md.",
+    "Updated docs/audio_transcription.md.",
+    "Updated docs/citation_validation.md.",
+    "Updated docs/error_archive.md.",
+    "Updated docs/index_compatibility.md.",
+    "Updated docs/ingestion_job_flow.md.",
+    "Updated docs/learning_log.md.",
+    "Updated docs/learning_system.md.",
+    "Updated docs/local_setup_windows.md.",
+    "Updated docs/onboarding_flow.md.",
+    "Updated docs/rag_pipeline.md.",
+    "Updated docs/roadmap.md.",
+    "Updated docs/stage_delivery_log.md.",
+    "Updated docs/ui_information_architecture.md.",
+    "Updated docs/v2_5_acceptance_report.md.",
+    "Updated docs/v2_5_learning_package_draft.json.",
+    "Updated docs/v2_current_state_audit.md.",
+    "Updated docs/v3_1_image_metadata_report.md.",
+    "Updated docs/v3_3_error_archive_report.md.",
+    "Updated docs/v3_4_audio_transcription_report.md.",
+    "Updated docs/v3_5_video_pipeline_report.md.",
+    "Updated docs/v3_6_acceptance_report.md.",
+    "Updated docs/v3_acceptance_report.md.",
+    "Updated docs/v3_learning_package_draft.json.",
+    "Updated docs/v3_predevelopment_audit.md.",
+    "Updated docs/version_learning_package.md.",
+    "Updated frontend/.env.local.example.",
+    "Updated frontend/app/chat/page.tsx.",
+    "Updated frontend/app/dashboard/page.tsx.",
+    "Updated frontend/app/documents/[id]/page.tsx.",
+    "Updated frontend/app/documents/page.tsx.",
+    "Updated frontend/app/errors/page.tsx.",
+    "Updated frontend/app/globals.css.",
+    "Updated frontend/app/knowledge/page.tsx.",
+    "Updated frontend/app/layout.tsx.",
+    "Updated frontend/app/learning/cards/page.tsx.",
+    "Updated frontend/app/learning/knowledge-points/[id]/page.tsx.",
+    "Updated frontend/app/learning/page.tsx.",
+    "Updated frontend/app/media/page.tsx.",
+    "Updated frontend/app/page.tsx.",
+    "Updated frontend/app/system/page.tsx.",
+    "Updated frontend/components/AnswerModeSelector.tsx.",
+    "Updated frontend/components/AppShell.tsx.",
+    "Updated frontend/components/KnowledgeChat.tsx.",
+    "Updated frontend/components/KnowledgeSpaceList.tsx.",
+    "Updated frontend/components/LearningLogPanel.tsx.",
+    "Updated frontend/components/ui.tsx.",
+    "Updated frontend/next-env.d.ts.",
+    "Updated frontend/next.config.ts.",
+    "Updated frontend/package-lock.json.",
+    "Updated frontend/package.json.",
+    "Updated frontend/services/api.ts.",
+    "Updated frontend/tsconfig.json.",
+    "Updated frontend/types/api.ts.",
+    "Updated pytest.ini.",
+    "Updated scripts/generate_learning_package.py.",
+    "Updated scripts/smoke_test_real_services.py.",
+    "Verified release packaging exclusions and SHA256 output."
+  ],
+  "major_files": [
+    {
+      "path": "backend/alembic/env.py",
+      "responsibility": "Database schema evolution."
+    },
+    {
+      "path": "backend/alembic/script.py.mako",
+      "responsibility": "Database schema evolution."
+    },
+    {
+      "path": "backend/alembic/versions/0001_v1_baseline.py",
+      "responsibility": "Database schema evolution."
+    },
+    {
+      "path": "backend/alembic/versions/0002_v2_schema.py",
+      "responsibility": "Database schema evolution."
+    },
+    {
+      "path": "backend/alembic/versions/0003_v2_5_product_learning.py",
+      "responsibility": "Database schema evolution."
+    },
+    {
+      "path": "backend/alembic/versions/0004_v3_task_multimodal_foundation.py",
+      "responsibility": "Database schema evolution."
+    },
+    {
+      "path": "backend/alembic/versions/0005_v3_3_error_archive.py",
+      "responsibility": "Database schema evolution."
+    },
+    {
+      "path": "backend/alembic/versions/0006_v3_6_unified_media_tasks.py",
+      "responsibility": "Database schema evolution."
+    },
+    {
+      "path": "backend/app/__init__.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/api/__init__.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/api/router.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/api/routes_chat.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/api/routes_dashboard.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/api/routes_documents.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/api/routes_errors.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/api/routes_ingestion_jobs.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/api/routes_knowledge_spaces.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/api/routes_learning.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/api/routes_media.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/api/routes_onboarding.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/api/routes_system.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/core/config.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/core/errors.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/core/logging.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/core/responses.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/db/session.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/main.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/models/__init__.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/models/chat_session.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/models/chunk.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/models/document.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/models/error_archive.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/models/ingestion_job.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/models/knowledge_space.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/models/learning_artifact.py",
+      "responsibility": "Auditable source-based learning artifact generation."
+    },
+    {
+      "path": "backend/app/models/learning_log.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/models/learning_note.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/models/learning_system.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/models/onboarding.py",
+      "responsibility": "Project implementation change."
+    },
+    {
+      "path": "backend/app/models/qa_log.py",
+      "responsibility": "Project implementation change."
+    }
+  ],
+  "knowledge_points": [
+    {
+      "name": "Unified Task Model",
+      "beginner_explanation": "Long-running work should have one durable state model, whether the target is a document or media source.",
+      "project_usage": "V3.6 uses target_type plus source_id/document_id so document ingestion and media processing share ingestion_jobs and job_events.",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "Review task state machines, nullable foreign keys, retry/cancel semantics and worker dispatch.",
+      "interview_expression": "I unified document and media processing under one durable task model, so progress, events, retries and cancellation work consistently across modalities."
+    },
+    {
+      "name": "Media Task Orchestration",
+      "beginner_explanation": "OCR, screenshot analysis, transcription and keyframe extraction are slow processing jobs, not instant UI actions.",
+      "project_usage": "MediaTaskService turns image OCR, visual description, screenshot analysis, audio transcription, video transcription, keyframes, keyframe OCR and full video pipeline into queueable jobs.",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "Review provider preflight checks, staged progress, JobEvent logging, retry and cancellation.",
+      "interview_expression": "I moved multimodal processing into a task service that records progress and failure details instead of hiding work inside synchronous buttons."
+    },
+    {
+      "name": "Real-Mode Provider Boundaries",
+      "beginner_explanation": "Uploading a file is not the same as understanding it; missing provider keys must be explicit.",
+      "project_usage": "V3.6 keeps NOT_CONFIGURED behavior for OCR, vision and transcription, and refuses to create fake subtitles or fake learning material.",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "Review provider adapters, ConfigurationError, NOT_CONFIGURED codes and long-term knowledge-base contamination risk.",
+      "interview_expression": "I kept media management separate from model understanding so real mode never silently writes fake OCR, fake captions or fake notes."
+    },
+    {
+      "name": "Citation Deep Links",
+      "beginner_explanation": "A citation should take the learner back to the evidence, not just name a file.",
+      "project_usage": "Chat citations now carry source_id/document_id and timestamp fields; CitationPanel links to document chunks or media timestamps.",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "Review citation payloads, URL query parameters, player seek and highlighted transcript chunks.",
+      "interview_expression": "I connected RAG citations to frontend routes so audio and video answers can jump to the exact timestamp that supports the answer."
+    },
+    {
+      "name": "Video Keyframes",
+      "beginner_explanation": "Video knowledge includes visible frames, not only the audio track.",
+      "project_usage": "V3.6 extracts multiple deduplicated keyframes, displays them on a timeline, and can run keyframe OCR or visual description with real providers.",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "Review FFmpeg extraction, perceptual dedupe, VisualFrame, MediaAsset and timestamp locators.",
+      "interview_expression": "I expanded video from a single poster into a traceable keyframe timeline that can feed OCR and visual analysis."
+    },
+    {
+      "name": "Source-Based Learning Artifacts",
+      "beginner_explanation": "Learning cards and notes should be traceable to real evidence chunks.",
+      "project_usage": "LearningArtifact records link generated knowledge points, cards, quizzes, notes and interview expressions back to document or multimodal chunks.",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "Review audit tables, deterministic transformations, chunk locators and refusal when no real text exists.",
+      "interview_expression": "I made source-derived learning material auditable, so every generated card or note can point back to real project evidence."
+    },
+    {
+      "name": "Demo-Friendly Frontend",
+      "beginner_explanation": "A user-facing OS should explain the next action without exposing raw internal fields on primary screens.",
+      "project_usage": "V3.6 improves Upload Center, Task Center and media detail pages with clearer steps, result links, transcript highlighting and keyframe browsing.",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "Review workflow cards, task filters, media player state, responsive layout and progressive disclosure.",
+      "interview_expression": "I reshaped the frontend around user workflows: upload, process, inspect evidence, ask questions and turn evidence into learning assets."
+    },
+    {
+      "name": "Release Verification",
+      "beginner_explanation": "A release package must be reproducible and must not include dependencies, caches, secrets or user data.",
+      "project_usage": "V3.6 keeps release.py exclusion rules and adds tests/checks for forbidden archive entries.",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "Review zip packaging, SHA256 checks, exclusion rules and acceptance reports.",
+      "interview_expression": "I treated release packaging as part of the product boundary, verifying that generated archives exclude secrets, databases, uploads and build caches."
+    }
+  ],
+  "focus": "Understand how V3.6 unifies multimodal processing, evidence navigation and learning artifact generation around real source chunks.",
+  "review_suggestions": "Review unified task model, media task orchestration, citation deep links, player synchronization, keyframes, learning artifact audit trails and release verification.",
+  "interview_expression": "In AI Knowledge OS Pro V3.6, I unified image, audio and video processing under the durable Task Center, made RAG citations jump to document chunks or media timestamps, and generated learning assets only from real source evidence.",
+  "next_version_suggestion": "Next, add subtitle export, richer scene segmentation, stronger provider diagnostics and visual-frame retrieval.",
+  "metadata": {
+    "generated_at": "2026-06-19 14:50:36",
+    "from_ref": null,
+    "to_ref": "HEAD",
+    "dependency_changes": [
+      ".env.example",
+      "backend/.env.example",
+      "backend/requirements.txt",
+      "docker-compose.yml",
+      "frontend/package-lock.json",
+      "frontend/package.json"
+    ],
+    "migration_changes": [
+      "alembic.ini",
+      "backend/alembic/versions/0001_v1_baseline.py",
+      "backend/alembic/versions/0002_v2_schema.py",
+      "backend/alembic/versions/0003_v2_5_product_learning.py",
+      "backend/alembic/versions/0004_v3_task_multimodal_foundation.py",
+      "backend/alembic/versions/0005_v3_3_error_archive.py",
+      "backend/alembic/versions/0006_v3_6_unified_media_tasks.py"
+    ],
+    "route_count": 79,
+    "change_count": 173
+  },
+  "markdown_content": "## V3.6 Learning Package Draft\n\n- Generated at: 2026-06-19 14:50:36\n- Version goal: Upgrade the multimodal prototype into a stable, unified and demo-friendly knowledge learning system.\n- Evidence: Git diff/status, backend route scan, dependency changes, migration changes and optional verification reports.\n\n### Changed Files\n- `??` `.env.example`\n- `??` `.gitignore`\n- `??` `README.md`\n- `??` `alembic.ini`\n- `??` `backend/.env.example`\n- `??` `backend/alembic/env.py`\n- `??` `backend/alembic/script.py.mako`\n- `??` `backend/alembic/versions/0001_v1_baseline.py`\n- `??` `backend/alembic/versions/0002_v2_schema.py`\n- `??` `backend/alembic/versions/0003_v2_5_product_learning.py`\n- `??` `backend/alembic/versions/0004_v3_task_multimodal_foundation.py`\n- `??` `backend/alembic/versions/0005_v3_3_error_archive.py`\n- `??` `backend/alembic/versions/0006_v3_6_unified_media_tasks.py`\n- `??` `backend/app/__init__.py`\n- `??` `backend/app/api/__init__.py`\n- `??` `backend/app/api/router.py`\n- `??` `backend/app/api/routes_chat.py`\n- `??` `backend/app/api/routes_dashboard.py`\n- `??` `backend/app/api/routes_documents.py`\n- `??` `backend/app/api/routes_errors.py`\n- `??` `backend/app/api/routes_ingestion_jobs.py`\n- `??` `backend/app/api/routes_knowledge_spaces.py`\n- `??` `backend/app/api/routes_learning.py`\n- `??` `backend/app/api/routes_media.py`\n- `??` `backend/app/api/routes_onboarding.py`\n- `??` `backend/app/api/routes_system.py`\n- `??` `backend/app/core/config.py`\n- `??` `backend/app/core/errors.py`\n- `??` `backend/app/core/logging.py`\n- `??` `backend/app/core/responses.py`\n- `??` `backend/app/db/session.py`\n- `??` `backend/app/main.py`\n- `??` `backend/app/models/__init__.py`\n- `??` `backend/app/models/chat_session.py`\n- `??` `backend/app/models/chunk.py`\n- `??` `backend/app/models/document.py`\n- `??` `backend/app/models/error_archive.py`\n- `??` `backend/app/models/ingestion_job.py`\n- `??` `backend/app/models/knowledge_space.py`\n- `??` `backend/app/models/learning_artifact.py`\n- `??` `backend/app/models/learning_log.py`\n- `??` `backend/app/models/learning_note.py`\n- `??` `backend/app/models/learning_system.py`\n- `??` `backend/app/models/onboarding.py`\n- `??` `backend/app/models/qa_log.py`\n- `??` `backend/app/models/source.py`\n- `??` `backend/app/models/task_event.py`\n- `??` `backend/app/schemas/__init__.py`\n- `??` `backend/app/schemas/chat_schema.py`\n- `??` `backend/app/schemas/dashboard_schema.py`\n- `??` `backend/app/schemas/document_schema.py`\n- `??` `backend/app/schemas/error_schema.py`\n- `??` `backend/app/schemas/knowledge_schema.py`\n- `??` `backend/app/schemas/learning_schema.py`\n- `??` `backend/app/schemas/media_schema.py`\n- `??` `backend/app/schemas/onboarding_schema.py`\n- `??` `backend/app/schemas/system_schema.py`\n- `??` `backend/app/services/__init__.py`\n- `??` `backend/app/services/chat_session_service.py`\n- `??` `backend/app/services/chunker.py`\n- `??` `backend/app/services/document_parser.py`\n- `??` `backend/app/services/embedding_service.py`\n- `??` `backend/app/services/error_archive_service.py`\n- `??` `backend/app/services/ingestion_service.py`\n- `??` `backend/app/services/learning_artifact_service.py`\n- `??` `backend/app/services/learning_log_service.py`\n- `??` `backend/app/services/learning_package_service.py`\n- `??` `backend/app/services/llm_service.py`\n- `??` `backend/app/services/media_service.py`\n- `??` `backend/app/services/media_task_service.py`\n- `??` `backend/app/services/ocr_service.py`\n- `??` `backend/app/services/onboarding_service.py`\n- `??` `backend/app/services/prompt_builder.py`\n- `??` `backend/app/services/providers.py`\n- `??` `backend/app/services/rag_service.py`\n- `??` `backend/app/services/system_service.py`\n- `??` `backend/app/services/task_broker.py`\n- `??` `backend/app/services/transcription_service.py`\n- `??` `backend/app/services/vector_store.py`\n- `??` `backend/app/services/video_service.py`\n- `??` `backend/app/tasks/__init__.py`\n- `??` `backend/app/tasks/ingestion_tasks.py`\n- `??` `backend/app/worker.py`\n- `??` `backend/requirements.txt`\n- `??` `backend/tests/conftest.py`\n- `??` `backend/tests/test_document_deduplication.py`\n- `??` `backend/tests/test_document_delete.py`\n- `??` `backend/tests/test_document_metadata.py`\n- `??` `backend/tests/test_document_upload.py`\n- `??` `backend/tests/test_embedding_batches.py`\n- `??` `backend/tests/test_health.py`\n- `??` `backend/tests/test_index_compatibility.py`\n- `??` `backend/tests/test_knowledge_spaces.py`\n- `??` `backend/tests/test_learning_cards.py`\n- `??` `backend/tests/test_learning_log_immutability.py`\n- `??` `backend/tests/test_learning_packages.py`\n- `??` `backend/tests/test_onboarding.py`\n- `??` `backend/tests/test_rag_refusal.py`\n- `??` `backend/tests/test_reindex.py`\n- `??` `backend/tests/test_v2_5_citation_validation.py`\n\n### Git Summary\n```text\n?? .env.example\n?? .gitignore\n?? README.md\n?? alembic.ini\n?? backend/\n?? docker-compose.yml\n?? docs/\n?? frontend/\n?? pytest.ini\n?? releases/\n?? scripts/\n```\n\n### Commit Range\n- No commit range was provided; the draft is based on the working tree.\n\n### Dependency Changes\n- `.env.example`\n- `backend/.env.example`\n- `backend/requirements.txt`\n- `docker-compose.yml`\n- `frontend/package-lock.json`\n- `frontend/package.json`\n\n### Migration Changes\n- `alembic.ini`\n- `backend/alembic/versions/0001_v1_baseline.py`\n- `backend/alembic/versions/0002_v2_schema.py`\n- `backend/alembic/versions/0003_v2_5_product_learning.py`\n- `backend/alembic/versions/0004_v3_task_multimodal_foundation.py`\n- `backend/alembic/versions/0005_v3_3_error_archive.py`\n- `backend/alembic/versions/0006_v3_6_unified_media_tasks.py`\n\n### API Route Snapshot\n- `backend/app/api/routes_chat.py::@router.post(\"/ask\", response_model=ChatResponse)`\n- `backend/app/api/routes_chat.py::@router.get(\"/history\", response_model=list[QALogRead])`\n- `backend/app/api/routes_chat.py::@router.post(\"/sessions\", response_model=ChatSessionRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_chat.py::@router.get(\"/sessions\", response_model=list[ChatSessionRead])`\n- `backend/app/api/routes_chat.py::@router.get(\"/sessions/{session_id}\", response_model=ChatSessionRead)`\n- `backend/app/api/routes_chat.py::@router.patch(\"/sessions/{session_id}\", response_model=ChatSessionRead)`\n- `backend/app/api/routes_chat.py::@router.delete(\"/sessions/{session_id}\", status_code=status.HTTP_204_NO_CONTENT)`\n- `backend/app/api/routes_chat.py::@router.post(\"/sessions/{session_id}/messages\", response_model=ChatResponse)`\n- `backend/app/api/routes_chat.py::@router.post(\"/messages/{message_id}/regenerate\", response_model=ChatResponse)`\n- `backend/app/api/routes_chat.py::@router.post(\"/messages/{message_id}/favorite\", response_model=ChatFavoriteResponse)`\n- `backend/app/api/routes_dashboard.py::@router.get(\"/summary\", response_model=DashboardSummary)`\n- `backend/app/api/routes_documents.py::@router.post(\"/upload\", response_model=DocumentUploadResponse, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_documents.py::@router.get(\"\", response_model=list[DocumentRead])`\n- `backend/app/api/routes_documents.py::@router.post(\"/bulk-delete\", response_model=BulkDocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/bulk-reindex\", response_model=BulkDocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/bulk-tags\", response_model=BulkDocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.get(\"/{document_id}\", response_model=DocumentRead)`\n- `backend/app/api/routes_documents.py::@router.patch(\"/{document_id}\", response_model=DocumentRead)`\n- `backend/app/api/routes_documents.py::@router.delete(\"/{document_id}\", response_model=DocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/{document_id}/retry\", response_model=DocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/{document_id}/reparse\", response_model=DocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/{document_id}/reindex\", response_model=DocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.get(\"/{document_id}/chunks\", response_model=list[ChunkRead])`\n- `backend/app/api/routes_errors.py::@router.get(\"\", response_model=list[ErrorArchiveRead])`\n- `backend/app/api/routes_errors.py::@router.post(\"/from-source/{source_id}\", response_model=ErrorExtractionResponse)`\n- `backend/app/api/routes_errors.py::@router.get(\"/{archive_id}\", response_model=ErrorArchiveRead)`\n- `backend/app/api/routes_errors.py::@router.patch(\"/{archive_id}\", response_model=ErrorArchiveRead)`\n- `backend/app/api/routes_ingestion_jobs.py::@router.get(\"\", response_model=list[IngestionJobRead])`\n- `backend/app/api/routes_ingestion_jobs.py::@router.get(\"/{job_id}\", response_model=IngestionJobRead)`\n- `backend/app/api/routes_ingestion_jobs.py::@router.get(\"/{job_id}/events\", response_model=list[JobEventRead])`\n- `backend/app/api/routes_ingestion_jobs.py::@router.post(\"/{job_id}/retry\", response_model=IngestionJobRead)`\n- `backend/app/api/routes_ingestion_jobs.py::@router.post(\"/{job_id}/cancel\", response_model=IngestionJobRead)`\n- `backend/app/api/routes_knowledge_spaces.py::@router.post(\"\", response_model=KnowledgeSpaceRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_knowledge_spaces.py::@router.get(\"\", response_model=list[KnowledgeSpaceDetail])`\n- `backend/app/api/routes_knowledge_spaces.py::@router.get(\"/{space_id}\", response_model=KnowledgeSpaceDetail)`\n- `backend/app/api/routes_learning.py::@router.get(\"/logs\", response_model=list[LearningLogRead])`\n- `backend/app/api/routes_learning.py::@router.get(\"/dashboard\", response_model=LearningDashboard)`\n- `backend/app/api/routes_learning.py::@router.get(\"/versions\", response_model=list[LearningLogRead])`\n- `backend/app/api/routes_learning.py::@router.get(\"/logs/{slug}\", response_model=LearningLogRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/logs\", response_model=LearningLogRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_learning.py::@router.post(\"/packages/generate-draft\", response_model=LearningPackageRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/packages\", response_model=LearningPackageRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_learning.py::@router.get(\"/packages\", response_model=list[LearningPackageRead])`\n- `backend/app/api/routes_learning.py::@router.get(\"/packages/{slug}\", response_model=LearningPackageRead)`\n- `backend/app/api/routes_learning.py::@router.patch(\"/packages/{slug}\", response_model=LearningPackageRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/packages/{slug}/confirm\", response_model=LearningPackageRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/packages/{slug}/export\", response_model=MarkdownExportResponse)`\n- `backend/app/api/routes_learning.py::@router.get(\"/knowledge-points\", response_model=list[KnowledgePointRead])`\n- `backend/app/api/routes_learning.py::@router.get(\"/knowledge-points/{point_id}\", response_model=KnowledgePointRead)`\n- `backend/app/api/routes_learning.py::@router.patch(\"/knowledge-points/{point_id}/progress\", response_model=KnowledgePointRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/knowledge-points/{point_id}/notes\", response_model=KnowledgePointRead)`\n- `backend/app/api/routes_learning.py::@router.get(\"/cards\", response_model=list[LearningCardRead])`\n- `backend/app/api/routes_learning.py::@router.patch(\"/cards/{card_id}/progress\", response_model=LearningCardRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/cards/{card_id}/review\", response_model=LearningCardRead)`\n- `backend/app/api/routes_learning.py::@router.get(\"/quizzes\", response_model=list[QuizQuestionRead])`\n- `backend/app/api/routes_learning.py::@router.post(\"/quizzes/{quiz_id}/answer\", response_model=QuizAnswerResponse)`\n- `backend/app/api/routes_learning.py::@router.post(\"/export-markdown\", response_model=MarkdownExportResponse)`\n- `backend/app/api/routes_learning.py::@router.get(\"/notes\", response_model=list[LearningNoteRead])`\n- `backend/app/api/routes_learning.py::@router.post(\"/notes\", response_model=LearningNoteRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_learning.py::@router.post(\"/from-source\", response_model=LearningArtifactBatchResponse, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_learning.py::@router.patch(\"/notes/{note_id}\", response_model=LearningNoteRead)`\n- `backend/app/api/routes_learning.py::@router.delete(\"/notes/{note_id}\", status_code=status.HTTP_204_NO_CONTENT)`\n- `backend/app/api/routes_media.py::@router.post(\"/images/upload\", response_model=ImageUploadResponse, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_media.py::@router.post(\"/audio/upload\", response_model=AudioUploadResponse, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_media.py::@router.post(\"/video/upload\", response_model=VideoUploadResponse, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_media.py::@router.get(\"/sources\", response_model=list[SourceDetail])`\n- `backend/app/api/routes_media.py::@router.get(\"/sources/{source_id}\", response_model=SourceDetail)`\n- `backend/app/api/routes_media.py::@router.get(\"/sources/{source_id}/file\", response_class=FileResponse)`\n- `backend/app/api/routes_media.py::@router.get(\"/assets/{asset_id}/file\", response_class=FileResponse)`\n- `backend/app/api/routes_media.py::@router.post(\"/sources/{source_id}/process\", response_model=MediaTaskResponse, status_code=status.HTTP_202_ACCEPTED)`\n- `backend/app/api/routes_media.py::@router.post(\"/sources/{source_id}/ocr\", response_model=MediaTaskResponse, status_code=status.HTTP_202_ACCEPTED)`\n- `backend/app/api/routes_media.py::@router.post(\"/sources/{source_id}/transcribe\", response_model=MediaTaskResponse, status_code=status.HTTP_202_ACCEPTED)`\n- `backend/app/api/routes_onboarding.py::@router.get(\"\", response_model=OnboardingRead)`\n- `backend/app/api/routes_onboarding.py::@router.patch(\"\", response_model=OnboardingRead)`\n- `backend/app/api/routes_onboarding.py::@router.post(\"/reset\", response_model=OnboardingRead)`\n- `backend/app/api/routes_system.py::@router.get(\"/status\", response_model=SystemStatusResponse)`\n- `backend/app/api/routes_system.py::@router.post(\"/test-llm\", response_model=SystemTestResponse)`\n- `backend/app/api/routes_system.py::@router.post(\"/test-embedding\", response_model=SystemTestResponse)`\n- `backend/app/api/routes_system.py::@router.post(\"/test-qdrant\", response_model=SystemTestResponse)`\n\n### Knowledge Topics\n#### Unified Task Model\n- Beginner explanation: Long-running work should have one durable state model, whether the target is a document or media source.\n- Project usage: V3.6 uses target_type plus source_id/document_id so document ingestion and media processing share ingestion_jobs and job_events.\n- Code locations: `.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- Review suggestion: Review task state machines, nullable foreign keys, retry/cancel semantics and worker dispatch.\n- Interview expression: I unified document and media processing under one durable task model, so progress, events, retries and cancellation work consistently across modalities.\n\n#### Media Task Orchestration\n- Beginner explanation: OCR, screenshot analysis, transcription and keyframe extraction are slow processing jobs, not instant UI actions.\n- Project usage: MediaTaskService turns image OCR, visual description, screenshot analysis, audio transcription, video transcription, keyframes, keyframe OCR and full video pipeline into queueable jobs.\n- Code locations: `.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- Review suggestion: Review provider preflight checks, staged progress, JobEvent logging, retry and cancellation.\n- Interview expression: I moved multimodal processing into a task service that records progress and failure details instead of hiding work inside synchronous buttons.\n\n#### Real-Mode Provider Boundaries\n- Beginner explanation: Uploading a file is not the same as understanding it; missing provider keys must be explicit.\n- Project usage: V3.6 keeps NOT_CONFIGURED behavior for OCR, vision and transcription, and refuses to create fake subtitles or fake learning material.\n- Code locations: `.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- Review suggestion: Review provider adapters, ConfigurationError, NOT_CONFIGURED codes and long-term knowledge-base contamination risk.\n- Interview expression: I kept media management separate from model understanding so real mode never silently writes fake OCR, fake captions or fake notes.\n\n#### Citation Deep Links\n- Beginner explanation: A citation should take the learner back to the evidence, not just name a file.\n- Project usage: Chat citations now carry source_id/document_id and timestamp fields; CitationPanel links to document chunks or media timestamps.\n- Code locations: `.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- Review suggestion: Review citation payloads, URL query parameters, player seek and highlighted transcript chunks.\n- Interview expression: I connected RAG citations to frontend routes so audio and video answers can jump to the exact timestamp that supports the answer.\n\n#### Video Keyframes\n- Beginner explanation: Video knowledge includes visible frames, not only the audio track.\n- Project usage: V3.6 extracts multiple deduplicated keyframes, displays them on a timeline, and can run keyframe OCR or visual description with real providers.\n- Code locations: `.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- Review suggestion: Review FFmpeg extraction, perceptual dedupe, VisualFrame, MediaAsset and timestamp locators.\n- Interview expression: I expanded video from a single poster into a traceable keyframe timeline that can feed OCR and visual analysis.\n\n#### Source-Based Learning Artifacts\n- Beginner explanation: Learning cards and notes should be traceable to real evidence chunks.\n- Project usage: LearningArtifact records link generated knowledge points, cards, quizzes, notes and interview expressions back to document or multimodal chunks.\n- Code locations: `.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- Review suggestion: Review audit tables, deterministic transformations, chunk locators and refusal when no real text exists.\n- Interview expression: I made source-derived learning material auditable, so every generated card or note can point back to real project evidence.\n\n#### Demo-Friendly Frontend\n- Beginner explanation: A user-facing OS should explain the next action without exposing raw internal fields on primary screens.\n- Project usage: V3.6 improves Upload Center, Task Center and media detail pages with clearer steps, result links, transcript highlighting and keyframe browsing.\n- Code locations: `.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- Review suggestion: Review workflow cards, task filters, media player state, responsive layout and progressive disclosure.\n- Interview expression: I reshaped the frontend around user workflows: upload, process, inspect evidence, ask questions and turn evidence into learning assets.\n\n#### Release Verification\n- Beginner explanation: A release package must be reproducible and must not include dependencies, caches, secrets or user data.\n- Project usage: V3.6 keeps release.py exclusion rules and adds tests/checks for forbidden archive entries.\n- Code locations: `.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- Review suggestion: Review zip packaging, SHA256 checks, exclusion rules and acceptance reports.\n- Interview expression: I treated release packaging as part of the product boundary, verifying that generated archives exclude secrets, databases, uploads and build caches.\n\n### Test Report\n```text\nNo test report file was provided.\n```\n\n### Build Report\n```text\nNo build report file was provided.\n```\n\n### Migration Report\n```text\nNo migration report file was provided.\n```\n"
+}
