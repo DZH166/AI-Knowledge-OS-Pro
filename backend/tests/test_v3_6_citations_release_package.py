@@ -78,6 +78,9 @@ def test_release_exclusion_rules_cover_sensitive_and_generated_paths() -> None:
         ROOT / "frontend" / "node_modules" / "pkg" / "index.js",
         ROOT / "releases" / "old.zip",
         ROOT / "frontend" / "tsconfig.tsbuildinfo",
+        ROOT / "sub2api" / ".git" / "config",
+        ROOT / ".agents" / "local.json",
+        ROOT / "vendor" / ".git" / "config",
     ]
     allowed = [
         ROOT / "README.md",

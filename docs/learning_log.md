@@ -902,3 +902,31 @@ AI Knowledge OS Pro V3.6 中，我把多模态处理从分散的同步按钮升�
 - `python -m alembic current`：`0006_v3_6_unified_media_tasks (head)`。
 - `frontend typecheck`：通过。
 - `frontend build`：通过。
+
+<!-- learning:v3-6-github-portfolio-release-20260621 -->
+## V3.6：GitHub 作品集发布收口
+
+### 本次补充做了什么
+- 统一后端、前端、OpenAPI、系统状态和发布工具的 `V3.6 / 3.6.0` 版本表达。
+- 将 README 重构为完整作品集说明，补齐架构、RAG/多模态流程、启动、环境变量、测试、路线图和简历表达。
+- 新增 GitHub Actions、Issue/PR 模板、SECURITY、CONTRIBUTING、LICENSE 和 release checklist。
+- 使用独立 `showcase.db` 与合成资料生成 7 张可复现截图，不读取正式数据库或私人上传内容。
+- 修复媒体任务响应模型：`document_id` 可空，并公开 `source_id`、`target_type`，消除合法媒体任务的 500 响应校验错误。
+- 修复展示学习日志、问答引用和相关片段的 Schema 数据结构，并新增 API 路由级回归测试。
+- 截图工具按页面等待真实数据，拒绝 `Failed to fetch` 和空白截图；视频截图展示多关键帧、时间戳和高亮转写。
+- 学习包草稿基于 `ba4166f..9dca572` 的真实 Git 差异、79 条 API 路由、依赖变化和验证报告生成。
+- 发布器改为优先打包 Git 跟踪文件，排除被忽略的嵌套仓库、代理元数据、数据库、上传、密钥、依赖和构建缓存。
+
+### 我应该重点理解什么
+一个可展示的 AI 项目不只是功能能运行，还要让版本、接口契约、演示数据、CI、文档和发布边界彼此一致。展示环境必须可复现且与真实用户数据隔离；发布器必须按仓库所有权打包，而不是盲目遍历工作区。
+
+### 面试表达方式
+我把 AI Knowledge OS Pro V3.6 收口成可运行、可测试、可讲解的 GitHub 作品。除了统一多模态任务、时间戳引用和来源学习资产，我还建立了真实 CI、UTF-8/版本检查、隔离展示数据、自动截图验证和基于 Git 跟踪文件的安全发布流程，并用 API 回归测试修复了媒体任务可空外键的响应契约问题。
+
+### 最终验证
+- backend compileall：通过。
+- pytest：41 passed，18 warnings。
+- 全新 SQLite 数据库 Alembic upgrade/current：`0006_v3_6_unified_media_tasks (head)`。
+- frontend typecheck/build：通过，15 个 App Router 页面构建成功。
+- UTF-8 与版本一致性检查：通过。
+- release 检查：199 files，forbidden=0，missing=0。

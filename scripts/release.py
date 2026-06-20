@@ -4,6 +4,7 @@ import argparse
 from datetime import datetime
 import hashlib
 from pathlib import Path
+import subprocess
 import zipfile
 
 
@@ -12,6 +13,8 @@ RELEASES = ROOT / "releases"
 
 EXCLUDED_DIRS = {
     ".git",
+    ".agents",
+    ".codex",
     ".next",
     ".pytest_cache",
     ".pytest_tmp",
@@ -24,6 +27,7 @@ EXCLUDED_DIRS = {
     "backend/storage",
     "frontend/.next",
     "frontend/node_modules",
+    "sub2api",
 }
 
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".db", ".sqlite", ".sqlite3", ".log", ".tsbuildinfo", ".tmp"}
@@ -39,9 +43,18 @@ def should_exclude(path: Path) -> bool:
         return True
     if any(relative == item or relative.startswith(f"{item}/") for item in EXCLUDED_DIRS):
         return True
-    if "__pycache__" in parts or "node_modules" in parts:
+    if ".git" in parts or "__pycache__" in parts or "node_modules" in parts:
         return True
     return False
+
+
+def release_files() -> list[Path]:
+    try:
+        output = subprocess.check_output(["git", "ls-files", "-z"], cwd=ROOT)
+        paths = [ROOT / item for item in output.decode("utf-8").split("\0") if item]
+        return [path for path in paths if path.is_file() and not should_exclude(path)]
+    except (FileNotFoundError, subprocess.CalledProcessError, UnicodeDecodeError):
+        return [path for path in ROOT.rglob("*") if path.is_file() and not should_exclude(path)]
 
 
 def make_release(version: str) -> tuple[Path, Path, str]:
@@ -49,9 +62,7 @@ def make_release(version: str) -> tuple[Path, Path, str]:
     date = datetime.now().strftime("%Y%m%d")
     zip_path = RELEASES / f"AI-Knowledge-OS-Pro-{version}-{date}.zip"
     with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
-        for path in ROOT.rglob("*"):
-            if path.is_dir() or should_exclude(path):
-                continue
+        for path in release_files():
             archive.write(path, path.relative_to(ROOT).as_posix())
 
     digest = hashlib.sha256(zip_path.read_bytes()).hexdigest()

@@ -49,7 +49,7 @@ frontend production build
 Result: passed
 
 encoding, version and release checks
-Result: encoding and version checks passed; final release archive check runs after the append-only delivery records
+Result: passed; release inspection reported 199 files, forbidden=0, missing=0
 ```
 
 The isolated showcase API returned HTTP 200 for dashboard summary, ingestion jobs, learning logs, chat history and chat sessions. Seven `1440 x 960` screenshots were regenerated; the capture guard found no `Failed to fetch` page and rejected blank-image output during validation.
@@ -61,3 +61,4 @@ The isolated showcase API returned HTTP 200 for dashboard summary, ingestion job
 - Vision description depends on a configured real provider.
 - Historical learning logs remain append-only and were not rewritten.
 - Showcase screenshots use synthetic persisted results and are not evidence that an unconfigured provider ran locally.
+- Release packaging uses Git-tracked files and excludes ignored/nested repositories as well as local agent metadata.

@@ -440,3 +440,30 @@ V2 优先做文档治理和学习复盘增强：文档删除、重新索引、�
 - SHA256 file: `releases/AI-Knowledge-OS-Pro-V3.6-20260619.zip.sha256`.
 - Previous regenerated SHA before this note: `bf1db3e543c5c8fab98409b04be1f0bddb4ed4e78efa7f5d0b446a77239a6815`.
 - Zip inspection: 175 files, forbidden entries 0 under release exclusion rules.
+
+<!-- stage:v3-6-github-portfolio-release-20260621 -->
+## V3.6 阶段交付：GitHub 作品集与安全发布收口
+
+### 阶段状态
+V3.6 已完成 GitHub 作品集化收口：专业 README、真实 CI、项目规范、UTF-8 与版本检查、隔离演示数据、自动截图、媒体任务 API 契约修复、真实 Git 差异学习包和安全 release 流程均已落地。
+
+### 交付证据
+- 第一阶段提交：`9dca572 feat: complete V3.6 portfolio release`。
+- 展示截图：Dashboard、上传中心、知识问答、媒体库、视频详情、学习档案、任务中心，共 7 张 `1440 x 960` PNG。
+- 展示 API：dashboard summary、ingestion jobs、learning logs、chat history、chat sessions 均返回 HTTP 200。
+- 视频展示：3 个带 `timestamp_ms` 的关键帧、时间戳跳转按钮和高亮转写片段。
+- 学习包：基于 `ba4166f..9dca572`、42 个变更文件、79 条 API 路由及真实验证结果生成。
+
+### 验证结果
+- compileall：通过。
+- pytest：41 passed，18 warnings。
+- Alembic fresh upgrade/current：`0006_v3_6_unified_media_tasks (head)`。
+- frontend typecheck/build：通过。
+- encoding/version check：通过。
+- release inspection：199 files，forbidden=0，missing=0。
+
+### 发布边界
+- 未配置真实 provider 时继续返回明确 NOT_CONFIGURED 类错误，不生成假 OCR、假视觉描述、假字幕或假回答。
+- 合成展示数据库与媒体位于被忽略目录，不进入 Git 或 release zip。
+- 发布器只选择当前仓库 Git 跟踪文件，并排除 `.env`、数据库、uploads、logs、`node_modules`、`.next`、缓存、嵌套仓库和本地代理元数据。
+- 最终摘要以 `releases/AI-Knowledge-OS-Pro-V3.6-20260621.zip.sha256` 为权威，不在归档内文档写入自引用哈希。

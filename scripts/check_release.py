@@ -15,6 +15,8 @@ FORBIDDEN_PATTERNS = (
     re.compile(r"(^|/)\.env$"),
     re.compile(r"(^|/)\.env\.local$"),
     re.compile(r"(^|/)releases/"),
+    re.compile(r"(^|/)\.git/"),
+    re.compile(r"(^|/)\.(agents|codex)/"),
     re.compile(r"(^|/)backend/(data|storage)/"),
     re.compile(r"(^|/)(uploads|logs?)/"),
     re.compile(r"(^|/)sub2api/"),
