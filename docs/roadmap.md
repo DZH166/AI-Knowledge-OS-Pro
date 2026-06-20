@@ -95,13 +95,23 @@
 - Timestamped video `TranscriptSegment`, `MultimodalChunk`, `CitationLocator` and `IndexRevision` records.
 - Qdrant indexing and RAG citations with `source_type=video`, `start_ms` and `end_ms`.
 
-## V3.x Next: Real Multimodal Pipelines
+## V3.6: Unified Multimodal Knowledge Workflow
+
+- Image, audio and video operations run through the Redis/RQ task center.
+- Media jobs expose progress, events, retry, cancel, reprocess and result navigation.
+- Audio/video citations deep-link to timestamps and highlight transcript evidence.
+- Video detail combines keyframes, transcript chunks, notes, questions and learning actions.
+- Multiple keyframes persist `timestamp_ms` and support timeline seeking.
+- Source-derived knowledge points, cards, quizzes, notes and interview expressions retain evidence ownership.
+- GitHub portfolio README, reproducible synthetic screenshots, CI, governance files, encoding checks and release safety checks.
+- V3.6 learning package generation uses real Git changes, routes, dependencies and verification reports.
+
+## V3.7 Next: Richer Media Understanding
 
 - Docling or equivalent parser for richer document formats.
-- Visual description on top of the image OCR foundation.
 - Subtitle export and richer video timeline controls.
-- Shot-level scene segmentation and multi-keyframe indexing.
-- Citation jump-to-page/timestamp/frame behavior.
+- Shot-level scene segmentation and semantic keyframe retrieval.
+- More complete PDF page/section navigation and frame-level citation highlighting.
 
 ## V5: Code Repository And Project Memory
 

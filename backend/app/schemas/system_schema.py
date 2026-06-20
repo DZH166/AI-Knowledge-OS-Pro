@@ -11,6 +11,7 @@ class ComponentStatus(BaseModel):
 class RuntimeStatus(BaseModel):
     app_name: str
     app_version: str
+    semantic_version: str
     app_env: str
     runtime_mode: str
     python_version: str

@@ -65,6 +65,7 @@ class SystemService:
             runtime=RuntimeStatus(
                 app_name=settings.app_name,
                 app_version=settings.app_version,
+                semantic_version=settings.app_semver,
                 app_env=settings.app_env,
                 runtime_mode=settings.runtime_mode,
                 python_version=platform.python_version(),

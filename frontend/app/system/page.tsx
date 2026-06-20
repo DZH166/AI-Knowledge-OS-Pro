@@ -82,6 +82,7 @@ export default function SystemPage() {
             </div>
             <div className="status-line">
               <StatusBadge status={status.runtime.runtime_mode} />
+              <span className="pill gray">{status.runtime.app_version} / {status.runtime.semantic_version}</span>
               <span className="pill gray">{status.runtime.llm_provider} / {status.runtime.llm_model}</span>
               <span className="pill gray">{status.runtime.embedding_provider} / {status.runtime.embedding_model}</span>
               <span className="pill gray">{status.runtime.ocr_provider} / {status.runtime.ocr_model}</span>

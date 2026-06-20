@@ -8,3 +8,4 @@ def test_health_check() -> None:
     response = client.get("/health")
     assert response.status_code == 200
     assert response.json()["version"] == "V3.6"
+    assert response.json()["semantic_version"] == "3.6.0"

@@ -1,4 +1,4 @@
-﻿# AI Knowledge OS Pro V3 前置审计
+# AI Knowledge OS Pro V3 前置审计
 
 生成时间：2026-06-12 21:05:00
 阶段：A. V3 前审计和备份

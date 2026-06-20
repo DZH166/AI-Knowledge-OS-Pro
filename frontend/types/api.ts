@@ -490,6 +490,7 @@ export type ComponentStatus = {
 export type RuntimeStatus = {
   app_name: string;
   app_version: string;
+  semantic_version: string;
   app_env: string;
   runtime_mode: string;
   python_version: string;

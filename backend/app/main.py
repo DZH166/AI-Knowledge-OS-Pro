@@ -22,8 +22,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title=settings.app_name,
-    version=settings.app_version,
-    description="AI Knowledge OS Pro V2 backend: real-mode RAG knowledge OS with diagnostics and learning archive.",
+    version=settings.app_semver,
+    description="AI Knowledge OS Pro V3.6 backend: real-mode multimodal RAG, durable tasks and learning archives.",
     lifespan=lifespan,
 )
 
@@ -88,4 +88,9 @@ app.include_router(api_router)
 
 @app.get("/health")
 def health_check() -> dict[str, str]:
-    return {"status": "ok", "version": settings.app_version, "runtime_mode": settings.runtime_mode}
+    return {
+        "status": "ok",
+        "version": settings.app_version,
+        "semantic_version": settings.app_semver,
+        "runtime_mode": settings.runtime_mode,
+    }

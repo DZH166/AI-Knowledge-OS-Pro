@@ -88,8 +88,10 @@ class IngestionJobRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
-    document_id: int
+    document_id: int | None = None
+    source_id: int | None = None
     space_id: int
+    target_type: str = "document"
     job_type: str
     status: str
     current_step: str | None = None

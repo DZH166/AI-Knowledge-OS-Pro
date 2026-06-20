@@ -16,6 +16,11 @@ V3.6 unifies document and media processing under the durable task engine, improv
 - Added frontend citation links to document chunks and media timestamps.
 - Rebuilt media detail page with player seek, transcript highlighting, keyframe timeline, task actions, selected chunk evidence, and learning artifact actions.
 - Updated Task Center to distinguish document and media jobs.
+- Unified product/backend/package version reporting as `V3.6` and `3.6.0`.
+- Added a portfolio README, seven reproducible synthetic screenshots, demo instructions and GitHub governance files.
+- Added GitHub Actions coverage for backend, frontend, migration, encoding, version and release safety checks.
+- Added UTF-8, version consistency and release archive verification scripts.
+- Corrected the public media-task response contract so nullable `document_id`, `source_id` and `target_type` serialize without API failures.
 
 ## Real-Mode Boundary
 
@@ -31,7 +36,7 @@ python -m compileall backend/app backend/alembic scripts
 Result: passed
 
 E:\python3.12.9\python.exe -m pytest
-Result: 40 passed, 18 warnings
+Result: 41 passed, 18 warnings
 
 E:\python3.12.9\python.exe -m alembic upgrade head
 E:\python3.12.9\python.exe -m alembic current
@@ -42,7 +47,12 @@ Result: passed
 
 frontend production build
 Result: passed
+
+encoding, version and release checks
+Result: encoding and version checks passed; final release archive check runs after the append-only delivery records
 ```
+
+The isolated showcase API returned HTTP 200 for dashboard summary, ingestion jobs, learning logs, chat history and chat sessions. Seven `1440 x 960` screenshots were regenerated; the capture guard found no `Failed to fetch` page and rejected blank-image output during validation.
 
 ## Boundaries
 
@@ -50,3 +60,4 @@ Result: passed
 - Full shot-level scene segmentation is not implemented.
 - Vision description depends on a configured real provider.
 - Historical learning logs remain append-only and were not rewritten.
+- Showcase screenshots use synthetic persisted results and are not evidence that an unconfigured provider ran locally.

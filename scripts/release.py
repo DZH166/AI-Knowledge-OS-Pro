@@ -62,7 +62,7 @@ def make_release(version: str) -> tuple[Path, Path, str]:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--version", default="V2.5")
+    parser.add_argument("--version", default="V3.6")
     args = parser.parse_args()
     zip_path, sha_path, digest = make_release(args.version)
     print(f"zip={zip_path}")

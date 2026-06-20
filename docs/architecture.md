@@ -67,3 +67,13 @@ V3.5 reuses the existing multimodal schema without another migration. Video uplo
 V3.6 adds Alembic revision `0006_v3_6_unified_media_tasks`. `ingestion_jobs.document_id` is nullable, media jobs store `source_id`, and `target_type` distinguishes document jobs from media jobs. The same Task Center can now observe, retry and cancel image OCR, image visual description, screenshot analysis, audio transcription, video transcription, keyframe extraction, keyframe OCR, visual description and full video pipeline tasks.
 
 V3.6 also adds `learning_artifacts` as an audit table for source-derived study material. Learning artifacts are deterministic transformations of existing document chunks or active multimodal chunks; empty media is refused rather than filled with fake notes. Chat citations now carry explicit `source_id` and `document_id`, so frontend citations can deep-link to document chunks or media timestamps.
+
+The public task contract mirrors the nullable database ownership model: document jobs return `document_id`, media jobs return `source_id`, and both expose `target_type`. This prevents response validation from turning valid media jobs into API failures.
+
+## Portfolio And Release Verification
+
+- GitHub Actions runs backend compilation/tests/migrations, frontend typecheck/build, UTF-8 checks, version checks and release archive inspection.
+- `scripts/seed_showcase.py` creates only an isolated synthetic database whose filename must contain `showcase`.
+- `scripts/capture_showcase.py` waits for real page data and rejects failed or blank captures before writing the seven README screenshots.
+- `scripts/check_release.py` validates the generated zip against the same exclusions used by the release builder.
+- Real `.env` files, SQLite databases, uploads, logs, dependencies, build caches and previous releases are excluded from release artifacts.
