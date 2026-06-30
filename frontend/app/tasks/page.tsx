@@ -99,7 +99,7 @@ export default function TasksPage() {
           </button>
         }
         description="Track document parsing, image analysis, audio transcription, video keyframes and video transcription in one durable task center. Failed tasks can be retried, active tasks can be cancelled, and completed tasks link back to their result."
-        eyebrow="V3.6 unified task engine"
+        eyebrow="V3.7 unified task engine"
         title="Task Center"
       />
 

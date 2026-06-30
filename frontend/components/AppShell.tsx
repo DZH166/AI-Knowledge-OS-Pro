@@ -89,7 +89,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </span>
           <span>
             <strong>AI Knowledge OS Pro</strong>
-            <small>V3.6 多模态知识中枢</small>
+            <small>V3.7 作品集 Demo 中枢</small>
           </span>
         </Link>
         <nav className="nav-list" aria-label="主导航">

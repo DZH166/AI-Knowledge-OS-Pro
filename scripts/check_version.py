@@ -5,8 +5,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DISPLAY_VERSION = "V3.6"
-SEMANTIC_VERSION = "3.6.0"
+DISPLAY_VERSION = "V3.7"
+SEMANTIC_VERSION = "3.7.0"
 
 
 def main() -> None:

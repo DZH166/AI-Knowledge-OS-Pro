@@ -10,8 +10,8 @@ BACKEND_DIR = Path(__file__).resolve().parents[2]
 class Settings(BaseSettings):
     app_name: str = "AI Knowledge OS Pro"
     app_env: str = "development"
-    app_version: str = "V3.6"
-    app_semver: str = "3.6.0"
+    app_version: str = "V3.7"
+    app_semver: str = "3.7.0"
     demo_mode: bool = False
 
     backend_cors_origins: list[str] = Field(

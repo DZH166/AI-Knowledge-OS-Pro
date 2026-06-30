@@ -23,7 +23,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title=settings.app_name,
     version=settings.app_semver,
-    description="AI Knowledge OS Pro V3.6 backend: real-mode multimodal RAG, durable tasks and learning archives.",
+    description="AI Knowledge OS Pro V3.7 backend: portfolio-grade multimodal RAG, demo readiness and release checks.",
     lifespan=lifespan,
 )
 

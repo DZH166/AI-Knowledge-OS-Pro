@@ -7,5 +7,5 @@ def test_health_check() -> None:
     client = TestClient(app)
     response = client.get("/health")
     assert response.status_code == 200
-    assert response.json()["version"] == "V3.6"
-    assert response.json()["semantic_version"] == "3.6.0"
+    assert response.json()["version"] == "V3.7"
+    assert response.json()["semantic_version"] == "3.7.0"

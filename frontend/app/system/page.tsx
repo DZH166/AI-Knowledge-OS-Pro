@@ -33,6 +33,45 @@ function StatusCard({ title, status, action }: { title: string; status: Componen
   );
 }
 
+function CapabilityMatrix({ status }: { status: SystemStatus }) {
+  const items = [
+    { name: "文档上传、解析与学习档案", group: "可直接使用", ready: status.db.ok, note: "依赖本地 SQLite；txt/md/pdf 解析不需要付费模型。" },
+    { name: "任务中心、重试和取消", group: "需要本地服务", ready: status.redis.ok && status.worker.ok, note: "需要 Redis 和 Worker；没有 Worker 时仍可看到任务记录。" },
+    { name: "语义检索与 RAG 引用", group: "需要本地服务", ready: status.qdrant.ok && status.collection.ok && status.embedding.ok, note: "需要 Qdrant 与真实 Embedding Provider。" },
+    { name: "真实问答", group: "需要真实 Provider", ready: status.llm.ok, note: "需要 LLM API Key；未配置时明确拒绝，不生成假回答。" },
+    { name: "图片 OCR / 视觉描述", group: "需要真实 Provider", ready: status.ocr.ok, note: "需要 OCR/vision Provider；未配置时返回 OCR_NOT_CONFIGURED。" },
+    { name: "音频/视频转写", group: "需要真实 Provider", ready: status.transcription.ok, note: "需要 speech-to-text Provider；未配置时返回 TRANSCRIPTION_NOT_CONFIGURED。" },
+    { name: "视频关键帧", group: "需要本地服务", ready: true, note: "需要 FFmpeg/imageio-ffmpeg；Demo 可展示合成关键帧时间线。" },
+    { name: "Demo 展示数据", group: "Demo 可展示", ready: status.runtime.runtime_mode === "demo", note: "Demo 数据是合成样例，不冒充真实模型输出。" },
+    { name: "字幕导出和镜头级分割", group: "尚未实现", ready: false, note: "保留在路线图中，不在 README 中宣称已完成。" }
+  ];
+  const groups = ["可直接使用", "需要本地服务", "需要真实 Provider", "Demo 可展示", "尚未实现"];
+  return (
+    <section className="panel stack">
+      <h2>能力可用性</h2>
+      <p className="muted">按真实依赖划分能力，避免把 Demo 流程误解成零配置 AI 能力。</p>
+      <div className="grid cols-3">
+        {groups.map((group) => (
+          <article className="card stack" key={group}>
+            <h3>{group}</h3>
+            {items
+              .filter((item) => item.group === group)
+              .map((item) => (
+                <div className="stack compact" key={item.name}>
+                  <div className="row between">
+                    <strong>{item.name}</strong>
+                    <StatusBadge status={item.ready ? "ready" : "pending"} label={item.ready ? "可用" : "需配置"} />
+                  </div>
+                  <p className="muted">{item.note}</p>
+                </div>
+              ))}
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function SystemPage() {
   const [status, setStatus] = useState<SystemStatus | null>(null);
   const [testResult, setTestResult] = useState<SystemTestResponse | null>(null);
@@ -115,6 +154,7 @@ export default function SystemPage() {
             <StatusCard title="音频转写" status={status.transcription} />
             <StatusCard title="文档索引" status={status.index} />
           </section>
+          <CapabilityMatrix status={status} />
           {testResult && <span className={testResult.ok ? "pill" : "pill rose"}>{testResult.message}</span>}
         </>
       )}

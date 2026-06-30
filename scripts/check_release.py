@@ -19,6 +19,7 @@ FORBIDDEN_PATTERNS = (
     re.compile(r"(^|/)\.(agents|codex)/"),
     re.compile(r"(^|/)backend/(data|storage)/"),
     re.compile(r"(^|/)(uploads|logs?)/"),
+    re.compile(r"(^|/)(qdrant_storage|redis_data|media_cache|transcripts_cache|keyframes_cache)/"),
     re.compile(r"(^|/)sub2api/"),
     re.compile(r"(^|/)__pycache__/"),
     re.compile(r"\.(db|sqlite|sqlite3|log|pyc|tsbuildinfo)$"),
@@ -45,7 +46,7 @@ def latest_release(version: str) -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Inspect an AI Knowledge OS Pro release archive.")
-    parser.add_argument("--version", default="V3.6")
+    parser.add_argument("--version", default="V3.7")
     parser.add_argument("--path", type=Path)
     args = parser.parse_args()
 

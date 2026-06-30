@@ -13,8 +13,8 @@ def test_system_status_includes_task_runtime_without_secret_leak(db_session, mon
 
     status = system_service.status(db_session)
 
-    assert status.runtime.app_version == "V3.6"
-    assert status.runtime.semantic_version == "3.6.0"
+    assert status.runtime.app_version == "V3.7"
+    assert status.runtime.semantic_version == "3.7.0"
     assert status.runtime.redis_url == "redis://***:***@localhost:6379/0"
     assert status.runtime.task_queue_name == settings.task_queue_name
     assert status.runtime.ocr_provider == settings.ocr_provider

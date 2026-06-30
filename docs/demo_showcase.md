@@ -1,6 +1,6 @@
 # GitHub Demo Showcase
 
-This guide presents AI Knowledge OS Pro V3.6 as a coherent product workflow rather than a collection of isolated pages.
+This guide presents AI Knowledge OS Pro V3.7 as a coherent product workflow rather than a collection of isolated pages.
 
 ## Demo data policy
 
@@ -60,3 +60,15 @@ The capture script waits for page-specific data, rejects pages containing `Faile
 - Keep text readable at GitHub README width.
 - Use the same synthetic workspace across all screenshots.
 - Re-capture after material layout or workflow changes.
+
+## V3.7 one-command preparation
+
+V3.7 adds setup scripts that keep demo data isolated from normal application data:
+
+```powershell
+python scripts/setup_demo.py --reset
+```
+
+The script starts Redis/Qdrant through Docker Compose, seeds `backend/data/demo_showcase.db`, validates required demo tables and prints the exact API/frontend commands. Use `--skip-docker` when services are already running.
+
+Synthetic demo records include a knowledge space, documents, image/audio/video sources, task records, Q&A, learning cards and a learning archive. They are labelled as demo/showcase data and must not be described as real provider outputs.

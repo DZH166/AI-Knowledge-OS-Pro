@@ -467,3 +467,41 @@ V3.6 已完成 GitHub 作品集化收口：专业 README、真实 CI、项目规
 - 合成展示数据库与媒体位于被忽略目录，不进入 Git 或 release zip。
 - 发布器只选择当前仓库 Git 跟踪文件，并排除 `.env`、数据库、uploads、logs、`node_modules`、`.next`、缓存、嵌套仓库和本地代理元数据。
 - 最终摘要以 `releases/AI-Knowledge-OS-Pro-V3.6-20260621.zip.sha256` 为权威，不在归档内文档写入自引用哈希。
+
+<!-- stage:v3-7-github-showcase-demo-20260701 -->
+## V3.7 阶段交付：GitHub 作品集、一键 Demo 与工程可信度
+
+### 阶段状态
+已完成 V3.7 GitHub 作品集化收口：README、Demo seed、Demo readiness、secret/repo-clean 检查、release dry-run、架构图、简历表达、系统能力矩阵和 CI 质量门均已落地。
+
+### 代码与文档交付
+- 创建开发分支：`feature/v3.7-github-showcase-demo`。
+- 新增 `docs/v3_7_predevelopment_audit.md` 和 `docs/v3_7_acceptance_report.md`。
+- 新增 `docs/demo_script.md`、`docs/architecture_diagram.md`、`docs/resume_pitch.md`、`docs/github_release_checklist.md`。
+- 新增 `docs/assets/demo/README.md`，README 不引用尚未捕获的 GIF，避免破图。
+- 新增 Demo 脚本：`scripts/setup_demo.py`、`scripts/seed_demo_data.py`、`scripts/check_demo_ready.py`。
+- 新增安全脚本：`scripts/check_secrets.py`、`scripts/check_repo_clean.py`。
+- 增强 `scripts/release.py --dry-run`，输出 included/excluded counts 和 secret/database/uploads/cache 风险项。
+- 系统状态页新增能力矩阵，明确真实 Provider 和本地服务依赖。
+
+### 验证结果
+- compileall：通过。
+- pytest：44 passed，19 warnings。
+- frontend typecheck：全局 `npm` 不在当前 PowerShell PATH；使用 bundled Node + 项目本地 TypeScript CLI 通过。
+- frontend build：全局 `npm` 不在当前 PowerShell PATH；使用 bundled Node + 项目本地 Next.js CLI 通过。
+- encoding check：通过。
+- secret check：通过。
+- repo clean check：通过。
+- release dry-run：通过，included_files=213，excluded_files=0，secrets/database/uploads/cache 均为 no。
+- demo seed/readiness：通过，创建 synthetic `demo_showcase.db`，包含知识库、文档、图片/音频/视频记录、任务、问答、学习卡片和学习档案。
+
+### 能力边界
+- Demo 数据为合成样例，不代表真实 provider 输出。
+- 未配置真实 LLM/Embedding/OCR/Transcription provider 时继续明确拒绝，不生成假回答、假 OCR、假转写或假学习资料。
+- Docker Compose 当前启动 Redis/Qdrant 依赖服务，不是完整生产部署。
+- Demo GIF 尚未录制，README 使用脚本和占位目录说明。
+
+### 建议发布信息
+- 建议 commit message：`feat: add V3.7 GitHub showcase demo workflow`。
+- 建议 tag：`v3.7.0`。
+- 建议 GitHub Release 标题：`AI Knowledge OS Pro V3.7 - GitHub Showcase Demo and Engineering Trust`。

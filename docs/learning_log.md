@@ -930,3 +930,32 @@ AI Knowledge OS Pro V3.6 中，我把多模态处理从分散的同步按钮升�
 - frontend typecheck/build：通过，15 个 App Router 页面构建成功。
 - UTF-8 与版本一致性检查：通过。
 - release 检查：199 files，forbidden=0，missing=0。
+
+<!-- learning:v3-7-github-showcase-demo-20260701 -->
+## V3.7：GitHub 作品集化、一键演示与工程可信度强化
+
+### 本次补充做了什么
+- 将当前版本表面升级为 `V3.7 / 3.7.0`，保留 V1-V3.6 历史记录不覆盖。
+- 新增 V3.7 开发前审计，记录分支、提交、远程、README、CI、规范文件、截图、Demo、敏感文件和验证基线。
+- 重构 README 为 GitHub 作品集首页，补齐 Demo 路径、功能矩阵、架构/RAG/多模态/学习闭环流程、Docker Demo、限制和简历表达。
+- 新增一键 Demo 准备脚本：`setup_demo.py`、`seed_demo_data.py`、`check_demo_ready.py`，使用隔离 synthetic demo 数据库。
+- 新增 `check_secrets.py`、`check_repo_clean.py`，并增强 `release.py --dry-run` 输出风险项。
+- 新增 `docs/architecture_diagram.md`、`docs/resume_pitch.md`、`docs/demo_script.md` 和 GitHub release checklist。
+- 系统状态页新增能力可用性矩阵，区分可直接使用、需要本地服务、需要真实 Provider、Demo 可展示和尚未实现。
+- CI 质量门增加 secret、repo-clean 和 release dry-run，不调用真实付费 API。
+
+### 我应该重点理解什么
+V3.7 的重点是工程可信度：一个 AI 项目要能被陌生人打开、理解、演示、验证和安全发布。Demo 数据必须隔离且标注，README 必须诚实表达 provider 边界，release 必须在打包前证明不会带入密钥、数据库、上传文件或缓存。
+
+### 面试表达方式
+AI Knowledge OS Pro V3.7 中，我把已有多模态 RAG 系统进一步作品集化：补齐 GitHub 首页、演示脚本、架构图、求职表达、一键 Demo seed、secret 检查、repo-clean 检查和 release dry-run。系统状态页也把能力按真实依赖分组，明确哪些零配置可用，哪些需要 Redis/Qdrant/Worker，哪些需要真实模型 provider，避免把 Demo 流程冒充真实 AI 能力。
+
+### 本阶段验证结果
+- `python -m compileall backend/app scripts`：通过。
+- `python -m pytest`：44 passed，19 warnings。
+- `frontend typecheck`：全局 `npm` 不在当前 PowerShell PATH；使用 bundled Node 执行项目本地 TypeScript CLI，通过。
+- `frontend build`：全局 `npm` 不在当前 PowerShell PATH；使用 bundled Node 执行项目本地 Next.js CLI，通过，15 个 App Router 页面构建成功。
+- `python scripts/check_encoding.py`：通过，204 个 UTF-8 文本文件。
+- `python scripts/check_secrets.py`：通过，202 个 tracked text 文件 findings=0。
+- `python scripts/check_repo_clean.py`：通过，forbidden tracked files=0。
+- `python scripts/release.py --version V3.7 --dry-run`：通过，included_files=213，excluded_files=0，secrets/database/uploads/cache 均为 no。

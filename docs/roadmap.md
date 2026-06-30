@@ -130,3 +130,20 @@
 
 - Connect Business Growth Engine materials.
 - Business document analysis, plan generation and review memory.
+
+## V3.7: GitHub Showcase Demo And Engineering Trust
+
+- Professional GitHub README with honest capability matrix and demo path.
+- `scripts/setup_demo.py`, `scripts/seed_demo_data.py` and `scripts/check_demo_ready.py` for isolated synthetic demo setup.
+- Release dry-run, secret scan and repository cleanliness checks.
+- CI quality job runs encoding, version, secret, repo-clean and release dry-run checks.
+- Mermaid architecture diagrams and resume/interview pitch documentation.
+- System Status capability matrix groups direct, local-service, provider-backed, demo-only and planned features.
+- V3.7 learning package documents open-source project hygiene, CI/CD and portfolio presentation.
+
+## V3.8 Next: Demo Capture And Provider Diagnostics
+
+- Record and commit a short demo GIF after final UI confirmation.
+- Add provider diagnostics with safer setup hints and copyable env template guidance.
+- Add subtitle export for audio/video transcript segments.
+- Add richer visual frame retrieval and shot-level video segmentation.
