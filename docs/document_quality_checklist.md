@@ -23,6 +23,7 @@ Use this checklist before publishing a portfolio release.
 - Screenshots match current UI.
 - README links point to existing docs.
 - Frontend smoke check passes and flags navigation targets that still need a later IA split.
+- Provider diagnostics use placeholders only and do not expose real keys.
 
 ## Learning Archive
 

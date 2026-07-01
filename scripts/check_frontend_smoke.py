@@ -27,6 +27,11 @@ REQUIRED_ROUTES = (
     "/system",
 )
 
+REQUIRED_TEXT = {
+    "frontend/app/system/page.tsx": ("能力配置向导", "NOT_CONFIGURED"),
+    "frontend/app/media/sources/[id]/page.tsx": ("元数据摘要", "处理详情"),
+}
+
 FORBIDDEN_UI_PATTERNS = (
     "Metadata JSON",
     "raw JSON",
@@ -82,6 +87,20 @@ def scan_forbidden_ui_patterns() -> list[str]:
     return failures
 
 
+def scan_required_text() -> list[str]:
+    failures: list[str] = []
+    for relative, snippets in REQUIRED_TEXT.items():
+        path = ROOT / relative
+        if not path.exists():
+            failures.append(f"Missing file for required text scan: {relative}")
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for snippet in snippets:
+            if snippet not in text:
+                failures.append(f"{relative} is missing required UI text: {snippet}")
+    return failures
+
+
 def evaluate_frontend() -> SmokeResult:
     warnings: list[str] = []
     failures: list[str] = []
@@ -105,6 +124,7 @@ def evaluate_frontend() -> SmokeResult:
         warnings.append(f"Navigation target {href} is reused by multiple labels; split it in the V4.0 IA pass.")
 
     failures.extend(scan_forbidden_ui_patterns())
+    failures.extend(scan_required_text())
 
     return SmokeResult(
         checked_routes=len(REQUIRED_ROUTES),

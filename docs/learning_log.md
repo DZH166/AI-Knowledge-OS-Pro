@@ -1000,6 +1000,7 @@ AI Knowledge OS Pro V3.8 中，我把已有多模态 RAG 项目进一步整理�
 - 新增 `scripts/check_frontend_smoke.py`，检查关键页面是否存在、AppShell 导航是否指向真实页面、前端页面是否出现明显 raw/debug 文案。
 - 将 demo seed、demo readiness、RAG demo evaluation 和 frontend smoke 接入 GitHub Actions。
 - 修复系统状态页和媒体详情页直接展示 `JSON.stringify` 元数据的问题，改为用户可读的摘要。
+- 在系统状态页新增 Provider/服务配置向导，按 Redis/Worker、Qdrant、LLM、Embedding、OCR/Vision、Speech-to-Text 说明影响面、修复方式和可复制的占位环境变量。
 - 新增 V3.9 质量门测试：`test_v3_9_rag_evaluation.py` 和 `test_v3_9_frontend_smoke.py`。
 
 ### 我应该重点理解什么
@@ -1015,6 +1016,6 @@ V3.9 开始从“能展示”转向“可验证、可收口”。RAG 评估不�
 - `python scripts/evaluate_rag.py --demo --database-path backend/data/demo_showcase.db`：通过，1 条 QA、1 个时间戳引用、7 个 MultimodalChunk、7 个 CitationLocator。
 - `python scripts/check_frontend_smoke.py`：通过，当前有 4 个导航复用 warning，留给 V4.0 IA 拆分。
 - frontend typecheck/build：通过，15 个 App Router 页面。
-- `python scripts/check_encoding.py`：通过，240 个 UTF-8 文本文件。
-- `python scripts/check_secrets.py`：通过，235 个 tracked text 文件 findings=0。
-- `python scripts/release.py --version V3.8 --dry-run`：通过，included_files=246，未发现 secrets/database/uploads/cache。
+- `python scripts/check_encoding.py`：通过，241 个 UTF-8 文本文件。
+- `python scripts/check_secrets.py`：通过，239 个 tracked text 文件 findings=0。
+- `python scripts/release.py --version V3.8 --dry-run`：通过，included_files=250，未发现 secrets/database/uploads/cache。

@@ -557,6 +557,7 @@ V3.9 已启动质量门建设，但尚未最终验收。当前完成 RAG demo ev
 - 新增 `backend/tests/test_v3_9_rag_evaluation.py` 和 `backend/tests/test_v3_9_frontend_smoke.py`。
 - CI backend job 增加 demo seed、readiness 和 RAG evaluation；quality job 增加 frontend smoke。
 - 系统状态页和媒体详情页不再直接展示 metadata JSON，改为可读摘要。
+- 系统状态页新增能力配置向导，使用占位 env 示例并强调缺 provider 时必须明确拒绝。
 - 新增 `docs/v3_9_quality_gate_report.md`。
 
 ### 验证结果
@@ -565,9 +566,9 @@ V3.9 已启动质量门建设，但尚未最终验收。当前完成 RAG demo ev
 - RAG demo evaluation：通过，1 条 QA、1 个时间戳 citation、7 个 multimodal chunks、7 个 citation locators。
 - Frontend smoke：通过，4 个导航复用 warning。
 - Frontend typecheck/build：通过。
-- encoding check：通过，240 个 UTF-8 文本文件。
-- secret check：通过，235 个 tracked text 文件 findings=0。
-- release dry-run：通过，included_files=246，secrets/database/uploads/cache 均为 no。
+- encoding check：通过，241 个 UTF-8 文本文件。
+- secret check：通过，239 个 tracked text 文件 findings=0。
+- release dry-run：通过，included_files=250，secrets/database/uploads/cache 均为 no。
 
 ### 能力边界
 - 这不是最终 V3.9 验收。

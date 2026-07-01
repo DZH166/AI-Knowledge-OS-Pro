@@ -25,6 +25,8 @@ Never commit real environment values. `.env`, `backend/.env`, `frontend/.env.loc
 | `TRANSCRIPTION_PROVIDER` | Requires configuration for real transcription | Used by audio/video transcription flows. |
 | `TRANSCRIPTION_API_KEY` | Requires configuration | Required by real transcription provider. |
 
+See [Provider Diagnostics](provider_diagnostics.md) for the System page setup guide and copyable placeholder examples.
+
 ## Safety Rules
 
 - Missing provider keys must return explicit NOT_CONFIGURED-style errors.

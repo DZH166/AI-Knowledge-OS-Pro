@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { RefreshCw, ServerCog } from "lucide-react";
 
-import { ErrorState, LoadingSkeleton, PageHeader, StatusBadge, TechnicalDetails } from "@/components/ui";
+import { CopyButton, ErrorState, LoadingSkeleton, PageHeader, StatusBadge, TechnicalDetails } from "@/components/ui";
 import { api } from "@/services/api";
 import type { ComponentStatus, SystemStatus, SystemTestResponse } from "@/types/api";
 
@@ -83,6 +83,83 @@ function CapabilityMatrix({ status }: { status: SystemStatus }) {
           </article>
         ))}
       </div>
+    </section>
+  );
+}
+
+function ProviderDiagnostics({ status }: { status: SystemStatus }) {
+  const checks = [
+    {
+      name: "Redis / Worker",
+      status: status.redis.ok && status.worker.ok,
+      impact: "任务中心、媒体处理、重试和取消",
+      fix: "启动 Redis，并运行 Worker 进程；没有 Worker 时任务记录仍可查看，但不会自动处理。",
+      env: "REDIS_URL=redis://localhost:6379/0"
+    },
+    {
+      name: "Qdrant",
+      status: status.qdrant.ok && status.collection.ok,
+      impact: "Embedding 入库、语义检索和 RAG 引用召回",
+      fix: "启动 Qdrant，并确认 collection 名称与当前索引版本一致。",
+      env: "QDRANT_URL=http://localhost:6333"
+    },
+    {
+      name: "LLM Provider",
+      status: status.llm.ok,
+      impact: "真实问答、项目解释和面试表达生成",
+      fix: "配置兼容 OpenAI 的 LLM provider。未配置时系统必须明确拒绝，不生成假回答。",
+      env: "LLM_API_KEY=<your-llm-api-key>"
+    },
+    {
+      name: "Embedding Provider",
+      status: status.embedding.ok,
+      impact: "真实语义索引和检索",
+      fix: "配置 embedding provider。未配置时真实索引会被阻止，避免写入假向量。",
+      env: "EMBEDDING_API_KEY=<your-embedding-api-key>"
+    },
+    {
+      name: "OCR / Vision Provider",
+      status: status.ocr.ok,
+      impact: "图片 OCR、截图报错识别和关键帧视觉理解",
+      fix: "配置 OCR 或 vision provider。未配置时返回 OCR_NOT_CONFIGURED 类错误。",
+      env: "OCR_API_KEY=<your-ocr-api-key>"
+    },
+    {
+      name: "Speech-to-Text Provider",
+      status: status.transcription.ok,
+      impact: "音频/视频真实转写和时间戳 citation",
+      fix: "配置 transcription provider。未配置时返回 TRANSCRIPTION_NOT_CONFIGURED，不生成假字幕。",
+      env: "TRANSCRIPTION_API_KEY=<your-transcription-api-key>"
+    }
+  ];
+  const notReady = checks.filter((item) => !item.status);
+
+  return (
+    <section className="panel stack">
+      <div className="row between wrap">
+        <div>
+          <h2>能力配置向导</h2>
+          <p className="muted">按影响面说明当前缺什么、怎么修，以及哪些能力需要真实 Provider。</p>
+        </div>
+        <span className={notReady.length ? "pill gold" : "pill"}>{notReady.length ? `${notReady.length} 项需处理` : "全部就绪"}</span>
+      </div>
+      <div className="grid cols-3">
+        {checks.map((item) => (
+          <article className="card stack" key={item.name}>
+            <div className="row between">
+              <h3>{item.name}</h3>
+              <StatusBadge status={item.status ? "ready" : "pending"} label={item.status ? "可用" : "需配置"} />
+            </div>
+            <p>{item.impact}</p>
+            <p className="muted">{item.fix}</p>
+            <div className="row between wrap">
+              <code>{item.env.split("=")[0]}</code>
+              <CopyButton label="复制示例" value={item.env} />
+            </div>
+          </article>
+        ))}
+      </div>
+      <p className="quote">Demo 模式只展示工作流和合成数据；真实模式缺少 Provider 时必须明确返回 NOT_CONFIGURED 类错误。</p>
     </section>
   );
 }
@@ -170,6 +247,7 @@ export default function SystemPage() {
             <StatusCard title="文档索引" status={status.index} />
           </section>
           <CapabilityMatrix status={status} />
+          <ProviderDiagnostics status={status} />
           {testResult && <span className={testResult.ok ? "pill" : "pill rose"}>{testResult.message}</span>}
         </>
       )}
