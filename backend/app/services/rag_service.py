@@ -13,9 +13,11 @@ from app.models.qa_log import QALog
 from app.models.source import IndexRevision, Source, SourceRevision
 from app.schemas.chat_schema import ChatResponse, Citation, RelatedChunk
 from app.services.embedding_service import EmbeddingService
+from app.services.hybrid_retriever import HybridRetriever
 from app.services.ingestion_service import ingestion_service
 from app.services.llm_service import LLMService
 from app.services.prompt_builder import PromptBuilder
+from app.services.rerank_provider import get_rerank_provider
 from app.services.vector_store import VectorStore
 
 
@@ -25,6 +27,7 @@ class RAGService:
         self.vector_store = VectorStore()
         self.prompt_builder = PromptBuilder()
         self.llm_service = LLMService()
+        self.rerank_provider = get_rerank_provider()
 
     def ingest_document(
         self,
@@ -101,8 +104,10 @@ class RAGService:
             )
 
         query_vector = self.embedding_service.embed_query(question)
-        hits = self.vector_store.search(
+        hits = HybridRetriever(vector_store=self.vector_store, rerank_provider=self.rerank_provider).search(
+            db,
             space_id=space.id,
+            query=question,
             query_vector=query_vector,
             limit=settings.retrieval_top_k,
             score_threshold=settings.retrieval_score_threshold,
@@ -119,6 +124,7 @@ class RAGService:
                     "建议补充更相关的资料，或换一个更贴近已上传资料的问题。"
                 ),
             )
+        hits = sorted(hits, key=lambda hit: (-hit.score, self._payload_position(hit.payload)))
 
         citations: list[Citation] = []
         related_chunks: list[RelatedChunk] = []
@@ -140,6 +146,12 @@ class RAGService:
             modality = self._optional_str(payload.get("modality"))
             start_ms = self._optional_int(payload.get("start_ms"))
             end_ms = self._optional_int(payload.get("end_ms"))
+            dense_score = self._optional_float(payload.get("dense_score"))
+            keyword_score = self._optional_float(payload.get("keyword_score"))
+            rerank_score = self._optional_float(payload.get("rerank_score"))
+            final_score = self._optional_float(payload.get("final_score")) or round(hit.score, 4)
+            retrieval_reason = self._optional_str(payload.get("retrieval_reason"))
+            citation_ready = bool(payload.get("citation_ready", True))
             citation_id = f"[{index}]"
 
             citations.append(
@@ -158,6 +170,12 @@ class RAGService:
                     document_id=document_id,
                     start_ms=start_ms,
                     end_ms=end_ms,
+                    dense_score=dense_score,
+                    keyword_score=keyword_score,
+                    rerank_score=rerank_score,
+                    final_score=final_score,
+                    retrieval_reason=retrieval_reason,
+                    citation_ready=citation_ready,
                 )
             )
             related_chunks.append(
@@ -174,6 +192,12 @@ class RAGService:
                     document_id=document_id,
                     start_ms=start_ms,
                     end_ms=end_ms,
+                    dense_score=dense_score,
+                    keyword_score=keyword_score,
+                    rerank_score=rerank_score,
+                    final_score=final_score,
+                    retrieval_reason=retrieval_reason,
+                    citation_ready=citation_ready,
                 )
             )
             location = []
@@ -307,6 +331,23 @@ class RAGService:
             return None
         text = str(value).strip()
         return text or None
+
+    @staticmethod
+    def _optional_float(value) -> float | None:
+        try:
+            if value is None:
+                return None
+            return float(value)
+        except (TypeError, ValueError):
+            return None
+
+    @classmethod
+    def _payload_position(cls, payload: dict) -> int:
+        for key in ("start_ms", "page_number", "chunk_index"):
+            value = cls._optional_int(payload.get(key))
+            if value is not None:
+                return value
+        return 0
 
     @staticmethod
     def _format_timestamp(milliseconds: int) -> str:

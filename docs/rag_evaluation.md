@@ -44,4 +44,5 @@ It returns a non-zero exit code when required checks fail.
 
 - Demo evidence-chain evaluation implemented.
 - Backend CI seeds demo data and runs the demo evaluator.
+- V4.0 hybrid retrieval tests cover keyword fallback when dense search misses and ensure rerank scores are not faked.
 - Real provider quality evaluation remains planned.

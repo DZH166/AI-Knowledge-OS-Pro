@@ -8,6 +8,8 @@ Observability means the system can explain what happened, where it failed and ho
 - Task model stores status, progress and job events.
 - System status page shows configured capabilities and service checks.
 - Provider missing states are intended to be explicit.
+- Hybrid retrieval exposes citation-level trace fields: `dense_score`, `keyword_score`, `rerank_score`, `final_score`, `retrieval_reason` and `citation_ready`.
+- `/system/observability` exists as a lightweight entry page.
 
 ## Target V4.0 Fields
 
@@ -36,4 +38,5 @@ Normal user screens should show understandable status and recovery actions. Adva
 ## Current Status
 
 - Foundation exists.
-- Dedicated observability page and structured trace reports are planned.
+- Dedicated observability page exists.
+- Structured trace reports, latency metrics and provider token usage are still planned.

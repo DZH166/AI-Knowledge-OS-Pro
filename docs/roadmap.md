@@ -162,7 +162,7 @@
 ## V4.0 Next: Knowledge-Enhanced Portfolio Edition
 
 - Record and commit a short demo GIF after final UI confirmation.
-- Add hybrid retrieval and rerank fallback.
+- Lightweight hybrid retrieval and rerank fallback have started; next is FTS/BM25 indexing and richer retrieval quality reports.
 - Add code repository ingestion with file/line citation locators.
 - Portfolio summary API and pages have started; next is provider-backed generation with NOT_CONFIGURED refusal when unavailable.
 - Add mock interview sessions and saved feedback.

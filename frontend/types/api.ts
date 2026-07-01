@@ -278,6 +278,12 @@ export type Citation = {
   document_id?: number | null;
   start_ms?: number | null;
   end_ms?: number | null;
+  dense_score?: number | null;
+  keyword_score?: number | null;
+  rerank_score?: number | null;
+  final_score?: number | null;
+  retrieval_reason?: string | null;
+  citation_ready?: boolean | null;
 };
 
 export type RelatedChunk = {
@@ -293,6 +299,12 @@ export type RelatedChunk = {
   document_id?: number | null;
   start_ms?: number | null;
   end_ms?: number | null;
+  dense_score?: number | null;
+  keyword_score?: number | null;
+  rerank_score?: number | null;
+  final_score?: number | null;
+  retrieval_reason?: string | null;
+  citation_ready?: boolean | null;
 };
 
 export type AnswerMode = "normal" | "beginner" | "project" | "interview";

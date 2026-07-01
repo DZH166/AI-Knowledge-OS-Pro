@@ -641,3 +641,34 @@ V4.0 知识增强与求职作品集方向已开始真实实现。当前完成 po
 - 当前 portfolio 页面展示的是 deterministic project facts，不是 LLM 生成内容。
 - 自动生成简历、面试问答和项目复盘必须后续接入真实 provider；未配置时应返回 NOT_CONFIGURED 类拒绝。
 - 可观测性页面当前是入口和字段边界，结构化 retrieval/provider trace 仍待实现。
+
+<!-- stage:v4-0-hybrid-retrieval-start-20260702 -->
+## V4.0 起步交付：轻量混合检索与 Rerank 降级边界
+
+### 阶段状态
+V4.0 知识增强主线继续推进：RAGService 已从单一路径检索升级为 lightweight hybrid retrieval。当前实现覆盖 dense + keyword fusion、trace 字段和 rerank 未配置降级；完整 FTS/BM25、真实 rerank provider 和前端 debug panel 仍在后续阶段。
+
+### 交付内容
+- 新增 `backend/app/services/hybrid_retriever.py`。
+- 新增 `backend/app/services/rerank_provider.py`。
+- 更新 `backend/app/services/rag_service.py`，通过 HybridRetriever 获取候选证据。
+- 更新 `backend/app/schemas/chat_schema.py` 和 `frontend/types/api.ts`，支持可选检索 trace 字段。
+- 新增 `backend/tests/test_v4_0_hybrid_retrieval.py`。
+- 更新 `docs/hybrid_retrieval.md` 和 `docs/rag_evaluation.md`。
+
+### 验证结果
+- compileall：通过。
+- 全量 pytest：53 passed，22 warnings。
+- Hybrid retrieval + audio timestamp regression targeted tests：3 passed。
+- Frontend smoke：通过，required_routes=24，nav_targets=21，warnings=0。
+- Frontend typecheck：通过。
+- Frontend build：通过，25 个 build entries（含 `_not-found`）。
+- encoding check：通过，258 个 UTF-8 文本文件。
+- secret check：通过，findings=0。
+- repo clean check：通过。
+- RAG demo evaluation：通过。
+
+### 能力边界
+- 当前 keyword 检索是轻量 SQLite scan，不是完整 BM25/FTS5。
+- Rerank provider 尚未接真实服务；未配置时只使用 deterministic fusion，`rerank_score` 保持为空。
+- 主界面暂不直接展示 trace 字段，避免 raw/debug 信息影响普通用户体验。

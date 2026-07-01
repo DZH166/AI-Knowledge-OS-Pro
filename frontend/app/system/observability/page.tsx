@@ -31,7 +31,7 @@ export default function ObservabilityPage() {
             </article>
             <article className="list-item">
               <strong>retrieval_trace_id</strong>
-              <p>作为 V4.0 混合检索和 RAG 质量报告的预留追踪字段，当前不伪造检索 trace。</p>
+              <p>完整 trace report 仍在建设；当前 Citation 已携带 dense_score、keyword_score、final_score、retrieval_reason 和 citation_ready。</p>
             </article>
           </div>
         </article>

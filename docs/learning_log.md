@@ -1048,6 +1048,34 @@ V3.9 开始从“能展示”转向“可验证、可收口”。RAG 评估不�
 - `E:\python3.12.9\python.exe scripts/check_repo_clean.py`：通过。
 - `E:\python3.12.9\python.exe scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
 - `E:\python3.12.9\python.exe scripts/evaluate_rag.py --demo`：通过。
+
+<!-- learning:v4-0-hybrid-retrieval-start-20260702 -->
+## V4.0 起步：轻量混合检索与 Rerank 降级边界
+
+### 本次补充做了什么
+- 新增 `backend/app/services/hybrid_retriever.py`，把 Qdrant dense 检索与 SQLite 中已索引文档/多模态片段的 keyword 检索做去重和分数融合。
+- 新增 `backend/app/services/rerank_provider.py`，先提供明确 disabled provider 边界；未配置 rerank 时不生成假分数，只在 reason 中标记 `rerank_not_configured`。
+- `RAGService` 改为通过 `HybridRetriever` 取候选片段，并在 `Citation`/`RelatedChunk` 中返回 `dense_score`、`keyword_score`、`rerank_score`、`final_score`、`retrieval_reason` 和 `citation_ready`。
+- 新增 `backend/tests/test_v4_0_hybrid_retrieval.py`，覆盖 dense 漏召回时的 keyword fallback，以及 RAG 响应不伪造 rerank_score。
+- 更新 `docs/hybrid_retrieval.md` 和 `docs/rag_evaluation.md`，把“planned”修正为当前真实实现状态和限制。
+
+### 我应该重点理解什么
+向量检索擅长语义相似，但容易漏掉精确术语、文件名、错误码和代码符号；关键词检索能补这些硬匹配，但不懂同义表达。混合检索的关键不是把两边结果简单拼起来，而是去重、融合分数、保留证据定位，并诚实标记 rerank 是否真的执行。没有真实 rerank provider 时，`rerank_score` 必须为空，不能编一个看起来专业的分数。
+
+### 面试表达方式
+V4.0 中我开始把 RAG 从单一路径向混合检索升级：dense retrieval 继续由 Qdrant 负责，keyword fallback 从 SQLite 中已索引的文档和多模态片段召回精确术语，HybridRetriever 对候选做去重、score fusion 和 trace 记录；rerank adapter 先保留真实 provider 边界，未配置时降级为 deterministic fusion，不伪造 rerank 分数。
+
+### 当前验证结果
+- `E:\python3.12.9\python.exe -m compileall backend/app scripts`：通过。
+- `E:\python3.12.9\python.exe -m pytest`：53 passed，22 warnings。
+- `E:\python3.12.9\python.exe -m pytest backend/tests/test_v3_audio_transcription.py::test_audio_upload_and_transcription_create_timestamped_rag_chunks backend/tests/test_v4_0_hybrid_retrieval.py -q`：3 passed。
+- `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：通过，required_routes=24，nav_targets=21，warnings=0。
+- frontend typecheck：通过。
+- frontend build：通过，25 个 build entries（含 `_not-found`）。
+- `E:\python3.12.9\python.exe scripts/check_encoding.py`：通过，258 个 UTF-8 文本文件。
+- `E:\python3.12.9\python.exe scripts/check_secrets.py`：通过，findings=0。
+- `E:\python3.12.9\python.exe scripts/check_repo_clean.py`：通过。
+- `E:\python3.12.9\python.exe scripts/evaluate_rag.py --demo`：通过。
 - `E:\python3.12.9\python.exe scripts/release.py --version V3.8 --dry-run`：通过，未发现 secrets/database/uploads/cache。
 
 <!-- learning:v4-0-portfolio-summary-start-20260702 -->
