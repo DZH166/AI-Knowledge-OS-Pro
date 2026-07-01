@@ -45,24 +45,24 @@ const groups: NavGroup[] = [
     title: "AI 助手",
     items: [
       { href: "/chat", label: "知识问答", icon: MessageSquare },
-      { href: "/chat", label: "会话记录", icon: FileQuestion }
+      { href: "/chat/history", label: "会话记录", icon: FileQuestion }
     ]
   },
   {
     title: "学习成长",
     items: [
       { href: "/learning", label: "学习路线", icon: GraduationCap },
-      { href: "/learning", label: "知识点", icon: ClipboardList },
+      { href: "/learning/knowledge-points", label: "知识点", icon: ClipboardList },
       { href: "/learning/cards", label: "学习卡片", icon: Layers },
-      { href: "/learning/cards", label: "练习中心", icon: Workflow },
-      { href: "/learning", label: "学习笔记", icon: NotebookPen }
+      { href: "/learning/quizzes", label: "练习中心", icon: Workflow },
+      { href: "/learning/notes", label: "学习笔记", icon: NotebookPen }
     ]
   },
   {
     title: "系统",
     items: [
       { href: "/system", label: "模型与服务", icon: ServerCog },
-      { href: "/system", label: "设置", icon: Settings }
+      { href: "/system/settings", label: "设置", icon: Settings }
     ]
   }
 ];
@@ -139,8 +139,12 @@ function crumbLabel(value: string) {
     tasks: "任务中心",
     chat: "知识问答",
     learning: "学习成长",
+    history: "会话记录",
+    quizzes: "练习中心",
+    notes: "学习笔记",
     cards: "学习卡片",
-    system: "系统状态"
+    system: "系统状态",
+    settings: "设置"
   };
   return map[value] || value;
 }

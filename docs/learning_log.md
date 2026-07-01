@@ -1020,3 +1020,32 @@ V3.9 开始从“能展示”转向“可验证、可收口”。RAG 评估不�
 - `python scripts/check_encoding.py`：通过，241 个 UTF-8 文本文件。
 - `python scripts/check_secrets.py`：通过，239 个 tracked text 文件 findings=0。
 - `python scripts/release.py --version V3.8 --dry-run`：通过，included_files=250，未发现 secrets/database/uploads/cache。
+
+<!-- learning:v3-9-navigation-ia-split-20260702 -->
+## V3.9 进行中：导航信息架构拆分与 Smoke 门禁升级
+
+### 本次补充做了什么
+- 将 AppShell 中复用同一路由的菜单拆成独立页面：`/chat/history`、`/learning/knowledge-points`、`/learning/quizzes`、`/learning/notes` 和 `/system/settings`。
+- 新页面复用现有真实 API，分别展示会话记录、知识点、练习题、学习笔记和配置安全边界，不引入假模型输出。
+- 将 `scripts/check_frontend_smoke.py` 的必检路由扩展到 19 个，并把重复导航目标从 warning 升级为 failure。
+- 更新 `test_v3_9_frontend_smoke.py`，让后端测试固定检查新的路由数量和 `warnings=0`。
+
+### 我应该重点理解什么
+信息架构不是“菜单多一点”这么简单。对于作品集项目，导航每一项都应该指向真实、有边界说明、有空状态或错误恢复的页面；如果多个入口实际落到同一页，面试官会感觉功能还没收口。把这个规则写进 smoke gate，可以防止后续改 UI 时悄悄退化。
+
+### 面试表达方式
+在 V3.9 中，我把前端导航从展示型菜单进一步收口成可验证的信息架构：会话记录、知识点、练习、笔记和设置都有独立页面，并把“重复导航目标”升级为 CI 可检测的失败条件。这体现了我不只关注功能存在，也会用自动化质量门保护产品体验。
+
+### 当前验证结果
+- `E:\python3.12.9\python.exe -m compileall backend/app scripts`：通过。
+- `E:\python3.12.9\python.exe -m pytest`：49 passed，21 warnings。
+- `E:\python3.12.9\python.exe -m pytest backend/tests/test_v3_9_frontend_smoke.py`：1 passed。
+- `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：通过，required_routes=19，nav_targets=16，warnings=0。
+- frontend typecheck：通过。
+- frontend build：通过，20 个 build entries（含 `_not-found`）。
+- `E:\python3.12.9\python.exe scripts/check_encoding.py`：通过，246 个 UTF-8 文本文件。
+- `E:\python3.12.9\python.exe scripts/check_secrets.py`：通过，findings=0。
+- `E:\python3.12.9\python.exe scripts/check_repo_clean.py`：通过。
+- `E:\python3.12.9\python.exe scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
+- `E:\python3.12.9\python.exe scripts/evaluate_rag.py --demo`：通过。
+- `E:\python3.12.9\python.exe scripts/release.py --version V3.8 --dry-run`：通过，未发现 secrets/database/uploads/cache。

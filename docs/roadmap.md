@@ -153,7 +153,8 @@
 ## V3.9 In Progress: Product Experience And Quality Gates
 
 - Extend `scripts/evaluate_rag.py --demo` beyond seeded evidence-chain checks into richer retrieval quality reporting.
-- Keep `scripts/check_frontend_smoke.py` green while splitting duplicated navigation targets into dedicated pages.
+- `scripts/check_frontend_smoke.py` now fails on duplicate AppShell navigation targets.
+- Split duplicated navigation targets into dedicated pages for chat history, knowledge points, quizzes, notes and settings.
 - Add lightweight UI smoke checks for Dashboard, Upload, Tasks, Chat, Media, Learning and System Status.
 - Improve provider diagnostics with safer setup hints and copyable env template guidance.
 - Improve task center failure recovery, retry/cancel clarity and media result navigation.

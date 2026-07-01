@@ -576,3 +576,35 @@ V3.9 已启动质量门建设，但尚未最终验收。当前完成 RAG demo ev
 - Demo RAG 评估不代表真实 LLM 质量。
 - Frontend smoke 不是浏览器 E2E 测试。
 - 当前导航复用 warning 会在 V4.0 UI/UX 信息架构阶段继续拆分。
+
+<!-- stage:v3-9-navigation-ia-split-20260702 -->
+## V3.9 进行中交付：导航信息架构拆分与 Smoke 门禁升级
+
+### 阶段状态
+V3.9 继续推进产品体验质量门：已将重复导航入口拆成独立页面，并让 smoke 检查在发现重复导航目标时直接失败。V3.9 尚未最终验收，版本号继续保持 `V3.8 / 3.8.0`。
+
+### 交付内容
+- 新增 `/chat/history` 会话记录页面，展示多轮会话与最近问答。
+- 新增 `/learning/knowledge-points` 知识点列表页面。
+- 新增 `/learning/quizzes` 练习中心页面。
+- 新增 `/learning/notes` 学习笔记页面，支持手动保存笔记。
+- 新增 `/system/settings` 设置说明页面，强调 Provider、Demo 模式和发布安全边界。
+- 更新 AppShell 导航，消除 `/chat`、`/learning`、`/learning/cards`、`/system` 的重复菜单目标。
+- 更新 frontend smoke 脚本和测试，覆盖 19 个必检路由，并要求 `warnings=0`。
+
+### 验证结果
+- compileall：通过。
+- 全量 pytest：49 passed，21 warnings。
+- V3.9 frontend smoke targeted test：1 passed。
+- Frontend smoke：通过，required_routes=19，nav_targets=16，warnings=0。
+- Frontend typecheck/build：通过。
+- encoding check：通过，246 个 UTF-8 文本文件。
+- secret check：通过，findings=0。
+- repo clean check：通过。
+- version check：通过，`V3.8 / 3.8.0`。
+- RAG demo evaluation：通过。
+- release dry-run：通过，secrets/database/uploads/cache 均为 no。
+
+### 能力边界
+- 新页面当前是轻量收口页，主要复用已有 API 和空状态；学习路线、作品集、模拟面试和可观测性仍属于后续 V4.0 增强范围。
+- Demo/真实模式边界不变：未配置 provider 时必须明确拒绝，不生成假回答、假 OCR 或假转写。

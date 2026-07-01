@@ -16,6 +16,7 @@ REQUIRED_ROUTES = (
     "/upload",
     "/tasks",
     "/chat",
+    "/chat/history",
     "/documents",
     "/knowledge",
     "/media",
@@ -23,12 +24,17 @@ REQUIRED_ROUTES = (
     "/errors",
     "/learning",
     "/learning/cards",
+    "/learning/knowledge-points",
     "/learning/knowledge-points/[id]",
+    "/learning/quizzes",
+    "/learning/notes",
     "/system",
+    "/system/settings",
 )
 
 REQUIRED_TEXT = {
     "frontend/app/system/page.tsx": ("能力配置向导", "NOT_CONFIGURED"),
+    "frontend/app/system/settings/page.tsx": ("安全边界", "Provider 诊断文档"),
     "frontend/app/media/sources/[id]/page.tsx": ("元数据摘要", "处理详情"),
     "frontend/app/tasks/page.tsx": ("恢复建议", "事件时间线"),
 }
@@ -122,7 +128,7 @@ def evaluate_frontend() -> SmokeResult:
 
     duplicates = sorted({href for href in nav_targets if nav_targets.count(href) > 1})
     for href in duplicates:
-        warnings.append(f"Navigation target {href} is reused by multiple labels; split it in the V4.0 IA pass.")
+        failures.append(f"Navigation target {href} is reused by multiple labels")
 
     failures.extend(scan_forbidden_ui_patterns())
     failures.extend(scan_required_text())
