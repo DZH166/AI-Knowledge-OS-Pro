@@ -456,6 +456,35 @@ export type LearningArtifact = {
   created_at: string;
 };
 
+export type PortfolioMetric = {
+  key: string;
+  label: string;
+  value: number;
+  description: string;
+};
+
+export type PortfolioCapability = {
+  name: string;
+  status: string;
+  evidence: string;
+  boundary: string;
+};
+
+export type PortfolioSummary = {
+  project_name: string;
+  version: string;
+  semantic_version: string;
+  runtime_mode: string;
+  positioning: string;
+  metrics: PortfolioMetric[];
+  capabilities: PortfolioCapability[];
+  resume_bullets: string[];
+  interview_talking_points: string[];
+  recommended_storyline: string[];
+  honest_boundaries: string[];
+  next_steps: string[];
+};
+
 export type LearningDashboard = {
   current_version: string;
   total_knowledge_points: number;

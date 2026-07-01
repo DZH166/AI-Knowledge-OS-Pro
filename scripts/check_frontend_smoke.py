@@ -28,13 +28,20 @@ REQUIRED_ROUTES = (
     "/learning/knowledge-points/[id]",
     "/learning/quizzes",
     "/learning/notes",
+    "/portfolio",
+    "/portfolio/resume",
+    "/portfolio/interview",
+    "/portfolio/project-review",
     "/system",
+    "/system/observability",
     "/system/settings",
 )
 
 REQUIRED_TEXT = {
     "frontend/app/system/page.tsx": ("能力配置向导", "NOT_CONFIGURED"),
     "frontend/app/system/settings/page.tsx": ("安全边界", "Provider 诊断文档"),
+    "frontend/app/system/observability/page.tsx": ("request_id", "retrieval_trace_id"),
+    "frontend/app/portfolio/page.tsx": ("真实项目概览", "NOT_CONFIGURED"),
     "frontend/app/media/sources/[id]/page.tsx": ("元数据摘要", "处理详情"),
     "frontend/app/tasks/page.tsx": ("恢复建议", "事件时间线"),
 }

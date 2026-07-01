@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BookOpen,
+  Briefcase,
   Brain,
   Bug,
   ClipboardList,
@@ -59,9 +60,19 @@ const groups: NavGroup[] = [
     ]
   },
   {
+    title: "作品集求职",
+    items: [
+      { href: "/portfolio", label: "项目复盘", icon: Briefcase },
+      { href: "/portfolio/resume", label: "简历表达", icon: FileText },
+      { href: "/portfolio/interview", label: "面试讲解", icon: FileQuestion },
+      { href: "/portfolio/project-review", label: "讲解路线", icon: Workflow }
+    ]
+  },
+  {
     title: "系统",
     items: [
       { href: "/system", label: "模型与服务", icon: ServerCog },
+      { href: "/system/observability", label: "可观测性", icon: TimerReset },
       { href: "/system/settings", label: "设置", icon: Settings }
     ]
   }
@@ -143,7 +154,12 @@ function crumbLabel(value: string) {
     quizzes: "练习中心",
     notes: "学习笔记",
     cards: "学习卡片",
+    portfolio: "作品集求职",
+    resume: "简历表达",
+    interview: "面试讲解",
+    "project-review": "讲解路线",
     system: "系统状态",
+    observability: "可观测性",
     settings: "设置"
   };
   return map[value] || value;

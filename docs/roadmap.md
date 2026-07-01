@@ -164,6 +164,6 @@
 - Record and commit a short demo GIF after final UI confirmation.
 - Add hybrid retrieval and rerank fallback.
 - Add code repository ingestion with file/line citation locators.
-- Add portfolio generation pages and APIs.
+- Portfolio summary API and pages have started; next is provider-backed generation with NOT_CONFIGURED refusal when unavailable.
 - Add mock interview sessions and saved feedback.
-- Add observability page and structured trace reports.
+- Observability page has started; next is structured trace reports and retrieval/provider metrics.

@@ -608,3 +608,36 @@ V3.9 继续推进产品体验质量门：已将重复导航入口拆成独立页
 ### 能力边界
 - 新页面当前是轻量收口页，主要复用已有 API 和空状态；学习路线、作品集、模拟面试和可观测性仍属于后续 V4.0 增强范围。
 - Demo/真实模式边界不变：未配置 provider 时必须明确拒绝，不生成假回答、假 OCR 或假转写。
+
+<!-- stage:v4-0-portfolio-summary-start-20260702 -->
+## V4.0 起步交付：作品集概览 API、求职页面与可观测性入口
+
+### 阶段状态
+V4.0 知识增强与求职作品集方向已开始真实实现。当前完成 portfolio summary API、作品集求职页面、可观测性入口和 smoke 覆盖；自动简历生成、模拟面试反馈、代码仓库接入和混合检索仍在后续阶段。
+
+### 交付内容
+- 新增 `backend/app/schemas/portfolio_schema.py`。
+- 新增 `backend/app/services/portfolio_service.py`，聚合真实数据库计数和能力边界。
+- 新增 `backend/app/api/routes_portfolio.py`，公开 `GET /api/portfolio/summary`。
+- 新增 `backend/tests/test_v4_0_portfolio_summary.py`，覆盖聚合逻辑和 API 响应契约。
+- 新增 `/portfolio`、`/portfolio/resume`、`/portfolio/interview`、`/portfolio/project-review` 页面。
+- 新增 `/system/observability` 页面，明确 request/task/retrieval trace 的当前状态与后续接入边界。
+- 更新 AppShell，增加“作品集求职”导航组和可观测性入口。
+- 更新 frontend smoke，覆盖 24 个必检路由。
+
+### 验证结果
+- compileall：通过。
+- 全量 pytest：51 passed，22 warnings。
+- V4.0 portfolio + V3.9 smoke targeted tests：3 passed。
+- Frontend smoke：通过，required_routes=24，nav_targets=21，warnings=0。
+- Frontend typecheck/build：通过，25 个 build entries（含 `_not-found`）。
+- encoding check：通过，255 个 UTF-8 文本文件。
+- secret check：通过，findings=0。
+- repo clean check：通过。
+- version check：通过，`V3.8 / 3.8.0`。
+- RAG demo evaluation：通过。
+
+### 能力边界
+- 当前 portfolio 页面展示的是 deterministic project facts，不是 LLM 生成内容。
+- 自动生成简历、面试问答和项目复盘必须后续接入真实 provider；未配置时应返回 NOT_CONFIGURED 类拒绝。
+- 可观测性页面当前是入口和字段边界，结构化 retrieval/provider trace 仍待实现。

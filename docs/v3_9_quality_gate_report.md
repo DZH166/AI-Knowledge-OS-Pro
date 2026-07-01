@@ -26,14 +26,14 @@ This is an in-progress V3.9 report, not the final V3.9 acceptance report. It rec
 | Check | Result |
 | --- | --- |
 | `python -m compileall backend/app scripts` | Passed |
-| `python -m pytest` | Passed: 49 passed, 21 warnings in 106.64s |
+| `python -m pytest` | Passed: 51 passed, 22 warnings in 101.16s |
 | `python -m pytest backend/tests/test_v3_9_rag_evaluation.py` | Passed: 2 tests |
 | `python -m pytest backend/tests/test_v3_9_frontend_smoke.py` | Passed: 1 test |
 | `python scripts/evaluate_rag.py --demo` | Passed: 1 QA log, 1 timestamp citation, 7 multimodal chunks, 7 citation locators |
-| `python scripts/check_frontend_smoke.py` | Passed: 19 required routes, 16 navigation targets, 0 warnings |
+| `python scripts/check_frontend_smoke.py` | Passed: 24 required routes, 21 navigation targets, 0 warnings |
 | Frontend typecheck | Passed |
-| Frontend production build | Passed, 20 build entries including `_not-found` |
-| `python scripts/check_encoding.py` | Passed: 246 UTF-8 text files |
+| Frontend production build | Passed, 25 build entries including `_not-found` |
+| `python scripts/check_encoding.py` | Passed: 255 UTF-8 text files |
 | `python scripts/check_secrets.py` | Passed: scanned 239 tracked text files, findings 0 |
 | `python scripts/release.py --version V3.8 --dry-run` | Passed: 250 included files, no secrets/databases/uploads/cache |
 
@@ -50,3 +50,4 @@ This is an in-progress V3.9 report, not the final V3.9 acceptance report. It rec
 - Expand RAG evaluation with richer retrieval/citation metrics.
 - Improve media result navigation and convert Task Center recovery hints into richer event-aware guidance where backend error codes are available.
 - Continue V4.0 UI/UX work with learning roadmap, portfolio, interview and observability pages.
+- Portfolio summary and observability entry pages have started; next work should add provider-backed generation and structured trace reports without faking AI output.

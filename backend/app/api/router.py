@@ -10,6 +10,7 @@ from app.api import (
     routes_learning,
     routes_media,
     routes_onboarding,
+    routes_portfolio,
     routes_system,
 )
 
@@ -23,4 +24,5 @@ api_router.include_router(routes_chat.router)
 api_router.include_router(routes_learning.router)
 api_router.include_router(routes_media.router)
 api_router.include_router(routes_onboarding.router)
+api_router.include_router(routes_portfolio.router)
 api_router.include_router(routes_system.router)

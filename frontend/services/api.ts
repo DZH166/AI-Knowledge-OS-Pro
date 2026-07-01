@@ -21,6 +21,7 @@ import type {
   MediaOperation,
   MediaTaskResponse,
   OnboardingState,
+  PortfolioSummary,
   QALog,
   QuizQuestion,
   SourceItem,
@@ -269,7 +270,8 @@ export const api = {
     method: "POST",
     body: JSON.stringify(payload)
   }),
-  exportLearningMarkdown: () => request<{ markdown: string; message: string }>("/api/learning/export-markdown", { method: "POST" })
+  exportLearningMarkdown: () => request<{ markdown: string; message: string }>("/api/learning/export-markdown", { method: "POST" }),
+  portfolioSummary: () => request<PortfolioSummary>("/api/portfolio/summary")
 };
 
 export function formatDate(value: string | null) {

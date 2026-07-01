@@ -1049,3 +1049,32 @@ V3.9 开始从“能展示”转向“可验证、可收口”。RAG 评估不�
 - `E:\python3.12.9\python.exe scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
 - `E:\python3.12.9\python.exe scripts/evaluate_rag.py --demo`：通过。
 - `E:\python3.12.9\python.exe scripts/release.py --version V3.8 --dry-run`：通过，未发现 secrets/database/uploads/cache。
+
+<!-- learning:v4-0-portfolio-summary-start-20260702 -->
+## V4.0 起步：作品集概览 API 与求职页面
+
+### 本次补充做了什么
+- 新增 `GET /api/portfolio/summary`，从真实数据库聚合知识库、文档、多模态 Source、CitationLocator、任务、问答和学习资产计数。
+- 新增 portfolio schema/service/route，并补充 `test_v4_0_portfolio_summary.py`，覆盖 service 聚合和 API 响应契约。
+- 新增 `/portfolio`、`/portfolio/resume`、`/portfolio/interview`、`/portfolio/project-review` 页面，把真实项目事实组织成项目复盘、简历表达、面试讲解和演示路线。
+- 新增 `/system/observability` 页面，整理 request_id、task_id、retrieval_trace_id 等后续可观测性字段边界。
+- 更新 AppShell 作品集求职导航和 frontend smoke，必检路由扩展到 24 个，nav_targets=21，继续要求 warnings=0。
+
+### 我应该重点理解什么
+作品集系统不能一上来就“编简历”。更稳的第一步是把项目里真实存在的工程事实聚合出来：有多少资料、多少引用定位、多少任务、多少学习资产，哪些能力已实现，哪些仍需要 Provider。这样后续即使用 LLM 生成简历或面试回答，也能基于真实事实，而不是凭空包装。
+
+### 面试表达方式
+V4.0 起步阶段，我先实现了作品集概览 API：后端从数据库统计资料、任务、引用和学习资产，并返回能力证据、简历要点、面试讲解点和诚实边界；前端提供作品集、简历、面试和项目复盘页面。自动生成部分仍保留为后续真实 Provider 能力，未配置时不能生成假内容。
+
+### 当前验证结果
+- `E:\python3.12.9\python.exe -m compileall backend/app scripts`：通过。
+- `E:\python3.12.9\python.exe -m pytest`：51 passed，22 warnings。
+- `E:\python3.12.9\python.exe -m pytest backend/tests/test_v4_0_portfolio_summary.py backend/tests/test_v3_9_frontend_smoke.py`：3 passed。
+- `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：通过，required_routes=24，nav_targets=21，warnings=0。
+- frontend typecheck：通过。
+- frontend build：通过，25 个 build entries（含 `_not-found`）。
+- `E:\python3.12.9\python.exe scripts/check_encoding.py`：通过，255 个 UTF-8 文本文件。
+- `E:\python3.12.9\python.exe scripts/check_secrets.py`：通过，findings=0。
+- `E:\python3.12.9\python.exe scripts/check_repo_clean.py`：通过。
+- `E:\python3.12.9\python.exe scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
+- `E:\python3.12.9\python.exe scripts/evaluate_rag.py --demo`：通过。
