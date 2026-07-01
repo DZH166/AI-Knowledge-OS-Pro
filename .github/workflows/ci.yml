@@ -27,6 +27,9 @@ jobs:
       - run: pip install -r backend/requirements.txt
       - run: python -m compileall backend/app scripts
       - run: python -m pytest
+      - run: python scripts/seed_demo_data.py --database-path backend/data/demo_showcase.db --reset
+      - run: python scripts/check_demo_ready.py --database-path backend/data/demo_showcase.db
+      - run: python scripts/evaluate_rag.py --demo --database-path backend/data/demo_showcase.db
       - run: python -m alembic upgrade head
       - run: python -m alembic current
 

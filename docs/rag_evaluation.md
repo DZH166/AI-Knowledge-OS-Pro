@@ -1,6 +1,6 @@
 # RAG Evaluation
 
-RAG evaluation is a V3.9/V4.0 quality gate. The current baseline does not yet include `scripts/evaluate_rag.py`.
+RAG evaluation is a V3.9/V4.0 quality gate. The current baseline includes a demo-safe evaluator at `scripts/evaluate_rag.py`.
 
 ## Target Evaluation Inputs
 
@@ -23,16 +23,25 @@ RAG evaluation is a V3.9/V4.0 quality gate. The current baseline does not yet in
 
 Demo evaluation may validate deterministic seeded records and citation plumbing. It must not claim synthetic demo answers measure real LLM quality.
 
-## Planned Script
+## Implemented Demo Script
 
 ```powershell
 python scripts/evaluate_rag.py --demo
 ```
 
-The script should produce a readable report and return a non-zero exit code when required checks fail.
+The script checks deterministic seeded evidence and citation plumbing:
+
+- demo QA logs exist;
+- answers are marked grounded;
+- citation ids match used citation ids;
+- related chunks are present;
+- at least one audio/video timestamp citation exists;
+- multimodal chunks and citation locators exist.
+
+It returns a non-zero exit code when required checks fail.
 
 ## Current Status
 
-- Evaluation design documented.
-- Script implementation pending.
-- CI integration pending after the script exists.
+- Demo evidence-chain evaluation implemented.
+- Backend CI seeds demo data and runs the demo evaluator.
+- Real provider quality evaluation remains planned.

@@ -150,9 +150,9 @@
 - Added `scripts/reset_demo_data.py` to safely rebuild the isolated synthetic demo database.
 - Preserved demo/real boundaries: synthetic demo data is labelled and missing providers must not be faked.
 
-## V3.9 Next: Product Experience And Quality Gates
+## V3.9 In Progress: Product Experience And Quality Gates
 
-- Add `scripts/evaluate_rag.py --demo`.
+- Extend `scripts/evaluate_rag.py --demo` beyond seeded evidence-chain checks into richer retrieval quality reporting.
 - Add lightweight UI smoke checks for Dashboard, Upload, Tasks, Chat, Media, Learning and System Status.
 - Improve provider diagnostics with safer setup hints and copyable env template guidance.
 - Improve task center failure recovery, retry/cancel clarity and media result navigation.
