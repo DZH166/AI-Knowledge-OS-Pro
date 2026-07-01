@@ -20,6 +20,7 @@ REQUIRED_ROUTES = (
     "/documents",
     "/knowledge",
     "/media",
+    "/code",
     "/media/sources/[id]",
     "/errors",
     "/learning",
@@ -42,6 +43,7 @@ REQUIRED_TEXT = {
     "frontend/app/system/settings/page.tsx": ("安全边界", "Provider 诊断文档"),
     "frontend/app/system/observability/page.tsx": ("request_id", "retrieval_trace_id"),
     "frontend/app/portfolio/page.tsx": ("真实项目概览", "NOT_CONFIGURED"),
+    "frontend/app/code/page.tsx": ("代码仓库接入", "EMBEDDING_NOT_CONFIGURED"),
     "frontend/app/media/sources/[id]/page.tsx": ("元数据摘要", "处理详情"),
     "frontend/app/tasks/page.tsx": ("恢复建议", "事件时间线"),
 }

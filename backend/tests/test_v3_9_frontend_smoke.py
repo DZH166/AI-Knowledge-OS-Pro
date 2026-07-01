@@ -12,5 +12,5 @@ def test_frontend_smoke_check_passes() -> None:
 
     assert "frontend_smoke=checked" in completed.stdout
     assert "result=passed" in completed.stdout
-    assert "required_routes=24" in completed.stdout
+    assert "required_routes=25" in completed.stdout
     assert "warnings=0" in completed.stdout

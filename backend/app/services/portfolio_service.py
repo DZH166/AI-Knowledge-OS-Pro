@@ -18,6 +18,7 @@ class PortfolioService:
             "knowledge_spaces": self._count(db, KnowledgeSpace),
             "documents": self._count(db, Document),
             "sources": self._count(db, Source),
+            "code_repositories": self._count_sources(db, "code_repository"),
             "multimodal_chunks": self._count(db, MultimodalChunk),
             "citation_locators": self._count(db, CitationLocator),
             "visual_frames": self._count(db, VisualFrame),
@@ -54,6 +55,12 @@ class PortfolioService:
                     label="多模态来源",
                     value=metric_values["sources"],
                     description="图片、音频、视频等 Source 记录，不包含原始私有文件。",
+                ),
+                PortfolioMetric(
+                    key="code_repositories",
+                    label="代码仓库",
+                    value=metric_values["code_repositories"],
+                    description="按安全白名单接入并生成文件行号 locator 的代码仓库快照。",
                 ),
                 PortfolioMetric(
                     key="citation_locators",
@@ -134,6 +141,12 @@ class PortfolioService:
                 boundary="从真实资料或真实版本 diff 生成，不覆盖历史 learning log。",
             ),
             PortfolioCapability(
+                name="代码仓库理解",
+                status="in_progress",
+                evidence=f"{metric_values['code_repositories']} 个代码仓库 Source，可生成 file_path/line locator。",
+                boundary="当前支持本地仓库安全扫描和代码片段索引；远程同步、符号图谱和 LLM 复盘仍在后续阶段。",
+            ),
+            PortfolioCapability(
                 name="作品集/面试系统",
                 status="in_progress",
                 evidence="当前提供真实项目概览、简历要点、讲解路线和边界说明。",
@@ -143,6 +156,9 @@ class PortfolioService:
 
     def _count(self, db: Session, model: type) -> int:
         return int(db.scalar(select(func.count()).select_from(model)) or 0)
+
+    def _count_sources(self, db: Session, source_type: str) -> int:
+        return int(db.scalar(select(func.count()).select_from(Source).where(Source.source_type == source_type)) or 0)
 
     def _learning_asset_count(self, db: Session) -> int:
         return (

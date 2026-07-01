@@ -152,6 +152,10 @@ class RAGService:
             final_score = self._optional_float(payload.get("final_score")) or round(hit.score, 4)
             retrieval_reason = self._optional_str(payload.get("retrieval_reason"))
             citation_ready = bool(payload.get("citation_ready", True))
+            file_path = self._optional_str(payload.get("file_path"))
+            line_start = self._optional_int(payload.get("line_start"))
+            line_end = self._optional_int(payload.get("line_end"))
+            symbol_name = self._optional_str(payload.get("symbol_name"))
             citation_id = f"[{index}]"
 
             citations.append(
@@ -176,6 +180,10 @@ class RAGService:
                     final_score=final_score,
                     retrieval_reason=retrieval_reason,
                     citation_ready=citation_ready,
+                    file_path=file_path,
+                    line_start=line_start,
+                    line_end=line_end,
+                    symbol_name=symbol_name,
                 )
             )
             related_chunks.append(
@@ -198,9 +206,18 @@ class RAGService:
                     final_score=final_score,
                     retrieval_reason=retrieval_reason,
                     citation_ready=citation_ready,
+                    file_path=file_path,
+                    line_start=line_start,
+                    line_end=line_end,
+                    symbol_name=symbol_name,
                 )
             )
             location = []
+            if file_path:
+                line_text = f":{line_start}-{line_end}" if line_start and line_end else ""
+                location.append(f"{file_path}{line_text}")
+            if symbol_name:
+                location.append(symbol_name)
             if page_number:
                 location.append(f"第 {page_number} 页")
             if heading_path:

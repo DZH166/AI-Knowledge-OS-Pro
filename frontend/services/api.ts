@@ -3,6 +3,7 @@ import type {
   ApiEnvelope,
   ChatResponse,
   ChatSession,
+  CodeRepositoryIngestResponse,
   Chunk,
   DashboardSummary,
   DocumentItem,
@@ -177,6 +178,23 @@ export const api = {
       method: "POST",
       body: formData
     });
+  },
+  ingestCodeRepository: (payload: {
+    space_id: number;
+    local_path: string;
+    title?: string;
+    github_url?: string;
+    max_files?: number;
+  }) =>
+    request<CodeRepositoryIngestResponse>("/api/code-repositories/ingest-local", {
+      method: "POST",
+      body: JSON.stringify(payload)
+    }),
+  listCodeRepositories: (spaceId?: number) => {
+    const params = new URLSearchParams();
+    if (spaceId) params.set("space_id", String(spaceId));
+    const query = params.toString();
+    return request<SourceItem[]>(query ? `/api/code-repositories?${query}` : "/api/code-repositories");
   },
   listSources: (spaceId?: number, sourceType?: string) => {
     const params = new URLSearchParams();
@@ -354,7 +372,9 @@ export function statusLabel(status: string) {
     audio_transcript: "音频片段",
     video_metadata_only: "视频元数据模式",
     video_transcription: "视频转写",
-    video_transcript: "视频片段"
+    video_transcript: "视频片段",
+    code_repository: "代码仓库",
+    code_file: "代码片段"
   };
   return map[status] || status;
 }

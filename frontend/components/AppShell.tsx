@@ -8,6 +8,7 @@ import {
   Briefcase,
   Brain,
   Bug,
+  Code2,
   ClipboardList,
   FileQuestion,
   FileText,
@@ -38,6 +39,7 @@ const groups: NavGroup[] = [
       { href: "/upload", label: "资料上传", icon: UploadCloud },
       { href: "/documents", label: "文档管理", icon: FileText },
       { href: "/media", label: "媒体资料库", icon: Images },
+      { href: "/code", label: "代码仓库", icon: Code2 },
       { href: "/errors", label: "报错档案", icon: Bug },
       { href: "/tasks", label: "任务中心", icon: TimerReset }
     ]
@@ -145,6 +147,7 @@ function crumbLabel(value: string) {
     upload: "资料上传",
     documents: "文档管理",
     media: "媒体资料库",
+    code: "代码仓库",
     errors: "报错档案",
     sources: "资料来源",
     tasks: "任务中心",

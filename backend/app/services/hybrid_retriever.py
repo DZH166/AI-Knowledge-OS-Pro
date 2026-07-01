@@ -148,6 +148,10 @@ class HybridRetriever:
                 "modality": chunk.modality,
                 "start_ms": chunk.start_ms,
                 "end_ms": chunk.end_ms,
+                "file_path": locator.get("file_path"),
+                "line_start": locator.get("line_start"),
+                "line_end": locator.get("line_end"),
+                "symbol_name": locator.get("symbol_name"),
                 "locator": locator,
             }
             results.append(
@@ -307,6 +311,10 @@ class HybridRetriever:
                 "section_title": payload.get("section_title"),
                 "start_ms": payload.get("start_ms"),
                 "end_ms": payload.get("end_ms"),
+                "file_path": payload.get("file_path"),
+                "line_start": payload.get("line_start"),
+                "line_end": payload.get("line_end"),
+                "symbol_name": payload.get("symbol_name"),
             }.items()
             if value is not None
         }

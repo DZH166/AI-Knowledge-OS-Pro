@@ -284,6 +284,10 @@ export type Citation = {
   final_score?: number | null;
   retrieval_reason?: string | null;
   citation_ready?: boolean | null;
+  file_path?: string | null;
+  line_start?: number | null;
+  line_end?: number | null;
+  symbol_name?: string | null;
 };
 
 export type RelatedChunk = {
@@ -305,6 +309,18 @@ export type RelatedChunk = {
   final_score?: number | null;
   retrieval_reason?: string | null;
   citation_ready?: boolean | null;
+  file_path?: string | null;
+  line_start?: number | null;
+  line_end?: number | null;
+  symbol_name?: string | null;
+};
+
+export type CodeRepositoryIngestResponse = {
+  source: SourceItem;
+  file_count: number;
+  chunk_count: number;
+  skipped_count: number;
+  message: string;
 };
 
 export type AnswerMode = "normal" | "beginner" | "project" | "interview";

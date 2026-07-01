@@ -1076,6 +1076,35 @@ V4.0 中我开始把 RAG 从单一路径向混合检索升级：dense retrieval 
 - `E:\python3.12.9\python.exe scripts/check_secrets.py`：通过，findings=0。
 - `E:\python3.12.9\python.exe scripts/check_repo_clean.py`：通过。
 - `E:\python3.12.9\python.exe scripts/evaluate_rag.py --demo`：通过。
+
+<!-- learning:v4-0-code-repository-ingestion-start-20260702 -->
+## V4.0 起步：代码仓库接入、文件行号 Locator 与代码问答证据
+
+### 本次补充做了什么
+- 新增 `backend/app/services/code_repository_service.py`，支持本地代码仓库路径扫描、安全跳过 `.env`、数据库、媒体、依赖目录、构建产物和缓存。
+- 新增 `POST /api/code-repositories/ingest-local`、`GET /api/code-repositories` 和详情接口，复用 `Source`、`SourceRevision`、`MultimodalChunk`、`CitationLocator` 与 `IndexRevision`。
+- 代码片段以 `source_type=code_repository`、`modality=code_file` 入库，并保存 `file_path`、`line_start`、`line_end`、`symbol_name` locator。
+- RAG 引用结构补充代码 locator 字段，代码问答可以返回文件路径与行号。
+- 新增 `/code` 前端页面和 AppShell 导航入口，上传中心也增加代码仓库流程卡。
+- 作品集概览新增代码仓库指标，展示这块能力的真实进展。
+- 新增 `backend/tests/test_v4_0_code_repository_ingestion.py`，覆盖敏感文件跳过、未配置 embedding 拒绝、API 响应契约和代码 RAG 引用。
+
+### 我应该重点理解什么
+代码仓库接入不是把整个项目目录塞进模型。安全扫描必须先排除 `.env`、数据库、媒体、依赖、构建和缓存；然后只读取白名单文本文件，按文件和行号切片，再把 locator 保存进 citation。这样后续问“这个接口在哪里”“这个模块怎么讲”时，答案可以指向真实文件行号，而不是泛泛解释。
+
+### 面试表达方式
+V4.0 中我开始实现代码仓库理解能力：系统可以读取本地仓库，按安全白名单扫描代码文件，生成带 `file_path`、`line_start`、`line_end` 和 `symbol_name` 的代码片段，并写入向量索引。缺少 Embedding provider 时返回 `EMBEDDING_NOT_CONFIGURED`，不会生成假向量或假代码解释。
+
+### 当前验证结果
+- `E:\python3.12.9\python.exe -m compileall backend/app scripts`：通过。
+- `E:\python3.12.9\python.exe -m pytest`：56 passed，25 warnings。
+- `E:\python3.12.9\python.exe -m pytest backend/tests/test_v4_0_code_repository_ingestion.py -q`：3 passed。
+- `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：通过，required_routes=25，nav_targets=22，warnings=0。
+- frontend typecheck：通过。
+- frontend build：通过，26 个 build entries（含 `_not-found`）。
+- `E:\python3.12.9\python.exe scripts/check_encoding.py`：通过，263 个 UTF-8 文本文件。
+- `E:\python3.12.9\python.exe scripts/check_secrets.py`：通过，findings=0。
+- `E:\python3.12.9\python.exe scripts/check_repo_clean.py`：通过。
 - `E:\python3.12.9\python.exe scripts/release.py --version V3.8 --dry-run`：通过，未发现 secrets/database/uploads/cache。
 
 <!-- learning:v4-0-portfolio-summary-start-20260702 -->

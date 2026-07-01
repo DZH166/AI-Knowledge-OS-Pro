@@ -672,3 +672,34 @@ V4.0 知识增强主线继续推进：RAGService 已从单一路径检索升级�
 - 当前 keyword 检索是轻量 SQLite scan，不是完整 BM25/FTS5。
 - Rerank provider 尚未接真实服务；未配置时只使用 deterministic fusion，`rerank_score` 保持为空。
 - 主界面暂不直接展示 trace 字段，避免 raw/debug 信息影响普通用户体验。
+
+<!-- stage:v4-0-code-repository-ingestion-start-20260702 -->
+## V4.0 起步交付：代码仓库接入与代码 Citation Locator
+
+### 阶段状态
+V4.0 代码仓库理解能力已开始落地。当前支持安全本地仓库扫描、代码文件切片、file/line locator、向量索引、RAG 引用字段和 `/code` 页面；远程同步、AST 符号图谱、自动项目复盘和模拟面试仍在后续阶段。
+
+### 交付内容
+- 新增 `backend/app/schemas/code_repository_schema.py`。
+- 新增 `backend/app/services/code_repository_service.py`。
+- 新增 `backend/app/api/routes_code_repositories.py` 并挂载到 API router。
+- 扩展 `Citation`、`RelatedChunk` 和前端类型，支持 `file_path`、`line_start`、`line_end`、`symbol_name`。
+- 新增 `/code` 页面、AppShell 导航入口和上传中心代码仓库流程卡。
+- 更新 `docs/code_repository_ingestion.md`、`docs/roadmap.md`、学习日志和阶段交付日志。
+- 新增 `backend/tests/test_v4_0_code_repository_ingestion.py`。
+
+### 验证结果
+- compileall：通过。
+- 全量 pytest：56 passed，25 warnings。
+- Code repository targeted tests：3 passed。
+- Frontend smoke：通过，required_routes=25，nav_targets=22，warnings=0。
+- Frontend typecheck：通过。
+- Frontend build：通过，26 个 build entries（含 `_not-found`）。
+- encoding check：通过，263 个 UTF-8 文本文件。
+- secret check：通过，findings=0。
+- repo clean check：通过。
+
+### 能力边界
+- 当前只做本地路径扫描，不自动 clone 远程仓库。
+- 当前使用轻量行切片和简单 symbol 识别，不是完整 AST/语言服务器分析。
+- 代码复盘、简历生成和面试反馈仍需后续真实 LLM provider，未配置时不能输出假内容。

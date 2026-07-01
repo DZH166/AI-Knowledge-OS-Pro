@@ -28,6 +28,10 @@ class Citation(BaseModel):
     final_score: float | None = None
     retrieval_reason: str | None = None
     citation_ready: bool | None = None
+    file_path: str | None = None
+    line_start: int | None = None
+    line_end: int | None = None
+    symbol_name: str | None = None
 
 
 class RelatedChunk(BaseModel):
@@ -49,6 +53,10 @@ class RelatedChunk(BaseModel):
     final_score: float | None = None
     retrieval_reason: str | None = None
     citation_ready: bool | None = None
+    file_path: str | None = None
+    line_start: int | None = None
+    line_end: int | None = None
+    symbol_name: str | None = None
 
 
 class ChatRequest(BaseModel):
