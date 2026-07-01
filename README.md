@@ -3,7 +3,7 @@
 > Multimodal personal knowledge OS for AI application learners: project sources become searchable evidence, RAG answers, durable media tasks and versioned learning archives.
 
 [![CI](https://github.com/DZH166/AI-Knowledge-OS-Pro/actions/workflows/ci.yml/badge.svg)](https://github.com/DZH166/AI-Knowledge-OS-Pro/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-V3.7%20%2F%203.7.0-0f766e)](docs/v3_7_predevelopment_audit.md)
+[![Version](https://img.shields.io/badge/version-V3.8%20%2F%203.8.0-0f766e)](docs/v4_0_long_run_predevelopment_audit.md)
 [![Python](https://img.shields.io/badge/Python-3.12-2563eb)](backend/requirements.txt)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688)](backend/requirements.txt)
 [![Next.js](https://img.shields.io/badge/Next.js-15-111827)](frontend/package.json)
@@ -13,9 +13,12 @@
 
 ## 30-60 Second Demo
 
-A Demo GIF is planned under `docs/assets/demo/v3_7_demo_walkthrough.gif`. It is not referenced as an image until captured, to avoid broken README media. Use the current walkthrough script instead:
+A Demo GIF is planned under `docs/assets/demo/v3_8_demo_walkthrough.gif`. It is not referenced as an image until captured, to avoid broken README media. Use the current walkthrough script instead:
 
+- [Quickstart](docs/quickstart.md)
+- [Demo mode boundary](docs/demo_mode.md)
 - [60-second demo script](docs/demo_script.md)
+- [Demo storyboard](docs/demo_storyboard.md)
 - [Demo showcase guide](docs/demo_showcase.md)
 - [Screenshot inventory](docs/assets/screenshots/README.md)
 
@@ -53,7 +56,7 @@ AI Knowledge OS Pro turns that workflow into a local product: sources are ingest
 | Video upload and keyframes | Implemented | FFmpeg/imageio-ffmpeg | Keyframes are real extracted/generated assets, not LLM output |
 | Video transcription | Implemented | Speech-to-text provider | No fake subtitles |
 | Task Center retry/cancel/events | Implemented | Redis/RQ for background dispatch | DB records remain visible without worker |
-| Demo seed data | Implemented in V3.7 | `scripts/seed_demo_data.py` | Synthetic and labelled |
+| Demo seed data | Implemented in V3.7/V3.8 | `scripts/seed_demo_data.py`, `scripts/reset_demo_data.py` | Synthetic and labelled |
 | Subtitle export | Planned | Not implemented | Do not claim as delivered |
 | Shot-level scene segmentation | Planned | Not implemented | Roadmap only |
 
@@ -144,6 +147,8 @@ flowchart LR
 | Verification | pytest, compileall, TypeScript typecheck, Next.js build, GitHub Actions |
 
 ## Local Quick Start
+
+For the maintained step-by-step guide, see [Quickstart](docs/quickstart.md). For local engineering notes, see [Local Development](docs/local_development.md).
 
 ```powershell
 git clone https://github.com/DZH166/AI-Knowledge-OS-Pro.git
@@ -246,7 +251,7 @@ python -m pytest
 python scripts/check_encoding.py
 python scripts/check_secrets.py
 python scripts/check_repo_clean.py
-python scripts/release.py --version V3.7 --dry-run
+python scripts/release.py --version V3.8 --dry-run
 ```
 
 ```powershell
@@ -268,6 +273,15 @@ scripts/                 Demo, verification, learning package and release utilit
 .github/ISSUE_TEMPLATE/  Issue forms and PR template
 ```
 
+## Documentation Map
+
+| Area | Docs |
+| --- | --- |
+| Demo and setup | [Quickstart](docs/quickstart.md), [Demo Mode](docs/demo_mode.md), [Local Development](docs/local_development.md), [Environment Variables](docs/environment_variables.md) |
+| Architecture and flows | [Architecture](docs/architecture.md), [Architecture Diagrams](docs/architecture_diagram.md), [RAG Flow](docs/rag_flow.md), [Multimodal Pipeline](docs/multimodal_pipeline.md), [Task Queue Flow](docs/task_queue_flow.md), [Citation Flow](docs/citation_flow.md), [Learning Loop](docs/learning_loop.md) |
+| Release and governance | [Release Process](docs/release_process.md), [Versioning](docs/versioning.md), [Commit Convention](docs/commit_convention.md), [Document Quality Checklist](docs/document_quality_checklist.md), [Release Checklist](docs/github_release_checklist.md) |
+| V4.0 roadmap modules | [RAG Evaluation](docs/rag_evaluation.md), [Hybrid Retrieval](docs/hybrid_retrieval.md), [Code Repository Ingestion](docs/code_repository_ingestion.md), [Portfolio System](docs/portfolio_system.md), [Interview System](docs/interview_system.md), [Observability](docs/observability.md), [Performance Notes](docs/performance_notes.md) |
+
 ## Current Limitations
 
 - Real LLM, embedding, OCR and transcription need configured providers.
@@ -284,7 +298,9 @@ scripts/                 Demo, verification, learning package and release utilit
 - V3.1-V3.5: Image metadata/OCR, screenshot error archive, audio and video timestamp citations.
 - V3.6: Unified media tasks, citation deep links, multi-keyframes and source-derived learning artifacts.
 - V3.7: GitHub showcase, one-click demo setup, release dry-run, secret checks, architecture/resume docs and clearer capability boundaries.
-- Next: Subtitle export, richer scene segmentation and stronger provider diagnostics.
+- V3.8: GitHub portfolio documentation map, demo reset workflow, quickstart/demo/development docs and V4.0 roadmap module specifications.
+- V3.9 planned: product experience hardening, RAG evaluation and lightweight UI smoke checks.
+- V4.0 planned: knowledge-enhanced portfolio and interview edition with code repository understanding.
 
 See [Roadmap](docs/roadmap.md).
 

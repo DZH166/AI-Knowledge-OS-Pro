@@ -21,7 +21,7 @@ def table_count(connection: sqlite3.Connection, table: str) -> int:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Check whether the local V3.7 demo database is ready.")
+    parser = argparse.ArgumentParser(description="Check whether the local V3.8 demo database is ready.")
     parser.add_argument("--database-path", type=Path, default=Path("backend/data/demo_showcase.db"))
     args = parser.parse_args()
 

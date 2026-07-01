@@ -17,7 +17,7 @@ def run(command: list[str], *, env: dict[str, str] | None = None) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Prepare local services and synthetic data for the V3.7 demo.")
+    parser = argparse.ArgumentParser(description="Prepare local services and synthetic data for the V3.8 demo.")
     parser.add_argument("--skip-docker", action="store_true", help="Do not run docker compose up -d.")
     parser.add_argument("--reset", action="store_true", help="Recreate the synthetic demo database.")
     args = parser.parse_args()

@@ -1,6 +1,6 @@
 # GitHub Demo Showcase
 
-This guide presents AI Knowledge OS Pro V3.7 as a coherent product workflow rather than a collection of isolated pages.
+This guide presents AI Knowledge OS Pro V3.8 as a coherent product workflow rather than a collection of isolated pages.
 
 ## Demo data policy
 
@@ -61,9 +61,9 @@ The capture script waits for page-specific data, rejects pages containing `Faile
 - Use the same synthetic workspace across all screenshots.
 - Re-capture after material layout or workflow changes.
 
-## V3.7 one-command preparation
+## V3.8 one-command preparation
 
-V3.7 adds setup scripts that keep demo data isolated from normal application data:
+V3.8 keeps setup/reset scripts that keep demo data isolated from normal application data:
 
 ```powershell
 python scripts/setup_demo.py --reset

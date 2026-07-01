@@ -119,21 +119,74 @@ TOPICS: tuple[LearningTopic, ...] = (
         interview_expression="I treated release packaging as part of the product boundary, verifying that generated archives exclude secrets, databases, uploads and build caches.",
         file_patterns=("release.py", "test_release", "stage_delivery_log", "v3_6_acceptance_report"),
     ),
+    LearningTopic(
+        key="portfolio_documentation",
+        name="Portfolio Documentation",
+        beginner_explanation="A GitHub portfolio project needs docs that help a stranger run, understand and evaluate it.",
+        project_usage="V3.8 adds quickstart, demo mode, local development, release, versioning, interview QA and roadmap module documents.",
+        review_suggestion="Review README navigation, quickstart commands, demo boundaries and whether planned features are clearly separated.",
+        interview_expression="I turned the repository from a code dump into a portfolio-ready project with runnable demo docs, interview notes and honest capability boundaries.",
+        file_patterns=("quickstart", "demo_mode", "local_development", "environment_variables", "interview_qa", "Documentation Map"),
+    ),
+    LearningTopic(
+        key="demo_reset_workflow",
+        name="Demo Reset Workflow",
+        beginner_explanation="A demo should be repeatable; reset scripts make it easy to recover a clean synthetic showcase state.",
+        project_usage="V3.8 adds reset_demo_data.py, which only resets backend/data/demo_showcase.db and refuses non-demo database paths.",
+        review_suggestion="Review path safety checks, synthetic data labels and demo readiness validation.",
+        interview_expression="I made the demo reproducible by adding a reset workflow that rebuilds only the isolated synthetic database and verifies required records.",
+        file_patterns=("reset_demo_data", "check_demo_ready", "seed_demo_data", "demo_showcase.db"),
+    ),
+    LearningTopic(
+        key="roadmap_specs",
+        name="Roadmap Specifications",
+        beginner_explanation="Large features should be specified before implementation so docs do not overpromise.",
+        project_usage="V3.8 documents V4.0 targets for RAG evaluation, hybrid retrieval, code ingestion, portfolio generation, interview system and observability.",
+        review_suggestion="Review each design doc and mark implemented, requires configuration, demo-only, planned and limitation states.",
+        interview_expression="I documented the V4.0 architecture direction before coding it, which keeps roadmap claims honest and reviewable.",
+        file_patterns=("rag_evaluation", "hybrid_retrieval", "code_repository_ingestion", "portfolio_system", "interview_system", "observability", "performance_notes"),
+    ),
+    LearningTopic(
+        key="version_governance",
+        name="Version Governance",
+        beginner_explanation="A visible product version must match backend config, frontend package metadata, README badges and CI release commands.",
+        project_usage="V3.8 updates version consistency checks, health tests, package metadata, README badge and CI release artifact naming.",
+        review_suggestion="Review check_version.py and every version-bearing file after a version bump.",
+        interview_expression="I treated versioning as a testable contract across backend, frontend, docs and CI instead of a README-only label.",
+        file_patterns=("check_version", "package.json", "package-lock.json", "app_version", "app_semver", "Version", "V3.8"),
+    ),
 )
 
 
 def run(command: list[str], *, check: bool = False) -> str:
     try:
-        return subprocess.check_output(command, cwd=ROOT, text=True, encoding="utf-8", errors="replace").strip()
+        completed = subprocess.run(
+            command,
+            cwd=ROOT,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            capture_output=True,
+            check=True,
+        )
+        return completed.stdout.strip()
     except subprocess.CalledProcessError as exc:
         if check:
-            message = exc.output.strip() if exc.output else str(exc)
+            message = (exc.stdout or exc.stderr or str(exc)).strip()
             raise SystemExit(f"Command failed: {' '.join(command)}\n{message}") from exc
         return ""
 
 
 def git_ref_exists(ref: str) -> bool:
-    return subprocess.call(["git", "rev-parse", "--verify", "--quiet", ref], cwd=ROOT) == 0
+    return (
+        subprocess.call(
+            ["git", "rev-parse", "--verify", "--quiet", ref],
+            cwd=ROOT,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        == 0
+    )
 
 
 def should_skip(path: Path) -> bool:
@@ -179,7 +232,14 @@ def collect_git_changes(from_ref: str | None, to_ref: str) -> list[GitChange]:
     raw = run(["git", "diff", "--name-status", to_ref]) if git_ref_exists(to_ref) else ""
     changes = parse_name_status(raw)
     seen = {change.path for change in changes}
-    for line in run(["git", "status", "--short"]).splitlines():
+    status_raw = subprocess.check_output(
+        ["git", "status", "--short"],
+        cwd=ROOT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    for line in status_raw.splitlines():
         if not line.strip():
             continue
         status = line[:2].strip() or "M"
@@ -409,6 +469,11 @@ def build_package(args: argparse.Namespace) -> dict:
     migrations = read_optional(args.migration_report)
     features = sorted(dict.fromkeys(infer_feature(change) for change in changes))
     normalized_version = args.version.lower().replace(".", "-").replace(" ", "-")
+    slug = (
+        "v3-6-unified-media-learning"
+        if args.version.strip().upper() == "V3.6"
+        else f"{normalized_version}-learning-package"
+    )
     markdown = render_markdown(
         version=args.version,
         generated_at=generated_at,
@@ -425,16 +490,16 @@ def build_package(args: argparse.Namespace) -> dict:
         topics=topics,
     )
     return {
-        "version_name": f"{args.version}: unified multimodal tasks and source-based learning artifacts",
-        "slug": f"{normalized_version}-unified-media-learning",
+        "version_name": f"{args.version}: {args.goal}",
+        "slug": slug,
         "summary": args.goal,
         "implemented_features": features,
         "major_files": infer_major_files(changes),
         "knowledge_points": topics,
-        "focus": "Understand how V3.6 unifies multimodal processing, evidence navigation and learning artifact generation around real source chunks.",
-        "review_suggestions": "Review unified task model, media task orchestration, citation deep links, player synchronization, keyframes, learning artifact audit trails and release verification.",
-        "interview_expression": "In AI Knowledge OS Pro V3.6, I unified image, audio and video processing under the durable Task Center, made RAG citations jump to document chunks or media timestamps, and generated learning assets only from real source evidence.",
-        "next_version_suggestion": "Next, add subtitle export, richer scene segmentation, stronger provider diagnostics and visual-frame retrieval.",
+        "focus": f"Understand the concrete changes, verification evidence and remaining limits for {args.version}.",
+        "review_suggestions": "Review the changed files, command outputs, generated docs, tests, release safety checks and planned follow-up boundaries.",
+        "interview_expression": f"In AI Knowledge OS Pro {args.version}, I advanced the project with evidence-backed changes, verified them with tests/builds/checks, and documented both delivered capabilities and remaining limits.",
+        "next_version_suggestion": "Continue with the next roadmap stage using measurable tests, honest provider boundaries and append-only learning records.",
         "metadata": {
             "generated_at": generated_at,
             "from_ref": args.from_ref,
@@ -474,7 +539,10 @@ def main() -> None:
     if not output.is_absolute():
         output = ROOT / output
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(package, ensure_ascii=False, indent=2), encoding="utf-8")
+    if output.suffix.lower() == ".md":
+        output.write_text(package["markdown_content"], encoding="utf-8")
+    else:
+        output.write_text(json.dumps(package, ensure_ascii=False, indent=2), encoding="utf-8")
     print(output)
 
 

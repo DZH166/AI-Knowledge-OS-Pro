@@ -4,6 +4,7 @@ import sys
 
 from scripts import release
 from scripts.check_demo_ready import REQUIRED_TABLE_COUNTS
+from scripts.reset_demo_data import DEFAULT_DATABASE, ensure_demo_database_path
 from scripts.seed_demo_data import main as seed_demo_main
 
 
@@ -27,7 +28,7 @@ def test_secret_and_repo_clean_checks_pass_on_tracked_files() -> None:
     commands = [
         [sys.executable, "scripts/check_secrets.py"],
         [sys.executable, "scripts/check_repo_clean.py"],
-        [sys.executable, "scripts/release.py", "--version", "V3.7", "--dry-run"],
+        [sys.executable, "scripts/release.py", "--version", "V3.8", "--dry-run"],
     ]
     for command in commands:
         completed = subprocess.run(command, cwd=release.ROOT, text=True, capture_output=True, check=True)
@@ -53,3 +54,40 @@ def test_demo_seed_creates_required_synthetic_records(tmp_path, monkeypatch) -> 
     assert counts["qa_logs"] >= 1
     assert counts["learning_cards"] >= 1
     assert counts["learning_logs"] >= 1
+
+
+def test_demo_reset_refuses_non_demo_database(tmp_path) -> None:
+    assert ensure_demo_database_path(DEFAULT_DATABASE) == DEFAULT_DATABASE.resolve()
+
+    unsafe_database = tmp_path / "user_data.db"
+    try:
+        ensure_demo_database_path(unsafe_database)
+    except SystemExit as exc:
+        assert "outside backend/data" in str(exc)
+    else:
+        raise AssertionError("reset_demo_data accepted a non-demo database path")
+
+
+def test_learning_package_generator_can_write_markdown(tmp_path) -> None:
+    output = tmp_path / "v3_8_learning_package_draft.md"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "scripts/generate_learning_package.py",
+            "--version",
+            "V3.8",
+            "--goal",
+            "GitHub portfolio demo docs and reset workflow",
+            "--output",
+            str(output),
+        ],
+        cwd=release.ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    assert str(output) in completed.stdout
+    markdown = output.read_text(encoding="utf-8")
+    assert "## V3.8 Learning Package Draft" in markdown
+    assert "GitHub portfolio demo docs and reset workflow" in markdown

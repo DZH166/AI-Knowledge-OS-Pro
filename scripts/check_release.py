@@ -46,7 +46,7 @@ def latest_release(version: str) -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Inspect an AI Knowledge OS Pro release archive.")
-    parser.add_argument("--version", default="V3.7")
+    parser.add_argument("--version", default="V3.8")
     parser.add_argument("--path", type=Path)
     args = parser.parse_args()
 

@@ -10,7 +10,7 @@ A multimodal personal knowledge operating system for AI application learners, co
 
 ## Resume Description
 
-Built an end-to-end multimodal RAG learning system with FastAPI, Next.js, SQLAlchemy, Alembic, Qdrant and Redis/RQ. The system supports document ingestion, image/audio/video source management, provider-backed OCR/transcription, timestamp citations, task progress tracking and source-derived learning artifacts. Added GitHub Actions, release safety checks, synthetic demo data and portfolio documentation for reproducible project presentation.
+Built an end-to-end multimodal RAG learning system with FastAPI, Next.js, SQLAlchemy, Alembic, Qdrant and Redis/RQ. The system supports document ingestion, image/audio/video source management, provider-backed OCR/transcription, timestamp citations, task progress tracking and source-derived learning artifacts. Added GitHub Actions, release safety checks, synthetic demo/reset data and portfolio documentation for reproducible project presentation.
 
 ## Tech Stack
 
@@ -28,7 +28,8 @@ Built an end-to-end multimodal RAG learning system with FastAPI, Next.js, SQLAlc
 - Image OCR, audio transcription, video transcription and video keyframes through durable media tasks.
 - Citation jumps to document chunks or media timestamps.
 - Learning artifacts: knowledge points, cards, quizzes, notes and interview expressions.
-- V3.7 demo setup with synthetic data and explicit real/demo mode boundaries.
+- V3.8 demo setup/reset workflow with synthetic data and explicit real/demo mode boundaries.
+- Quickstart, demo mode, local development, release, versioning, interview QA and V4.0 roadmap module docs.
 
 ## Technical Challenges
 
@@ -45,6 +46,7 @@ Built an end-to-end multimodal RAG learning system with FastAPI, Next.js, SQLAlc
 - `CitationLocator`, timestamp fields and frontend deep links preserve evidence navigation.
 - Release scripts use Git-tracked files, dry-run analysis and forbidden-file checks.
 - Demo seed creates isolated synthetic sources, tasks, Q&A and learning data.
+- Demo reset rebuilds only the isolated synthetic database and refuses non-demo database paths.
 
 ## Project Highlights
 
@@ -59,6 +61,7 @@ Built an end-to-end multimodal RAG learning system with FastAPI, Next.js, SQLAlc
 - 15 Next.js routes build successfully in the current frontend.
 - 7 checked-in screenshots document the main workflow.
 - One release dry-run reports included/excluded file counts and checks for secrets, databases, uploads and caches.
+- 30 interview Q&A prompts explain architecture, RAG, multimodal processing, task orchestration and engineering quality.
 
 ## Interview Follow-Ups And Answer Templates
 

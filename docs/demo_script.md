@@ -1,4 +1,4 @@
-# V3.7 60-Second Demo Script
+# V3.8 60-Second Demo Script
 
 This script is designed for a short portfolio walkthrough. Use the synthetic demo database created by `scripts/setup_demo.py` or `scripts/seed_demo_data.py`.
 

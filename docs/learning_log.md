@@ -959,3 +959,35 @@ AI Knowledge OS Pro V3.7 中，我把已有多模态 RAG 系统进一步作品�
 - `python scripts/check_secrets.py`：通过，202 个 tracked text 文件 findings=0。
 - `python scripts/check_repo_clean.py`：通过，forbidden tracked files=0。
 - `python scripts/release.py --version V3.7 --dry-run`：通过，included_files=213，excluded_files=0，secrets/database/uploads/cache 均为 no。
+
+<!-- learning:v3-8-portfolio-demo-docs-20260702 -->
+## V3.8：GitHub 作品集 Demo 文档化与可重置演示流程
+
+### 本次补充做了什么
+- 将当前运行版本升级为 `V3.8 / 3.8.0`，同步后端配置、健康检查测试、前端 package、README badge、CI release artifact 命名和版本检查脚本。
+- 新增 `docs/v4_0_long_run_predevelopment_audit.md`，在进入 V4.0 长期迭代前按 44 项真实审计当前仓库、文档、CI、测试、Demo、发布和能力缺口。
+- 新增 quickstart、demo mode、local development、environment variables、deployment、Docker、release process、versioning、commit convention 和 document quality checklist 文档。
+- 新增 RAG、multimodal、media、task queue、citation locator、citation flow 和 learning loop 流程文档。
+- 新增 RAG evaluation、hybrid retrieval、code repository ingestion、portfolio system、interview system、observability 和 performance notes 设计文档，明确这些是 V4.0 目标，不冒充已实现。
+- 新增 `docs/demo_storyboard.md` 和 `docs/interview_qa.md`，其中 interview QA 覆盖 30 个项目讲解问题。
+- 新增 `scripts/reset_demo_data.py`，只允许重置 `backend/data/demo_showcase.db`，拒绝非 Demo 数据库路径。
+- 泛化 `scripts/generate_learning_package.py`，支持 Markdown 输出，并减少旧 V3.6 固定文案残留。
+- README 新增 Documentation Map，把 GitHub 访客最需要的启动、Demo、架构、流程、发布和路线图文档串起来。
+
+### 我应该重点理解什么
+V3.8 的重点不是新增模型能力，而是把项目变成“陌生人可运行、可验证、可讲解”的作品集。真正专业的 AI 项目需要同时交代：哪些功能已实现，哪些需要本地服务，哪些需要真实 provider，哪些只是 Demo 展示，哪些仍是计划。文档、版本号、Demo 数据、release 检查和学习包也都是工程边界的一部分。
+
+### 面试表达方式
+AI Knowledge OS Pro V3.8 中，我把已有多模态 RAG 项目进一步整理为可复现的 GitHub 作品集：统一版本号，补齐 quickstart、demo/real 边界、本地开发、部署、发布和面试问答文档；增加安全的 Demo reset 脚本；并用真实 diff 生成学习包。这个阶段强调工程可信度和讲解能力，而不是用假模型输出堆功能。
+
+### 本阶段验证结果
+- `E:\python3.12.9\python.exe -m compileall backend/app scripts`：通过。
+- `E:\python3.12.9\python.exe -m pytest`：46 passed，22 warnings。
+- frontend typecheck：使用 bundled Node + 项目本地 TypeScript CLI，通过。
+- frontend build：使用 bundled Node + 项目本地 Next.js CLI，通过，15 个 App Router 页面构建成功。
+- `python scripts/check_encoding.py`：通过，235 个 UTF-8 文本文件。
+- `python scripts/check_secrets.py`：通过，233 个 tracked text 文件 findings=0。
+- `python scripts/check_repo_clean.py`：通过，forbidden tracked files=0。
+- `python scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
+- `python scripts/release.py --version V3.8 --dry-run`：通过，included_files=244，未发现 secrets/database/uploads/cache。
+- `python scripts/reset_demo_data.py`：通过，重建 isolated synthetic demo 数据库并通过 readiness check。

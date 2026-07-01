@@ -106,27 +106,27 @@
 - GitHub portfolio README, reproducible synthetic screenshots, CI, governance files, encoding checks and release safety checks.
 - V3.6 learning package generation uses real Git changes, routes, dependencies and verification reports.
 
-## V3.7 Next: Richer Media Understanding
+## Future Media Understanding
 
 - Docling or equivalent parser for richer document formats.
 - Subtitle export and richer video timeline controls.
 - Shot-level scene segmentation and semantic keyframe retrieval.
 - More complete PDF page/section navigation and frame-level citation highlighting.
 
-## V5: Code Repository And Project Memory
+## V4.0 Target: Code Repository And Project Memory
 
 - Git repository sync.
 - Code file parsing and module explanation.
 - Error archive and repair notes.
 - Project version diffs and technical storytelling.
 
-## V6: Interview And Portfolio System
+## V4.0 Target: Interview And Portfolio System
 
 - Project interview expression generation.
 - Knowledge-point follow-up cards.
 - Portfolio page and project story line.
 
-## V7: Business Brain Integration
+## Future: Business Brain Integration
 
 - Connect Business Growth Engine materials.
 - Business document analysis, plan generation and review memory.
@@ -141,9 +141,27 @@
 - System Status capability matrix groups direct, local-service, provider-backed, demo-only and planned features.
 - V3.7 learning package documents open-source project hygiene, CI/CD and portfolio presentation.
 
-## V3.8 Next: Demo Capture And Provider Diagnostics
+## V3.8: GitHub Portfolio Demo Docs And Reset Workflow
+
+- Version unified to `V3.8 / 3.8.0`.
+- Added quickstart, demo mode, local development, environment variables, release, versioning and commit convention docs.
+- Added storyboard and interview QA docs for GitHub and interview explanation.
+- Added V4.0 design notes for RAG evaluation, hybrid retrieval, code repository ingestion, portfolio system, interview system, observability and performance.
+- Added `scripts/reset_demo_data.py` to safely rebuild the isolated synthetic demo database.
+- Preserved demo/real boundaries: synthetic demo data is labelled and missing providers must not be faked.
+
+## V3.9 Next: Product Experience And Quality Gates
+
+- Add `scripts/evaluate_rag.py --demo`.
+- Add lightweight UI smoke checks for Dashboard, Upload, Tasks, Chat, Media, Learning and System Status.
+- Improve provider diagnostics with safer setup hints and copyable env template guidance.
+- Improve task center failure recovery, retry/cancel clarity and media result navigation.
+
+## V4.0 Next: Knowledge-Enhanced Portfolio Edition
 
 - Record and commit a short demo GIF after final UI confirmation.
-- Add provider diagnostics with safer setup hints and copyable env template guidance.
-- Add subtitle export for audio/video transcript segments.
-- Add richer visual frame retrieval and shot-level video segmentation.
+- Add hybrid retrieval and rerank fallback.
+- Add code repository ingestion with file/line citation locators.
+- Add portfolio generation pages and APIs.
+- Add mock interview sessions and saved feedback.
+- Add observability page and structured trace reports.

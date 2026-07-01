@@ -505,3 +505,42 @@ V3.6 已完成 GitHub 作品集化收口：专业 README、真实 CI、项目规
 - 建议 commit message：`feat: add V3.7 GitHub showcase demo workflow`。
 - 建议 tag：`v3.7.0`。
 - 建议 GitHub Release 标题：`AI Knowledge OS Pro V3.7 - GitHub Showcase Demo and Engineering Trust`。
+
+<!-- stage:v3-8-portfolio-demo-docs-20260702 -->
+## V3.8 阶段交付：GitHub 作品集 Demo 文档化与可重置演示流程
+
+### 阶段状态
+已完成 V3.8 阶段收口：版本统一、V4.0 长期预审计、GitHub 文档地图、可重置 synthetic demo 数据、面试问答、V4.0 目标设计文档、学习包 Markdown 输出和本地验证均已落地。
+
+### 代码与文档交付
+- 创建长期开发分支：`feature/v4.0-knowledge-portfolio-os`。
+- 新增 `docs/v4_0_long_run_predevelopment_audit.md`，真实记录 V3.7 基线和 V4.0 缺口。
+- 新增 V3.8 验收与测试报告：`docs/v3_8_acceptance_report.md`、`docs/v3_8_test_report.md`。
+- 新增 `docs/v3_8_learning_package_draft.md`，由当前真实 working tree diff、路由快照和验证报告生成。
+- 新增 quickstart、demo mode、本地开发、环境变量、部署、Docker、发布流程、版本、提交规范和文档质量检查文档。
+- 新增 RAG、多模态、媒体、任务队列、引用定位、引用跳转和学习闭环流程文档。
+- 新增 RAG 评估、混合检索、代码仓库接入、作品集系统、模拟面试、可观测性和性能说明设计文档，全部标明当前状态与限制。
+- 新增 `scripts/reset_demo_data.py`，并补充路径安全测试，防止误删非 Demo 数据库。
+- 泛化 `scripts/generate_learning_package.py`，支持 Markdown 输出和版本通用学习包元信息。
+
+### 验证结果
+- compileall：通过。
+- pytest：46 passed，22 warnings。
+- frontend typecheck：通过。
+- frontend build：通过，15 个 App Router 页面构建成功。
+- encoding check：通过，235 个 UTF-8 文本文件。
+- secret check：通过，233 个 tracked text 文件 findings=0。
+- repo clean check：通过。
+- version check：通过，`V3.8 / 3.8.0`。
+- release dry-run：通过，included_files=244，secrets/database/uploads/cache 均为 no。
+- demo reset/readiness：通过。
+
+### 能力边界
+- V3.8 没有声称完成 hybrid retrieval、RAG evaluation、code repository ingestion、portfolio APIs、interview session 或 observability page。
+- 上述能力已作为 V4.0 目标文档化，等待后续真实实现、测试和验收。
+- Demo 数据继续保持 synthetic 标识，不冒充真实 LLM/OCR/transcription provider 输出。
+- 未配置 provider 时仍必须明确拒绝，不生成假回答、假 OCR、假转写或假学习资料。
+
+### 下一阶段
+- V3.9：实现 `scripts/evaluate_rag.py --demo`、轻量 UI smoke checks、provider diagnostics 和任务中心体验质量门。
+- V4.0：实现代码仓库接入、混合检索、作品集生成、模拟面试和可观测性页面。
