@@ -15,6 +15,8 @@ import type {
   LearningArtifact,
   LearningArtifactType,
   LearningDashboard,
+  LearningRoadmap,
+  KnowledgeRelation,
   LearningKnowledgePoint,
   LearningLog,
   LearningNote,
@@ -241,6 +243,8 @@ export const api = {
   favoriteMessage: (messageId: number) =>
     request<{ message_id: number; is_favorite: boolean }>(`/api/chat/messages/${messageId}/favorite`, { method: "POST" }),
   learningDashboard: () => request<LearningDashboard>("/api/learning/dashboard"),
+  learningRoadmap: () => request<LearningRoadmap>("/api/learning/roadmap"),
+  knowledgeGraph: () => request<KnowledgeRelation[]>("/api/learning/knowledge-graph"),
   learningLogs: () => request<LearningLog[]>("/api/learning/logs"),
   learningVersions: () => request<LearningLog[]>("/api/learning/versions"),
   learningLog: (slug: string) => request<LearningLog>(`/api/learning/logs/${slug}`),
@@ -374,7 +378,11 @@ export function statusLabel(status: string) {
     video_transcription: "视频转写",
     video_transcript: "视频片段",
     code_repository: "代码仓库",
-    code_file: "代码片段"
+    code_file: "代码片段",
+    prerequisite: "前置知识",
+    related: "相关知识",
+    used_by_project: "项目使用",
+    next_to_learn: "下一步"
   };
   return map[status] || status;
 }

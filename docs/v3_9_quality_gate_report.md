@@ -30,7 +30,7 @@ This is an in-progress V3.9 report, not the final V3.9 acceptance report. It rec
 | `python -m pytest backend/tests/test_v3_9_rag_evaluation.py` | Passed: 2 tests |
 | `python -m pytest backend/tests/test_v3_9_frontend_smoke.py` | Passed: 1 test |
 | `python scripts/evaluate_rag.py --demo` | Passed: 1 QA log, 1 timestamp citation, 7 multimodal chunks, 7 citation locators |
-| `python scripts/check_frontend_smoke.py` | Passed: 25 required routes, 22 navigation targets, 0 warnings |
+| `python scripts/check_frontend_smoke.py` | Passed: 27 required routes, 24 navigation targets, 0 warnings |
 | Frontend typecheck | Passed |
 | Frontend production build | Passed, 25 build entries including `_not-found` |
 | `python scripts/check_encoding.py` | Passed: 255 UTF-8 text files |

@@ -525,6 +525,34 @@ export type LearningDashboard = {
   next_lesson: string;
 };
 
+export type KnowledgeRelation = {
+  source_point_id: number;
+  source_name: string;
+  target_point_id: number | null;
+  target_name: string | null;
+  relation_type: string;
+  reason: string;
+};
+
+export type LearningRoadmapStep = {
+  order: number;
+  knowledge_point_id: number;
+  title: string;
+  mastery_status: string;
+  relation_hint: string;
+  action_label: string;
+  code_locations: string[];
+  interview_expression: string;
+};
+
+export type LearningRoadmap = {
+  total_steps: number;
+  review_needed_count: number;
+  generated_from: string;
+  steps: LearningRoadmapStep[];
+  relations: KnowledgeRelation[];
+};
+
 export type DashboardSummary = {
   knowledge_space_count: number;
   document_count: number;

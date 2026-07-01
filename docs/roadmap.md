@@ -164,6 +164,7 @@
 - Record and commit a short demo GIF after final UI confirmation.
 - Lightweight hybrid retrieval and rerank fallback have started; next is FTS/BM25 indexing and richer retrieval quality reports.
 - Code repository ingestion has started with safe local scanning and file/line citation locators; next is remote sync and symbol graph extraction.
+- Learning roadmap and lightweight knowledge relation pages have started; next is persistent KnowledgeRelation storage and provider-backed roadmap generation.
 - Portfolio summary API and pages have started; next is provider-backed generation with NOT_CONFIGURED refusal when unavailable.
 - Add mock interview sessions and saved feedback.
 - Observability page has started; next is structured trace reports and retrieval/provider metrics.

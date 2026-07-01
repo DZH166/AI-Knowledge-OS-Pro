@@ -703,3 +703,36 @@ V4.0 代码仓库理解能力已开始落地。当前支持安全本地仓库扫
 - 当前只做本地路径扫描，不自动 clone 远程仓库。
 - 当前使用轻量行切片和简单 symbol 识别，不是完整 AST/语言服务器分析。
 - 代码复盘、简历生成和面试反馈仍需后续真实 LLM provider，未配置时不能输出假内容。
+
+<!-- stage:v4-0-learning-roadmap-relations-start-20260702 -->
+## V4.0 起步交付：学习路线与轻量知识关系
+
+### 阶段状态
+V4.0 学习教练方向已开始落地。当前实现派生学习路线、知识关系 API、学习路线页面和知识关系页面；持久化 KnowledgeRelation、复杂图谱和真实 LLM 个性化路线仍在后续阶段。
+
+### 交付内容
+- 新增 `LearningRoadmapRead`、`LearningRoadmapStep` 和 `KnowledgeRelationRead` schema。
+- 扩展 `learning_package_service`，从现有知识点和学习资产派生 roadmap 与 knowledge graph。
+- 新增 `/api/learning/roadmap` 与 `/api/learning/knowledge-graph`。
+- 新增 `/learning/roadmap` 与 `/learning/knowledge-graph` 页面。
+- 更新 AppShell 导航，拆分学习路线、知识关系和版本档案。
+- 新增 `backend/tests/test_v4_0_learning_roadmap.py`。
+- 更新 `docs/learning_system.md`、roadmap、学习日志和阶段交付日志。
+
+### 验证结果
+- Learning roadmap targeted tests：3 passed。
+- compileall：通过。
+- 全量 pytest：58 passed，20 warnings。
+- Frontend smoke：通过，required_routes=27，nav_targets=24，warnings=0。
+- Frontend typecheck：通过。
+- Frontend build：通过，28 个 build entries（含 `_not-found`）。
+- encoding check：通过，266 个 UTF-8 文本文件。
+- secret check：通过，findings=0。
+- repo clean check：通过。
+- version check：通过，`V3.8 / 3.8.0`。
+- RAG demo evaluation：通过。
+
+### 能力边界
+- 当前关系是 request-time 派生视图，不是持久化图数据库。
+- 当前路线不调用 LLM，不做假个性化推荐。
+- 后续可以加入 KnowledgeRelation 表、图谱可视化和真实 provider 生成路线。

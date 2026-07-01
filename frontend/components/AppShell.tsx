@@ -12,6 +12,7 @@ import {
   ClipboardList,
   FileQuestion,
   FileText,
+  GitBranch,
   GraduationCap,
   Home,
   Images,
@@ -19,6 +20,7 @@ import {
   Menu,
   MessageSquare,
   NotebookPen,
+  Route,
   ServerCog,
   Settings,
   TimerReset,
@@ -54,11 +56,13 @@ const groups: NavGroup[] = [
   {
     title: "学习成长",
     items: [
-      { href: "/learning", label: "学习路线", icon: GraduationCap },
+      { href: "/learning/roadmap", label: "学习路线", icon: Route },
+      { href: "/learning/knowledge-graph", label: "知识关系", icon: GitBranch },
       { href: "/learning/knowledge-points", label: "知识点", icon: ClipboardList },
       { href: "/learning/cards", label: "学习卡片", icon: Layers },
       { href: "/learning/quizzes", label: "练习中心", icon: Workflow },
-      { href: "/learning/notes", label: "学习笔记", icon: NotebookPen }
+      { href: "/learning/notes", label: "学习笔记", icon: NotebookPen },
+      { href: "/learning", label: "版本档案", icon: GraduationCap }
     ]
   },
   {
@@ -153,6 +157,8 @@ function crumbLabel(value: string) {
     tasks: "任务中心",
     chat: "知识问答",
     learning: "学习成长",
+    roadmap: "学习路线",
+    "knowledge-graph": "知识关系",
     history: "会话记录",
     quizzes: "练习中心",
     notes: "学习笔记",

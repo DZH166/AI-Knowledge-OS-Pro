@@ -24,6 +24,8 @@ REQUIRED_ROUTES = (
     "/media/sources/[id]",
     "/errors",
     "/learning",
+    "/learning/roadmap",
+    "/learning/knowledge-graph",
     "/learning/cards",
     "/learning/knowledge-points",
     "/learning/knowledge-points/[id]",
@@ -44,6 +46,8 @@ REQUIRED_TEXT = {
     "frontend/app/system/observability/page.tsx": ("request_id", "retrieval_trace_id"),
     "frontend/app/portfolio/page.tsx": ("真实项目概览", "NOT_CONFIGURED"),
     "frontend/app/code/page.tsx": ("代码仓库接入", "EMBEDDING_NOT_CONFIGURED"),
+    "frontend/app/learning/roadmap/page.tsx": ("学习路线", "existing_knowledge_points_cards_quizzes_notes"),
+    "frontend/app/learning/knowledge-graph/page.tsx": ("知识关系", "used_by_project"),
     "frontend/app/media/sources/[id]/page.tsx": ("元数据摘要", "处理详情"),
     "frontend/app/tasks/page.tsx": ("恢复建议", "事件时间线"),
 }

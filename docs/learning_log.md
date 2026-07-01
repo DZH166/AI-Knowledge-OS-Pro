@@ -1046,6 +1046,35 @@ V3.9 开始从“能展示”转向“可验证、可收口”。RAG 评估不�
 - `E:\python3.12.9\python.exe scripts/check_encoding.py`：通过，246 个 UTF-8 文本文件。
 - `E:\python3.12.9\python.exe scripts/check_secrets.py`：通过，findings=0。
 - `E:\python3.12.9\python.exe scripts/check_repo_clean.py`：通过。
+
+<!-- learning:v4-0-learning-roadmap-relations-start-20260702 -->
+## V4.0 起步：学习路线与轻量知识关系
+
+### 本次补充做了什么
+- 新增 `GET /api/learning/roadmap`，根据已有 KnowledgePoint、学习卡片、练习、笔记和版本学习包派生学习顺序。
+- 新增 `GET /api/learning/knowledge-graph`，派生 `prerequisite`、`related`、`used_by_project`、`next_to_learn` 关系。
+- 新增 `/learning/roadmap` 和 `/learning/knowledge-graph` 页面，并更新 AppShell 导航，保留 `/learning` 作为版本档案入口。
+- 新增 `backend/tests/test_v4_0_learning_roadmap.py`，覆盖路线排序、关系类型和 API 响应契约。
+- 更新 `docs/learning_system.md`，明确当前是派生关系视图，不是持久化图数据库，也不使用假 LLM 生成关系。
+
+### 我应该重点理解什么
+学习路线不是简单把知识点列出来，而是根据掌握状态决定下一步：不会/模糊/待复习优先，未开始其次，已掌握则练习面试表达。知识关系也必须有证据来源：同一版本包顺序、共享关键词、项目文件位置，而不是模型随口生成。
+
+### 面试表达方式
+V4.0 中我把学习系统从“知识点列表”推进到“路线和关系”：后端从现有学习资产派生学习顺序和知识关系，前端提供学习路线与知识关系页面。这个阶段先保证可解释和可验证，后续再加入持久化 KnowledgeRelation 和真实 LLM provider 生成个性化路线。
+
+### 当前验证结果
+- `E:\python3.12.9\python.exe -m pytest backend/tests/test_v4_0_learning_roadmap.py backend/tests/test_v3_9_frontend_smoke.py -q`：3 passed。
+- `E:\python3.12.9\python.exe -m compileall backend/app scripts`：通过。
+- `E:\python3.12.9\python.exe -m pytest`：58 passed，20 warnings。
+- `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：通过，required_routes=27，nav_targets=24，warnings=0。
+- frontend typecheck：通过。
+- frontend build：通过，28 个 build entries（含 `_not-found`）。
+- `E:\python3.12.9\python.exe scripts/check_encoding.py`：通过，266 个 UTF-8 文本文件。
+- `E:\python3.12.9\python.exe scripts/check_secrets.py`：通过，findings=0。
+- `E:\python3.12.9\python.exe scripts/check_repo_clean.py`：通过。
+- `E:\python3.12.9\python.exe scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
+- `E:\python3.12.9\python.exe scripts/evaluate_rag.py --demo`：通过。
 - `E:\python3.12.9\python.exe scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
 - `E:\python3.12.9\python.exe scripts/evaluate_rag.py --demo`：通过。
 
