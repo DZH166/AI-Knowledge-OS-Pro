@@ -17,6 +17,7 @@ This is an in-progress V3.9 report, not the final V3.9 acceptance report. It rec
 - Added CI steps for demo seed/readiness/RAG evaluation and frontend smoke.
 - Removed raw JSON metadata display from System and Media detail pages, replacing it with readable summaries.
 - Added a System page provider setup guide with copyable placeholder env examples and NOT_CONFIGURED boundary text.
+- Added Task Center recovery hints for active, failed, interrupted, cancelled, provider-missing and indexing-related jobs.
 
 ## Verification
 
@@ -46,5 +47,5 @@ This is an in-progress V3.9 report, not the final V3.9 acceptance report. It rec
 
 - Expand RAG evaluation with richer retrieval/citation metrics.
 - Add provider diagnostic guidance to the System page.
-- Improve Task Center recovery language and media result navigation.
+- Improve media result navigation and convert Task Center recovery hints into richer event-aware guidance where backend error codes are available.
 - Convert navigation reuse warnings into dedicated pages during the V4.0 UI/UX pass.

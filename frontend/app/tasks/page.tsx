@@ -208,6 +208,7 @@ export default function TasksPage() {
                 </div>
 
                 {selectedJob.error_message && <p className="quote">{selectedJob.error_message}</p>}
+                <RecoveryHint job={selectedJob} />
 
                 <section className="stack">
                   <div className="row">
@@ -300,6 +301,85 @@ function resultUrl(job: IngestionJob) {
   if (job.source_id) return `/media/sources/${job.source_id}`;
   if (job.document_id) return `/documents/${job.document_id}`;
   return null;
+}
+
+function recoveryHint(job: IngestionJob) {
+  const haystack = [job.status, job.job_type, job.current_step, job.message, job.error_message].join(" ").toLowerCase();
+  if (job.status === "completed") {
+    return {
+      title: "处理已完成",
+      detail: "可以打开结果页检查生成的片段、转写、关键帧或引用来源。",
+      action: "查看结果"
+    };
+  }
+  if (activeStatuses.has(job.status)) {
+    return {
+      title: "任务正在处理中",
+      detail: "保持 Worker 和本地服务运行；如果长时间没有心跳，先检查 Redis、Worker 进程和系统状态页。",
+      action: "检查系统"
+    };
+  }
+  if (job.status === "cancelled") {
+    return {
+      title: "任务已取消",
+      detail: "源资料仍保留。确认配置或文件无误后，可以重新处理。",
+      action: "重新处理"
+    };
+  }
+  if (haystack.includes("transcription_not_configured") || haystack.includes("transcription")) {
+    return {
+      title: "需要配置转写 Provider",
+      detail: "音频/视频转写需要真实 speech-to-text provider。未配置时系统会明确拒绝，不会生成假字幕。",
+      action: "配置后重试"
+    };
+  }
+  if (haystack.includes("ocr_not_configured") || haystack.includes("vision") || haystack.includes("ocr")) {
+    return {
+      title: "需要配置 OCR / Vision Provider",
+      detail: "图片 OCR、截图报错识别和关键帧理解需要真实 provider。配置后再重试该任务。",
+      action: "配置后重试"
+    };
+  }
+  if (haystack.includes("embedding") || haystack.includes("qdrant") || haystack.includes("index")) {
+    return {
+      title: "检查检索服务",
+      detail: "语义索引依赖 Embedding provider 和 Qdrant。先确认系统状态页，再重试索引任务。",
+      action: "检查系统"
+    };
+  }
+  if (job.status === "interrupted") {
+    return {
+      title: "Worker 中断",
+      detail: "任务可能在 Worker 停止或服务断开时中断。恢复 Redis/Worker 后重试即可。",
+      action: "恢复后重试"
+    };
+  }
+  return {
+    title: "需要人工处理",
+    detail: "查看事件时间线里的失败阶段和技术信息，修复配置、服务或文件问题后再重试。",
+    action: "查看事件"
+  };
+}
+
+function RecoveryHint({ job }: { job: IngestionJob }) {
+  const hint = recoveryHint(job);
+  return (
+    <article className="card stack">
+      <div className="row between wrap">
+        <div>
+          <span className="muted">恢复建议</span>
+          <h3>{hint.title}</h3>
+        </div>
+        <span className="pill gray">{hint.action}</span>
+      </div>
+      <p>{hint.detail}</p>
+      {!job.status.includes("completed") && (
+        <p className="muted">
+          配置类问题先到 <Link href="/system">模型与服务</Link> 页面检查；文件或处理阶段问题可结合事件时间线定位。
+        </p>
+      )}
+    </article>
+  );
 }
 
 function Metric({ label, value }: { label: string; value: string }) {

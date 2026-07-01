@@ -1001,13 +1001,14 @@ AI Knowledge OS Pro V3.8 中，我把已有多模态 RAG 项目进一步整理�
 - 将 demo seed、demo readiness、RAG demo evaluation 和 frontend smoke 接入 GitHub Actions。
 - 修复系统状态页和媒体详情页直接展示 `JSON.stringify` 元数据的问题，改为用户可读的摘要。
 - 在系统状态页新增 Provider/服务配置向导，按 Redis/Worker、Qdrant、LLM、Embedding、OCR/Vision、Speech-to-Text 说明影响面、修复方式和可复制的占位环境变量。
+- 在任务中心新增“恢复建议”，针对运行中、取消、中断、转写未配置、OCR/Vision 未配置、Embedding/Qdrant/索引问题给出下一步。
 - 新增 V3.9 质量门测试：`test_v3_9_rag_evaluation.py` 和 `test_v3_9_frontend_smoke.py`。
 
 ### 我应该重点理解什么
 V3.9 开始从“能展示”转向“可验证、可收口”。RAG 评估不能只看有没有回答，还要检查引用是否能对应证据；前端质量也不能只看 build 是否过，还要检查导航、关键页面和普通用户界面是否泄露 raw/debug 信息。
 
 ### 面试表达方式
-在 V3.9 中，我开始把质量门前移：新增 demo RAG evaluation 来验证 seeded evidence 和 citation plumbing；新增 frontend smoke check 来保护关键页面和导航；同时清理系统/媒体页面的 raw JSON 展示，让产品界面更适合普通用户和作品集演示。
+在 V3.9 中，我开始把质量门前移：新增 demo RAG evaluation 来验证 seeded evidence 和 citation plumbing；新增 frontend smoke check 来保护关键页面和导航；同时清理系统/媒体页面的 raw JSON 展示，并给系统能力和任务失败补充可执行的恢复建议。
 
 ### 当前验证结果
 - `python -m compileall backend/app scripts`：通过。

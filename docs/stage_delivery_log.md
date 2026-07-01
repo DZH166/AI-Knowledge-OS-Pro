@@ -558,6 +558,7 @@ V3.9 已启动质量门建设，但尚未最终验收。当前完成 RAG demo ev
 - CI backend job 增加 demo seed、readiness 和 RAG evaluation；quality job 增加 frontend smoke。
 - 系统状态页和媒体详情页不再直接展示 metadata JSON，改为可读摘要。
 - 系统状态页新增能力配置向导，使用占位 env 示例并强调缺 provider 时必须明确拒绝。
+- 任务中心新增恢复建议，帮助用户区分 provider 配置、Worker 中断、索引服务和取消后重试等处理路径。
 - 新增 `docs/v3_9_quality_gate_report.md`。
 
 ### 验证结果
