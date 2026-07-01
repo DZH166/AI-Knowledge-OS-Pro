@@ -44,8 +44,42 @@ function parseMetadata(value: string | null | undefined) {
 function displayValue(value: unknown) {
   if (typeof value === "string" && value.trim()) return value;
   if (typeof value === "number" && Number.isFinite(value)) return String(value);
-  if (typeof value === "boolean") return value ? "yes" : "no";
-  return "not recorded";
+  if (typeof value === "boolean") return value ? "是" : "否";
+  return "未记录";
+}
+
+function metadataLabel(key: string) {
+  const labels: Record<string, string> = {
+    audio_status: "音轨提取",
+    duration_ms: "时长",
+    error_archive_status: "报错档案",
+    has_audio: "音轨",
+    height: "高度",
+    keyframe_count: "关键帧数量",
+    keyframe_status: "关键帧抽取",
+    ocr_status: "OCR",
+    parser_version: "解析器",
+    transcription_status: "转写",
+    transcript_segment_count: "转写片段",
+    video_status: "视频分析",
+    vision_description_status: "视觉描述",
+    width: "宽度"
+  };
+  return labels[key] || key.replace(/_/g, " ");
+}
+
+function metadataSummaryEntries(metadata: Record<string, unknown>) {
+  return Object.entries(metadata)
+    .filter(([, value]) => value !== null && value !== undefined && value !== "")
+    .map(([key, value]) => {
+      const label = metadataLabel(key);
+      if (key.endsWith("_ms") && typeof value === "number") return [label, formatDuration(value)] as const;
+      if (typeof value === "object") {
+        const count = Array.isArray(value) ? value.length : Object.keys(value as Record<string, unknown>).length;
+        return [label, count ? `已记录 ${count} 项` : "未记录"] as const;
+      }
+      return [label, displayValue(value)] as const;
+    });
 }
 
 function isTranscribable(source: SourceItem | null) {
@@ -392,9 +426,17 @@ export default function MediaSourceDetailPage() {
             </article>
 
             <article className="panel stack">
-              <h2>Technical details</h2>
-              <TechnicalDetails title="Metadata JSON">
-                <pre className="pre-wrap">{JSON.stringify(metadata, null, 2)}</pre>
+              <h2>处理详情</h2>
+              <TechnicalDetails title="元数据摘要">
+                {metadataSummaryEntries(metadata).length === 0 ? (
+                  <p>暂未记录元数据。</p>
+                ) : (
+                  metadataSummaryEntries(metadata).map(([key, value]) => (
+                    <p key={key}>
+                      {key}: {value}
+                    </p>
+                  ))
+                )}
               </TechnicalDetails>
               <div className="list">
                 {assets.length === 0 ? (

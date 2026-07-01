@@ -22,6 +22,7 @@ Use this checklist before publishing a portfolio release.
 - Demo reset/check commands work.
 - Screenshots match current UI.
 - README links point to existing docs.
+- Frontend smoke check passes and flags navigation targets that still need a later IA split.
 
 ## Learning Archive
 
@@ -35,3 +36,4 @@ Use this checklist before publishing a portfolio release.
 - Pytest passes or limitations are documented.
 - Frontend typecheck/build pass.
 - Encoding, secret, repo clean and release checks pass.
+- `scripts/check_frontend_smoke.py` passes.

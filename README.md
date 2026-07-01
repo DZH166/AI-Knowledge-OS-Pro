@@ -251,6 +251,7 @@ python -m pytest
 python scripts/check_encoding.py
 python scripts/check_secrets.py
 python scripts/check_repo_clean.py
+python scripts/check_frontend_smoke.py
 python scripts/evaluate_rag.py --demo --database-path backend/data/demo_showcase.db
 python scripts/release.py --version V3.8 --dry-run
 ```

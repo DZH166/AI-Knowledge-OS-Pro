@@ -544,3 +544,33 @@ V3.6 已完成 GitHub 作品集化收口：专业 README、真实 CI、项目规
 ### 下一阶段
 - V3.9：实现 `scripts/evaluate_rag.py --demo`、轻量 UI smoke checks、provider diagnostics 和任务中心体验质量门。
 - V4.0：实现代码仓库接入、混合检索、作品集生成、模拟面试和可观测性页面。
+
+<!-- stage:v3-9-quality-gates-in-progress-20260702 -->
+## V3.9 进行中交付：RAG Demo 评估与前端 Smoke 质量门
+
+### 阶段状态
+V3.9 已启动质量门建设，但尚未最终验收。当前完成 RAG demo evidence-chain evaluation、frontend smoke check、CI 接入和 raw metadata UI 收口。
+
+### 交付内容
+- 新增 `scripts/evaluate_rag.py --demo`，不调用 provider，只验证 synthetic demo evidence 和 citation plumbing。
+- 新增 `scripts/check_frontend_smoke.py`，检查关键页面、导航目标和 raw/debug UI 文案。
+- 新增 `backend/tests/test_v3_9_rag_evaluation.py` 和 `backend/tests/test_v3_9_frontend_smoke.py`。
+- CI backend job 增加 demo seed、readiness 和 RAG evaluation；quality job 增加 frontend smoke。
+- 系统状态页和媒体详情页不再直接展示 metadata JSON，改为可读摘要。
+- 新增 `docs/v3_9_quality_gate_report.md`。
+
+### 验证结果
+- 全量 pytest：49 passed，22 warnings。
+- V3.9 targeted tests：3 passed。
+- RAG demo evaluation：通过，1 条 QA、1 个时间戳 citation、7 个 multimodal chunks、7 个 citation locators。
+- Frontend smoke：通过，4 个导航复用 warning。
+- Frontend typecheck/build：通过。
+- encoding check：通过，240 个 UTF-8 文本文件。
+- secret check：通过，235 个 tracked text 文件 findings=0。
+- release dry-run：通过，included_files=246，secrets/database/uploads/cache 均为 no。
+
+### 能力边界
+- 这不是最终 V3.9 验收。
+- Demo RAG 评估不代表真实 LLM 质量。
+- Frontend smoke 不是浏览器 E2E 测试。
+- 当前导航复用 warning 会在 V4.0 UI/UX 信息架构阶段继续拆分。

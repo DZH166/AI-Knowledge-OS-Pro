@@ -7,6 +7,21 @@ import { ErrorState, LoadingSkeleton, PageHeader, StatusBadge, TechnicalDetails 
 import { api } from "@/services/api";
 import type { ComponentStatus, SystemStatus, SystemTestResponse } from "@/types/api";
 
+function humanizeDetailKey(key: string) {
+  return key
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function summarizeDetailValue(value: unknown) {
+  if (typeof value === "string" && value.trim()) return value;
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  if (typeof value === "boolean") return value ? "是" : "否";
+  if (Array.isArray(value)) return value.length ? `已记录 ${value.length} 项` : "无记录";
+  if (value && typeof value === "object") return `已记录 ${Object.keys(value).length} 项`;
+  return "未记录";
+}
+
 function StatusCard({ title, status, action }: { title: string; status: ComponentStatus; action?: () => void }) {
   return (
     <article className="card stack">
@@ -25,7 +40,7 @@ function StatusCard({ title, status, action }: { title: string; status: Componen
       <TechnicalDetails>
         {Object.entries(status.details || {}).map(([key, value]) => (
           <p key={key}>
-            {key}: {typeof value === "object" ? JSON.stringify(value) : String(value)}
+            {humanizeDetailKey(key)}: {summarizeDetailValue(value)}
           </p>
         ))}
       </TechnicalDetails>

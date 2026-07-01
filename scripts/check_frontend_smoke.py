@@ -1,0 +1,134 @@
+from __future__ import annotations
+
+import re
+from dataclasses import dataclass
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+FRONTEND = ROOT / "frontend"
+APP_DIR = FRONTEND / "app"
+APP_SHELL = FRONTEND / "components" / "AppShell.tsx"
+
+REQUIRED_ROUTES = (
+    "/",
+    "/dashboard",
+    "/upload",
+    "/tasks",
+    "/chat",
+    "/documents",
+    "/knowledge",
+    "/media",
+    "/media/sources/[id]",
+    "/errors",
+    "/learning",
+    "/learning/cards",
+    "/learning/knowledge-points/[id]",
+    "/system",
+)
+
+FORBIDDEN_UI_PATTERNS = (
+    "Metadata JSON",
+    "raw JSON",
+    "debug payload",
+    "Failed to fetch",
+    "JSON.stringify(",
+)
+
+ALLOWED_PRE_FILES = {
+    "frontend/app/errors/page.tsx",
+    "frontend/app/media/sources/[id]/page.tsx",
+    "frontend/components/ui.tsx",
+}
+
+
+@dataclass
+class SmokeResult:
+    checked_routes: int
+    nav_targets: int
+    warnings: list[str]
+    failures: list[str]
+
+    @property
+    def passed(self) -> bool:
+        return not self.failures
+
+
+def route_to_page(route: str) -> Path:
+    if route == "/":
+        return APP_DIR / "page.tsx"
+    return APP_DIR.joinpath(*route.strip("/").split("/")) / "page.tsx"
+
+
+def app_relative(path: Path) -> str:
+    return path.relative_to(ROOT).as_posix()
+
+
+def extract_nav_targets() -> list[str]:
+    text = APP_SHELL.read_text(encoding="utf-8")
+    return re.findall(r'href:\s*"([^"]+)"', text)
+
+
+def scan_forbidden_ui_patterns() -> list[str]:
+    failures: list[str] = []
+    for path in sorted([*APP_DIR.rglob("*.tsx"), *(FRONTEND / "components").rglob("*.tsx")]):
+        relative = app_relative(path)
+        text = path.read_text(encoding="utf-8", errors="replace")
+        for pattern in FORBIDDEN_UI_PATTERNS:
+            if pattern in text:
+                failures.append(f"{relative} contains forbidden UI pattern: {pattern}")
+        if "<pre" in text and relative not in ALLOWED_PRE_FILES:
+            failures.append(f"{relative} contains <pre> outside the approved evidence/code views")
+    return failures
+
+
+def evaluate_frontend() -> SmokeResult:
+    warnings: list[str] = []
+    failures: list[str] = []
+
+    for route in REQUIRED_ROUTES:
+        page = route_to_page(route)
+        if not page.exists():
+            failures.append(f"Missing required page for {route}: {app_relative(page)}")
+
+    nav_targets = extract_nav_targets()
+    if not nav_targets:
+        failures.append("No navigation targets found in AppShell.")
+
+    for href in sorted(set(nav_targets)):
+        page = route_to_page(href)
+        if not page.exists():
+            failures.append(f"Navigation target {href} has no page file: {app_relative(page)}")
+
+    duplicates = sorted({href for href in nav_targets if nav_targets.count(href) > 1})
+    for href in duplicates:
+        warnings.append(f"Navigation target {href} is reused by multiple labels; split it in the V4.0 IA pass.")
+
+    failures.extend(scan_forbidden_ui_patterns())
+
+    return SmokeResult(
+        checked_routes=len(REQUIRED_ROUTES),
+        nav_targets=len(nav_targets),
+        warnings=warnings,
+        failures=failures,
+    )
+
+
+def main() -> None:
+    result = evaluate_frontend()
+    print("frontend_smoke=checked")
+    print(f"required_routes={result.checked_routes}")
+    print(f"nav_targets={result.nav_targets}")
+    print(f"warnings={len(result.warnings)}")
+    for warning in result.warnings:
+        print(f"warning: {warning}")
+    if result.failures:
+        print("result=failed")
+        for failure in result.failures:
+            print(f"failure: {failure}")
+        raise SystemExit(1)
+    print("result=passed")
+
+
+if __name__ == "__main__":
+    main()

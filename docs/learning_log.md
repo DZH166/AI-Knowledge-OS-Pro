@@ -991,3 +991,30 @@ AI Knowledge OS Pro V3.8 中，我把已有多模态 RAG 项目进一步整理�
 - `python scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
 - `python scripts/release.py --version V3.8 --dry-run`：通过，included_files=244，未发现 secrets/database/uploads/cache。
 - `python scripts/reset_demo_data.py`：通过，重建 isolated synthetic demo 数据库并通过 readiness check。
+
+<!-- learning:v3-9-quality-gates-in-progress-20260702 -->
+## V3.9 进行中：RAG Demo 评估与前端 Smoke 质量门
+
+### 本次补充做了什么
+- 新增 `scripts/evaluate_rag.py --demo`，验证 synthetic demo 数据里的 QA、grounded 状态、citation ids、related chunks、音视频时间戳引用、MultimodalChunk 和 CitationLocator。
+- 新增 `scripts/check_frontend_smoke.py`，检查关键页面是否存在、AppShell 导航是否指向真实页面、前端页面是否出现明显 raw/debug 文案。
+- 将 demo seed、demo readiness、RAG demo evaluation 和 frontend smoke 接入 GitHub Actions。
+- 修复系统状态页和媒体详情页直接展示 `JSON.stringify` 元数据的问题，改为用户可读的摘要。
+- 新增 V3.9 质量门测试：`test_v3_9_rag_evaluation.py` 和 `test_v3_9_frontend_smoke.py`。
+
+### 我应该重点理解什么
+V3.9 开始从“能展示”转向“可验证、可收口”。RAG 评估不能只看有没有回答，还要检查引用是否能对应证据；前端质量也不能只看 build 是否过，还要检查导航、关键页面和普通用户界面是否泄露 raw/debug 信息。
+
+### 面试表达方式
+在 V3.9 中，我开始把质量门前移：新增 demo RAG evaluation 来验证 seeded evidence 和 citation plumbing；新增 frontend smoke check 来保护关键页面和导航；同时清理系统/媒体页面的 raw JSON 展示，让产品界面更适合普通用户和作品集演示。
+
+### 当前验证结果
+- `python -m compileall backend/app scripts`：通过。
+- `python -m pytest`：49 passed，22 warnings。
+- `python -m pytest backend/tests/test_v3_9_frontend_smoke.py backend/tests/test_v3_9_rag_evaluation.py`：3 passed。
+- `python scripts/evaluate_rag.py --demo --database-path backend/data/demo_showcase.db`：通过，1 条 QA、1 个时间戳引用、7 个 MultimodalChunk、7 个 CitationLocator。
+- `python scripts/check_frontend_smoke.py`：通过，当前有 4 个导航复用 warning，留给 V4.0 IA 拆分。
+- frontend typecheck/build：通过，15 个 App Router 页面。
+- `python scripts/check_encoding.py`：通过，240 个 UTF-8 文本文件。
+- `python scripts/check_secrets.py`：通过，235 个 tracked text 文件 findings=0。
+- `python scripts/release.py --version V3.8 --dry-run`：通过，included_files=246，未发现 secrets/database/uploads/cache。
