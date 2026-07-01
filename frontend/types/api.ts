@@ -513,6 +513,15 @@ export type PortfolioSummary = {
   next_steps: string[];
 };
 
+export type PortfolioMarkdownResponse = {
+  title: string;
+  markdown: string;
+  message: string;
+  source_branch: string | null;
+  source_commit: string | null;
+  evidence: string[];
+};
+
 export type LearningDashboard = {
   current_version: string;
   total_knowledge_points: number;

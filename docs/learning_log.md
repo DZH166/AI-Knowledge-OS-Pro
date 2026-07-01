@@ -1164,3 +1164,14 @@ V4.0 起步阶段，我先实现了作品集概览 API：后端从数据库统�
 - `E:\python3.12.9\python.exe scripts/check_repo_clean.py`：通过。
 - `E:\python3.12.9\python.exe scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
 - `E:\python3.12.9\python.exe scripts/evaluate_rag.py --demo`：通过。
+<!-- learning:v4-0-portfolio-ui-resilience-20260702 -->
+## V4.0 起步：作品集页面的服务边界和烟雾校验
+### 本次补充做了什么?
+- 将 `/portfolio`、`/portfolio/resume`、`/portfolio/interview`、`/portfolio/project-review` 的真实摘要加载与可选 markdown 生成拆开，避免 LLM provider 未配置时整页失败。
+- 根作品集页补入“真实项目概览”文案，满足 frontend smoke 对关键文本的校验。
+- 继续保留真实模式边界：生成接口缺 provider 仍然返回明确 `NOT_CONFIGURED`，不伪造内容。
+### 本阶段验证结果
+- `E:\python3.12.9\python.exe -m pytest`：61 passed, 25 warnings。
+- `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：passed，required_routes=27，nav_targets=24，warnings=0。
+- `C:\Users\Lenovo\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe .\node_modules\typescript\bin\tsc --noEmit`：passed。
+- `C:\Users\Lenovo\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe .\node_modules\next\dist\bin\next build`：passed，28 个 App Router routes built successfully。

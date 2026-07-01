@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class PortfolioMetric(BaseModel):
@@ -28,3 +28,12 @@ class PortfolioSummary(BaseModel):
     recommended_storyline: list[str]
     honest_boundaries: list[str]
     next_steps: list[str]
+
+
+class PortfolioMarkdownResponse(BaseModel):
+    title: str
+    markdown: str
+    message: str
+    source_branch: str | None = None
+    source_commit: str | None = None
+    evidence: list[str] = Field(default_factory=list)

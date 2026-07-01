@@ -24,6 +24,7 @@ import type {
   MediaOperation,
   MediaTaskResponse,
   OnboardingState,
+  PortfolioMarkdownResponse,
   PortfolioSummary,
   QALog,
   QuizQuestion,
@@ -293,7 +294,11 @@ export const api = {
     body: JSON.stringify(payload)
   }),
   exportLearningMarkdown: () => request<{ markdown: string; message: string }>("/api/learning/export-markdown", { method: "POST" }),
-  portfolioSummary: () => request<PortfolioSummary>("/api/portfolio/summary")
+  portfolioSummary: () => request<PortfolioSummary>("/api/portfolio/summary"),
+  generatePortfolioResumeEntry: () => request<PortfolioMarkdownResponse>("/api/portfolio/generate-resume-entry", { method: "POST" }),
+  generatePortfolioInterviewQa: () => request<PortfolioMarkdownResponse>("/api/portfolio/generate-interview-qa", { method: "POST" }),
+  generatePortfolioProjectReview: () => request<PortfolioMarkdownResponse>("/api/portfolio/generate-project-review", { method: "POST" }),
+  exportPortfolioMarkdown: () => request<PortfolioMarkdownResponse>("/api/portfolio/export-markdown", { method: "POST" })
 };
 
 export function formatDate(value: string | null) {

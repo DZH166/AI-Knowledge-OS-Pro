@@ -11,6 +11,15 @@ from app.models.learning_system import KnowledgePoint, LearningCard, QuizQuestio
 from app.models.qa_log import QALog
 from app.models.source import CitationLocator, MultimodalChunk, Source, SourceRevision, VisualFrame
 from app.services.portfolio_service import portfolio_service
+from tests.conftest import FakeLLMService
+
+
+class UnconfiguredLLMService:
+    def is_configured(self) -> bool:
+        return False
+
+    def complete(self, system_prompt: str, user_prompt: str) -> str:  # pragma: no cover - should never be called
+        raise AssertionError("complete should not be called when the provider is missing")
 
 
 def test_portfolio_summary_uses_real_database_counts(db_session, knowledge_space) -> None:
@@ -48,6 +57,72 @@ def test_portfolio_summary_route_returns_display_contract(db_session, knowledge_
         assert len(payload["metrics"]) >= 6
         assert len(payload["resume_bullets"]) >= 3
         assert "fake" not in json.dumps(payload, ensure_ascii=False).lower()
+    finally:
+        app.dependency_overrides.pop(get_db, None)
+
+
+def test_portfolio_generation_routes_refuse_without_llm_provider(db_session, knowledge_space, monkeypatch) -> None:
+    _seed_portfolio_records(db_session, knowledge_space.id)
+    original_llm = portfolio_service.llm_service
+    portfolio_service.llm_service = UnconfiguredLLMService()  # type: ignore[assignment]
+
+    def override_db():
+        yield db_session
+
+    app.dependency_overrides[get_db] = override_db
+    try:
+        client = TestClient(app)
+        response = client.post("/api/portfolio/generate-resume-entry")
+        assert response.status_code == 503
+        payload = response.json()
+        assert payload["error"]["code"] == "LLM_NOT_CONFIGURED"
+        assert "Portfolio markdown generation requires a real LLM provider" in payload["error"]["message"]
+    finally:
+        app.dependency_overrides.pop(get_db, None)
+        portfolio_service.llm_service = original_llm
+
+
+def test_portfolio_generation_routes_use_real_summary_fact_base(db_session, knowledge_space) -> None:
+    _seed_portfolio_records(db_session, knowledge_space.id)
+    original_llm = portfolio_service.llm_service
+    portfolio_service.llm_service = FakeLLMService()  # type: ignore[assignment]
+
+    def override_db():
+        yield db_session
+
+    app.dependency_overrides[get_db] = override_db
+    try:
+        client = TestClient(app)
+        response = client.post("/api/portfolio/generate-interview-qa")
+        assert response.status_code == 200
+        payload = response.json()["data"]
+        assert payload["title"] == "Interview Q&A"
+        assert payload["markdown"]
+        assert payload["source_branch"]
+        assert payload["source_commit"]
+        assert payload["evidence"]
+        assert "fake" not in json.dumps(payload, ensure_ascii=False).lower()
+    finally:
+        app.dependency_overrides.pop(get_db, None)
+        portfolio_service.llm_service = original_llm
+
+
+def test_portfolio_export_markdown_returns_summary_snapshot(db_session, knowledge_space) -> None:
+    _seed_portfolio_records(db_session, knowledge_space.id)
+
+    def override_db():
+        yield db_session
+
+    app.dependency_overrides[get_db] = override_db
+    try:
+        client = TestClient(app)
+        response = client.post("/api/portfolio/export-markdown")
+        assert response.status_code == 200
+        payload = response.json()["data"]
+        assert payload["title"] == "Portfolio Summary"
+        assert "# AI Knowledge OS Pro Portfolio Summary" in payload["markdown"]
+        assert payload["source_commit"]
+        assert payload["evidence"]
     finally:
         app.dependency_overrides.pop(get_db, None)
 

@@ -1,6 +1,12 @@
+from __future__ import annotations
+
+import json
+import subprocess
+
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from app.core.errors import ConfigurationError
 from app.core.config import settings
 from app.models.document import Document
 from app.models.ingestion_job import IngestionJob
@@ -9,10 +15,19 @@ from app.models.learning_note import LearningNote
 from app.models.learning_system import KnowledgePoint, LearningCard, QuizQuestion, VersionLearningPackage
 from app.models.qa_log import QALog
 from app.models.source import CitationLocator, MultimodalChunk, Source, VisualFrame
-from app.schemas.portfolio_schema import PortfolioCapability, PortfolioMetric, PortfolioSummary
+from app.schemas.portfolio_schema import (
+    PortfolioCapability,
+    PortfolioMarkdownResponse,
+    PortfolioMetric,
+    PortfolioSummary,
+)
+from app.services.llm_service import LLMService
 
 
 class PortfolioService:
+    def __init__(self) -> None:
+        self.llm_service = LLMService()
+
     def summary(self, db: Session) -> PortfolioSummary:
         metric_values = {
             "knowledge_spaces": self._count(db, KnowledgeSpace),
@@ -167,6 +182,161 @@ class PortfolioService:
             + self._count(db, QuizQuestion)
             + self._count(db, LearningNote)
         )
+
+    def generate_resume_entry(self, db: Session) -> PortfolioMarkdownResponse:
+        return self._generate_markdown_entry(
+            db,
+            title="Resume Entry",
+            section_name="简历表达",
+            prompt_style="resume",
+        )
+
+    def generate_interview_qa(self, db: Session) -> PortfolioMarkdownResponse:
+        return self._generate_markdown_entry(
+            db,
+            title="Interview Q&A",
+            section_name="面试讲解",
+            prompt_style="interview",
+        )
+
+    def generate_project_review(self, db: Session) -> PortfolioMarkdownResponse:
+        return self._generate_markdown_entry(
+            db,
+            title="Project Review",
+            section_name="项目复盘",
+            prompt_style="review",
+        )
+
+    def export_markdown(self, db: Session) -> PortfolioMarkdownResponse:
+        summary = self.summary(db)
+        return PortfolioMarkdownResponse(
+            title="Portfolio Summary",
+            markdown=self._summary_markdown(summary),
+            message="已导出作品集摘要 Markdown。",
+            source_branch=self._git_branch(),
+            source_commit=self._git_commit(),
+            evidence=self._summary_evidence(summary),
+        )
+
+    def _generate_markdown_entry(self, db: Session, *, title: str, section_name: str, prompt_style: str) -> PortfolioMarkdownResponse:
+        if not self.llm_service.is_configured():
+            raise ConfigurationError(
+                "Portfolio markdown generation requires a real LLM provider.",
+                code="LLM_NOT_CONFIGURED",
+                details={"section": section_name, "prompt_style": prompt_style},
+            )
+
+        summary = self.summary(db)
+        prompt = self._build_generation_prompt(summary, section_name=section_name, prompt_style=prompt_style)
+        markdown = self.llm_service.complete(
+            system_prompt=(
+                "You write honest portfolio-grade markdown for AI Knowledge OS Pro. "
+                "Only use supplied facts and boundaries. Do not invent features. "
+                "When a capability is planned or requires providers, say so explicitly."
+            ),
+            user_prompt=prompt,
+        ).strip()
+        if not markdown:
+            raise ConfigurationError(
+                "Portfolio markdown generation returned empty content.",
+                code="PORTFOLIO_GENERATION_FAILED",
+                details={"section": section_name},
+            )
+        return PortfolioMarkdownResponse(
+            title=title,
+            markdown=markdown,
+            message=f"已使用 {section_name} 真实名 LLM provider 生成。",
+            source_branch=self._git_branch(),
+            source_commit=self._git_commit(),
+            evidence=self._summary_evidence(summary),
+        )
+
+    def _build_generation_prompt(self, summary: PortfolioSummary, *, section_name: str, prompt_style: str) -> str:
+        payload = {
+            "project_name": summary.project_name,
+            "version": summary.version,
+            "semantic_version": summary.semantic_version,
+            "runtime_mode": summary.runtime_mode,
+            "positioning": summary.positioning,
+            "metrics": [metric.model_dump() for metric in summary.metrics],
+            "capabilities": [cap.model_dump() for cap in summary.capabilities],
+            "resume_bullets": summary.resume_bullets,
+            "interview_talking_points": summary.interview_talking_points,
+            "recommended_storyline": summary.recommended_storyline,
+            "honest_boundaries": summary.honest_boundaries,
+            "next_steps": summary.next_steps,
+        }
+        return (
+            f"Write a {section_name} section for AI Knowledge OS Pro.\n"
+            f"Style: {prompt_style}.\n"
+            "Use only the following verified facts.\n"
+            "Structure the answer with clear headings and concise bullets where helpful.\n"
+            "If a feature is planned or requires providers, say that plainly.\n\n"
+            f"FACTS:\n{json.dumps(payload, ensure_ascii=False, indent=2)}"
+        )
+
+    @staticmethod
+    def _summary_markdown(summary: PortfolioSummary) -> str:
+        lines = [
+            f"# {summary.project_name} Portfolio Summary",
+            "",
+            f"- Version: {summary.version} / {summary.semantic_version}",
+            f"- Runtime mode: {summary.runtime_mode}",
+            "",
+            "## Positioning",
+            summary.positioning,
+            "",
+            "## Metrics",
+        ]
+        for metric in summary.metrics:
+            lines.append(f"- {metric.label}: {metric.value} ({metric.description})")
+        lines.extend(
+            [
+                "",
+                "## Honest Boundaries",
+                *[f"- {boundary}" for boundary in summary.honest_boundaries],
+                "",
+                "## Next Steps",
+                *[f"- {step}" for step in summary.next_steps],
+            ]
+        )
+        return "\n".join(lines)
+
+    @staticmethod
+    def _summary_evidence(summary: PortfolioSummary) -> list[str]:
+        evidence = [f"{metric.label}={metric.value}" for metric in summary.metrics[:6]]
+        evidence.extend([f"runtime_mode={summary.runtime_mode}", f"version={summary.version}/{summary.semantic_version}"])
+        return evidence
+
+    @staticmethod
+    def _git_branch() -> str | None:
+        try:
+            output = subprocess.check_output(
+                ["git", "branch", "--show-current"],
+                cwd=settings.project_root,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+            )
+        except Exception:
+            return None
+        value = output.strip()
+        return value or None
+
+    @staticmethod
+    def _git_commit() -> str | None:
+        try:
+            output = subprocess.check_output(
+                ["git", "rev-parse", "HEAD"],
+                cwd=settings.project_root,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+            )
+        except Exception:
+            return None
+        value = output.strip()
+        return value or None
 
 
 portfolio_service = PortfolioService()

@@ -736,3 +736,22 @@ V4.0 学习教练方向已开始落地。当前实现派生学习路线、知识
 - 当前关系是 request-time 派生视图，不是持久化图数据库。
 - 当前路线不调用 LLM，不做假个性化推荐。
 - 后续可以加入 KnowledgeRelation 表、图谱可视化和真实 provider 生成路线。
+<!-- stage:v4-0-portfolio-ui-resilience-20260702 -->
+## V4.0 起步交付：作品集页的服务边界收口与 smoke 通过
+
+### 阶段状态
+已完成本轮作品集页收口：真实摘要展示与 LLM 生成动作拆分，根页补齐 smoke 需要的真实项目概览文案，前端 typecheck/build 与后端测试重新通过。
+
+### 交付内容
+- 重写 `/portfolio`、`/portfolio/resume`、`/portfolio/interview`、`/portfolio/project-review`，让真实概览与可选生成内容分离。
+- 保留 provider 缺失的明确拒绝，不把整页失败伪装成能力完成。
+- 重新验证 frontend smoke、TypeScript typecheck、Next.js build 和后端 pytest。
+
+### 验证结果
+- `E:\python3.12.9\python.exe -m pytest`：61 passed, 25 warnings。
+- `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：passed，required_routes=27，nav_targets=24，warnings=0。
+- frontend typecheck：passed。
+- frontend build：passed。
+
+### 当前边界
+- 本轮仅完成作品集页边界收口，README、版本号、release 检查和推送仍待继续。
