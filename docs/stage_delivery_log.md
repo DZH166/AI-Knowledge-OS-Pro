@@ -755,3 +755,34 @@ V4.0 学习教练方向已开始落地。当前实现派生学习路线、知识
 
 ### 当前边界
 - 本轮仅完成作品集页边界收口，README、版本号、release 检查和推送仍待继续。
+
+<!-- stage:v4-1-codebase-cleanup-architecture-consolidation-20260702 -->
+## V4.1 进行中交付：全量代码体检、历史归档与架构收口
+
+### 阶段状态
+V4.1 已启动并完成第一批真实清理：代码资产清单、历史报告归档、前端 hooks suppression 清理、架构边界文档和多项质量门禁。当前仍未宣布最终发布，secret/repo-clean/release dry-run 需要在最终文件集 staged 后再次验证。
+
+### 交付内容
+- 新增 `scripts/audit_codebase.py`。
+- 新增 `docs/v4_1_predevelopment_audit.md`、`docs/v4_1_code_inventory.md`、`docs/v4_1_code_inventory.json`。
+- 新增 `docs/v4_1_dead_code_report.md`、`docs/v4_1_dead_code_plan.md`、`docs/v4_1_cleanup_report.md`。
+- 新增 `docs/backend_architecture.md`、`docs/frontend_architecture.md`、`docs/module_boundaries.md`、`docs/scripts_reference.md`。
+- 新增 `docs/v4_1_dependency_audit.md`、`docs/v4_1_test_audit.md`、`docs/v4_1_config_audit.md`、`docs/v4_1_ci_release_audit.md`、`docs/v4_1_docs_cleanup_report.md`。
+- 将 V2/V3/V4.0 历史报告移动到 `docs/archive`，不删除历史学习档案。
+- 更新 README、release 检查脚本和相关测试，指向新的 archive 路径。
+- 移除本地临时 pnpm 文件，保留 npm/package-lock 作为前端标准依赖链路。
+
+### 当前验证结果
+- compileall：passed。
+- pytest：61 passed，8 warnings。
+- frontend typecheck：passed。
+- frontend build：passed，28 routes。
+- Alembic 临时库 upgrade/current：passed，`0006_v3_6_unified_media_tasks (head)`。
+- encoding check：passed，282 UTF-8 files。
+- version check：passed，`V3.8 / 3.8.0`。
+- frontend smoke：passed，warnings=0。
+
+### 当前边界
+- V4.1 是工程治理与架构收口阶段，不新增假 AI 能力。
+- 历史报告已归档但未删除；`learning_log.md` 和 `stage_delivery_log.md` 继续 append-only。
+- 最终 release dry-run、secret check、repo clean check 和 V4.1 验收报告仍需在最终 staged 文件集上完成。

@@ -3,7 +3,7 @@
 > Multimodal personal knowledge OS for AI application learners: project sources become searchable evidence, RAG answers, durable media tasks and versioned learning archives.
 
 [![CI](https://github.com/DZH166/AI-Knowledge-OS-Pro/actions/workflows/ci.yml/badge.svg)](https://github.com/DZH166/AI-Knowledge-OS-Pro/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-V3.8%20%2F%203.8.0-0f766e)](docs/v4_0_long_run_predevelopment_audit.md)
+[![Version](https://img.shields.io/badge/version-V3.8%20%2F%203.8.0-0f766e)](docs/archive/v4/v4_0_long_run_predevelopment_audit.md)
 [![Python](https://img.shields.io/badge/Python-3.12-2563eb)](backend/requirements.txt)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688)](backend/requirements.txt)
 [![Next.js](https://img.shields.io/badge/Next.js-15-111827)](frontend/package.json)

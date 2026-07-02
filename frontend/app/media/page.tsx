@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { AudioLines, Image as ImageIcon, Search, UploadCloud, Video } from "lucide-react";
 
@@ -29,7 +29,7 @@ export default function MediaLibraryPage() {
   const [sourceType, setSourceType] = useState("");
   const [error, setError] = useState("");
 
-  async function load() {
+  const load = useCallback(async () => {
     setError("");
     try {
       const [sourceData, spaceData] = await Promise.all([
@@ -41,12 +41,11 @@ export default function MediaLibraryPage() {
     } catch (exc) {
       setError(exc instanceof Error ? exc.message : "媒体资料加载失败");
     }
-  }
+  }, [spaceId, sourceType]);
 
   useEffect(() => {
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [spaceId, sourceType]);
+  }, [load]);
 
   const filtered = useMemo(() => {
     const keyword = query.trim().toLowerCase();

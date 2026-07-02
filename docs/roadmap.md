@@ -118,6 +118,21 @@
 - Git repository sync.
 - Code file parsing and module explanation.
 - Error archive and repair notes.
+
+## V4.1: Codebase Cleanup And Architecture Consolidation
+
+- Repository-wide asset inventory and dead-code review reports.
+- Historical V2/V3/V4.0 reports archived under `docs/archive`.
+- Backend, frontend, script, dependency, configuration, CI and release audits.
+- Frontend hooks dependency suppression cleanup.
+- Architecture and module-boundary docs aligned with the current codebase.
+
+## V4.2 Candidate Direction
+
+- Split large frontend pages into domain component folders.
+- Add browser E2E smoke checks for citation jumps and media playback.
+- Split backend runtime and development requirements after CI is adjusted.
+- Continue consolidating overlapping RAG/media/citation documentation.
 - Project version diffs and technical storytelling.
 
 ## V4.0 Target: Interview And Portfolio System

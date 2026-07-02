@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { AudioLines, Code2, FileText, ImagePlus, UploadCloud, Video } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -50,7 +50,7 @@ function UploadContent() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  async function load() {
+  const load = useCallback(async () => {
     setError("");
     try {
       const [spaceData, documentData, sourceData] = await Promise.all([api.listSpaces(), api.listDocuments(), api.listSources()]);
@@ -63,12 +63,11 @@ function UploadContent() {
     } catch (exc) {
       setError(exc instanceof Error ? exc.message : "Failed to load upload center.");
     }
-  }
+  }, [defaultSpaceId]);
 
   useEffect(() => {
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [load]);
 
   async function uploadImage() {
     if (!imageSpaceId || !imageFile) return;

@@ -1,6 +1,6 @@
 # Architecture
 
-AI Knowledge OS Pro V3.6 uses a Next.js frontend, FastAPI backend, SQLite relational store, Qdrant vector store, and Redis/RQ task engine.
+AI Knowledge OS Pro currently uses a Next.js frontend, FastAPI backend, SQLite relational store, Qdrant vector store, and Redis/RQ task engine. V4.1 is a cleanup and architecture-consolidation pass: it does not add fake provider-backed capabilities, and it keeps V3.8 as the latest stable public version until final V4.1 gates pass.
 
 ## Backend
 
@@ -77,3 +77,16 @@ The public task contract mirrors the nullable database ownership model: document
 - `scripts/capture_showcase.py` waits for real page data and rejects failed or blank captures before writing the seven README screenshots.
 - `scripts/check_release.py` validates the generated zip against the same exclusions used by the release builder.
 - Real `.env` files, SQLite databases, uploads, logs, dependencies, build caches and previous releases are excluded from release artifacts.
+
+## V4.1 Architecture Consolidation
+
+V4.1 adds a repository-wide code inventory, dead-code review plan, archive structure and module-boundary docs. Historical reports are preserved under `docs/archive`, while active architecture, setup, release and learning docs remain in `docs/`.
+
+New V4.1 architecture references:
+
+- `docs/backend_architecture.md`
+- `docs/frontend_architecture.md`
+- `docs/module_boundaries.md`
+- `docs/scripts_reference.md`
+- `docs/v4_1_code_inventory.md`
+- `docs/v4_1_cleanup_report.md`

@@ -94,3 +94,22 @@ flowchart TD
     Video --> Highlight["Seek player and highlight transcript"]
     Audio --> Highlight
 ```
+
+## 7. Portfolio Generation Flow
+
+```mermaid
+flowchart TD
+    Code["Codebase + Git history"] --> Summary["Portfolio summary service"]
+    Docs["README + architecture + learning logs"] --> Summary
+    Tests["Test/build/release evidence"] --> Summary
+    Summary --> Resume["Resume entry draft"]
+    Summary --> Interview["Interview Q&A draft"]
+    Summary --> Review["Project review narrative"]
+    Providers["Configured LLM provider"] --> Resume
+    Providers --> Interview
+    Providers --> Review
+    Resume --> Export["Markdown export"]
+    Interview --> Export
+    Review --> Export
+    Export --> Portfolio["GitHub portfolio evidence"]
+```

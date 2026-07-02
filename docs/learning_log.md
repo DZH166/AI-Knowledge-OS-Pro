@@ -1175,3 +1175,30 @@ V4.0 起步阶段，我先实现了作品集概览 API：后端从数据库统�
 - `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：passed，required_routes=27，nav_targets=24，warnings=0。
 - `C:\Users\Lenovo\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe .\node_modules\typescript\bin\tsc --noEmit`：passed。
 - `C:\Users\Lenovo\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe .\node_modules\next\dist\bin\next build`：passed，28 个 App Router routes built successfully。
+
+<!-- learning:v4-1-codebase-cleanup-architecture-consolidation-20260702 -->
+## V4.1 进行中：全量代码体检、历史归档与架构收口
+
+### 本次补充做了什么
+- 新增 `scripts/audit_codebase.py`，生成 V4.1 predevelopment audit、代码资产清单、dead-code report 和 cleanup plan。
+- 将 V2、V3、V4.0 历史报告移动到 `docs/archive/v2`、`docs/archive/v3`、`docs/archive/v4`，保留历史但降低 docs 根目录噪音。
+- 修复 `docs/version_learning_package.md` 的可读性和历史草稿路径，保留 append-only 学习日志原文不覆盖。
+- 新增后端、前端、模块边界、脚本参考、依赖审计、测试审计、配置审计、CI/release 审计和文档清理报告。
+- 清理前端 `react-hooks/exhaustive-deps` suppression，使用 `useCallback` 收口页面加载函数。
+- 继续保留真实模式边界：未配置 provider 时必须明确拒绝，不生成假 OCR、假转写、假回答或假学习材料。
+
+### 我应该重点理解什么
+V4.1 的重点不是堆新功能，而是把大项目变得可维护：先用资产清单识别代码和文档，再按风险归档、清理、验证。历史学习档案是资产，不是垃圾；真正能删的东西必须先证明没有入口、没有引用、没有测试依赖、没有文档依赖。
+
+### 面试表达方式
+在 V4.1 中，我把 AI Knowledge OS Pro 从持续迭代状态推进到工程治理状态：建立全仓代码资产清单，归档历史报告，补齐模块边界和脚本参考，清理前端 hooks 技术债，并用 compileall、pytest、typecheck、build、encoding、Alembic 等门禁验证。这个阶段体现的是长期项目维护能力，而不是单纯功能开发。
+
+### 当前验证结果
+- `python -m compileall backend/app scripts`：通过。
+- `python -m pytest`：61 passed，8 warnings。
+- frontend typecheck：通过。
+- frontend production build：通过，28 个 App Router routes。
+- Alembic 临时 SQLite upgrade/current：通过，`0006_v3_6_unified_media_tasks (head)`。
+- `python scripts/check_encoding.py`：通过，282 个 UTF-8 文本文件；legacy append-only log 警告保留。
+- `python scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
+- `python scripts/check_frontend_smoke.py`：通过，required_routes=27，nav_targets=24，warnings=0。

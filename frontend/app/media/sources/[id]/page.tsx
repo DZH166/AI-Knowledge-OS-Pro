@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import {
@@ -150,7 +150,7 @@ export default function MediaSourceDetailPage() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  async function load() {
+  const load = useCallback(async () => {
     if (!Number.isFinite(sourceId)) return;
     setError("");
     try {
@@ -160,12 +160,11 @@ export default function MediaSourceDetailPage() {
     } catch (exc) {
       setError(exc instanceof Error ? exc.message : "Failed to load media source.");
     }
-  }
+  }, [sourceId]);
 
   useEffect(() => {
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sourceId]);
+  }, [load]);
 
   useEffect(() => {
     if (!activeJobId) return;
@@ -184,8 +183,7 @@ export default function MediaSourceDetailPage() {
       }
     }, 2500);
     return () => window.clearInterval(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeJobId]);
+  }, [activeJobId, load]);
 
   const metadata = useMemo(() => (source ? parseMetadata(source.metadata_json) : {}), [source]);
   const assets = source?.media_assets || [];
@@ -209,12 +207,28 @@ export default function MediaSourceDetailPage() {
     (source?.source_type === "image" ? ocrChunks[0] || visualChunks[0] || null : null);
   const busy = processingOperation !== null;
 
+  const seekTo = useCallback((milliseconds: number, autoplay = true) => {
+    const media = source?.source_type === "video" ? videoRef.current : audioRef.current;
+    if (media) {
+      media.currentTime = Math.max(0, milliseconds / 1000);
+      if (autoplay) media.play().catch(() => undefined);
+    }
+    const segment = transcriptSegments.find((item) => milliseconds >= item.start_ms && milliseconds <= item.end_ms) || null;
+    setActiveSegmentId(segment?.id || null);
+    if (segment) {
+      const chunk = transcriptChunks.find((item) => item.start_ms === segment.start_ms);
+      setSelectedChunkId(chunk?.id || null);
+      window.setTimeout(() => {
+        document.getElementById(`segment-${segment.id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 60);
+    }
+  }, [source?.source_type, transcriptChunks, transcriptSegments]);
+
   useEffect(() => {
     if (!source) return;
     if (requestedChunkId) setSelectedChunkId(requestedChunkId);
     if (requestedTimestamp && transcriptSegments.length) seekTo(requestedTimestamp, false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [source?.id, requestedTimestamp, requestedChunkId, transcriptSegments.length]);
+  }, [source, requestedTimestamp, requestedChunkId, transcriptSegments.length, seekTo]);
 
   async function enqueueOperation(operation: MediaOperation) {
     if (!source) return;
@@ -229,23 +243,6 @@ export default function MediaSourceDetailPage() {
     } catch (exc) {
       setError(exc instanceof Error ? exc.message : "Failed to create media task.");
       setProcessingOperation(null);
-    }
-  }
-
-  function seekTo(milliseconds: number, autoplay = true) {
-    const media = source?.source_type === "video" ? videoRef.current : audioRef.current;
-    if (media) {
-      media.currentTime = Math.max(0, milliseconds / 1000);
-      if (autoplay) media.play().catch(() => undefined);
-    }
-    const segment = transcriptSegments.find((item) => milliseconds >= item.start_ms && milliseconds <= item.end_ms) || null;
-    setActiveSegmentId(segment?.id || null);
-    if (segment) {
-      const chunk = transcriptChunks.find((item) => item.start_ms === segment.start_ms);
-      setSelectedChunkId(chunk?.id || null);
-      window.setTimeout(() => {
-        document.getElementById(`segment-${segment.id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 60);
     }
   }
 

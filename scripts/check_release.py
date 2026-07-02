@@ -31,7 +31,7 @@ REQUIRED_ENTRIES = {
     "README.md",
     "SECURITY.md",
     "backend/app/main.py",
-    "docs/v3_6_acceptance_report.md",
+    "docs/archive/v3/v3_6_acceptance_report.md",
     "frontend/package.json",
     "scripts/check_encoding.py",
 }

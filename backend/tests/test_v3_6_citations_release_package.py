@@ -85,7 +85,7 @@ def test_release_exclusion_rules_cover_sensitive_and_generated_paths() -> None:
     allowed = [
         ROOT / "README.md",
         ROOT / "backend" / "app" / "services" / "media_task_service.py",
-        ROOT / "docs" / "v3_6_acceptance_report.md",
+        ROOT / "docs" / "archive" / "v3" / "v3_6_acceptance_report.md",
     ]
 
     assert all(should_exclude(path) for path in forbidden)

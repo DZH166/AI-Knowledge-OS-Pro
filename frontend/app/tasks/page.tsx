@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Ban, RefreshCw, RotateCcw, TimerReset } from "lucide-react";
 import Link from "next/link";
 
@@ -21,25 +21,24 @@ export default function TasksPage() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  async function load() {
+  const load = useCallback(async () => {
     setError("");
     try {
       const data = await api.listIngestionJobs();
       setJobs(data);
-      if (!selectedJobId && data.length) setSelectedJobId(data[0].id);
+      setSelectedJobId((current) => current || data[0]?.id || null);
     } catch (exc) {
       setError(exc instanceof Error ? exc.message : "Failed to load tasks.");
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
   useEffect(() => {
     load();
     const timer = window.setInterval(load, 5000);
     return () => window.clearInterval(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [load]);
 
   useEffect(() => {
     if (!selectedJobId) return;
