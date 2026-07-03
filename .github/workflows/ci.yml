@@ -30,6 +30,7 @@ jobs:
       - run: python scripts/seed_demo_data.py --database-path backend/data/demo_showcase.db --reset
       - run: python scripts/check_demo_ready.py --database-path backend/data/demo_showcase.db
       - run: python scripts/evaluate_rag.py --demo --database-path backend/data/demo_showcase.db
+      - run: python scripts/check_full_regression.py --database-path backend/data/demo_showcase.db
       - run: python -m alembic upgrade head
       - run: python -m alembic current
 
@@ -63,13 +64,13 @@ jobs:
       - run: python scripts/check_secrets.py
       - run: python scripts/check_repo_clean.py
       - run: python scripts/check_frontend_smoke.py
-      - run: python scripts/release.py --version V3.8 --dry-run
-      - run: python scripts/release.py --version V3.8
-      - run: python scripts/check_release.py --version V3.8
+      - run: python scripts/release.py --version V4.2 --dry-run
+      - run: python scripts/release.py --version V4.2
+      - run: python scripts/check_release.py --version V4.2
       - uses: actions/upload-artifact@v4
         with:
-          name: AI-Knowledge-OS-Pro-V3.8
+          name: AI-Knowledge-OS-Pro-V4.2
           path: |
-            releases/AI-Knowledge-OS-Pro-V3.8-*.zip
-            releases/AI-Knowledge-OS-Pro-V3.8-*.zip.sha256
+            releases/AI-Knowledge-OS-Pro-V4.2-*.zip
+            releases/AI-Knowledge-OS-Pro-V4.2-*.zip.sha256
           if-no-files-found: error

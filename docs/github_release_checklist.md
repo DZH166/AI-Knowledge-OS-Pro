@@ -1,6 +1,6 @@
 # GitHub Release Checklist
 
-Use this checklist before publishing AI Knowledge OS Pro `V3.8 / 3.8.0` or drafting a GitHub Release.
+Use this checklist before publishing AI Knowledge OS Pro `V4.2 / 4.2.0` or drafting a GitHub Release.
 
 ## Product Integrity
 
@@ -19,7 +19,10 @@ Use this checklist before publishing AI Knowledge OS Pro `V3.8 / 3.8.0` or draft
 - [ ] `python scripts/check_encoding.py` passes.
 - [ ] `python scripts/check_secrets.py` passes.
 - [ ] `python scripts/check_repo_clean.py` passes.
-- [ ] `python scripts/release.py --version V3.8 --dry-run` passes.
+- [ ] `python scripts/check_demo_ready.py --database-path backend/data/demo_showcase.db` passes.
+- [ ] `python scripts/evaluate_rag.py --demo --database-path backend/data/demo_showcase.db` passes.
+- [ ] `python scripts/check_full_regression.py --database-path backend/data/demo_showcase.db` passes.
+- [ ] `python scripts/release.py --version V4.2 --dry-run` passes.
 
 ## Documentation
 
@@ -38,6 +41,6 @@ Use this checklist before publishing AI Knowledge OS Pro `V3.8 / 3.8.0` or draft
 
 ## GitHub Release Draft Notes
 
-- Tag: `v3.8.0`.
-- Title: `AI Knowledge OS Pro V3.8 - GitHub Portfolio Demo Docs and Reset Workflow`.
+- Tag: `v4.2.0`.
+- Title: `AI Knowledge OS Pro V4.2 - Full Regression, Demo Stability And Release Readiness`.
 - Attach release zip only after local and CI checks pass.

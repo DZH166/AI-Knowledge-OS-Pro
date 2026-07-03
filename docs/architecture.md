@@ -1,6 +1,6 @@
 # Architecture
 
-AI Knowledge OS Pro currently uses a Next.js frontend, FastAPI backend, SQLite relational store, Qdrant vector store, and Redis/RQ task engine. V4.1 is a cleanup and architecture-consolidation pass: it does not add fake provider-backed capabilities, and it keeps V3.8 as the latest stable public version until final V4.1 gates pass.
+AI Knowledge OS Pro currently uses a Next.js frontend, FastAPI backend, SQLite relational store, Qdrant vector store, and Redis/RQ task engine. V4.2 is a full-regression, demo-stability and release-readiness pass after the V4.1 cleanup. It does not add fake provider-backed capabilities; it proves the cleaned architecture can still run, demonstrate and ship.
 
 ## Backend
 
@@ -74,6 +74,7 @@ The public task contract mirrors the nullable database ownership model: document
 
 - GitHub Actions runs backend compilation/tests/migrations, frontend typecheck/build, UTF-8 checks, version checks and release archive inspection.
 - `scripts/seed_showcase.py` creates only an isolated synthetic database whose filename must contain `showcase`.
+- `scripts/check_demo_ready.py`, `scripts/evaluate_rag.py` and `scripts/check_full_regression.py` validate V4.2 synthetic demo readiness, RAG evidence plumbing and full regression coverage.
 - `scripts/capture_showcase.py` waits for real page data and rejects failed or blank captures before writing the seven README screenshots.
 - `scripts/check_release.py` validates the generated zip against the same exclusions used by the release builder.
 - Real `.env` files, SQLite databases, uploads, logs, dependencies, build caches and previous releases are excluded from release artifacts.

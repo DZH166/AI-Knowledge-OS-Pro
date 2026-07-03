@@ -7,7 +7,7 @@ AI Knowledge OS Pro uses visible product milestones and semantic versions.
 Current audited baseline:
 
 ```text
-V3.8 / 3.8.0
+V4.2 / 4.2.0
 ```
 
 Version locations include:
@@ -26,15 +26,15 @@ Run:
 python scripts/check_version.py
 ```
 
-## Planned V4.0 Version
+## Release Version
 
-V4.0 should use:
+V4.2 uses:
 
 ```text
-V4.0 / 4.0.0
+V4.2 / 4.2.0
 ```
 
-Do not update the public version badge before V4.0 functionality, docs and verification evidence are aligned.
+Do not update the public version badge before functionality, docs and verification evidence are aligned.
 
 ## Learning Archive Rule
 
@@ -42,8 +42,8 @@ Do not update the public version badge before V4.0 functionality, docs and verif
 
 ## Release Tag
 
-Recommended V4.0 tag after final verification:
+Recommended V4.2 tag after final verification:
 
 ```text
-v4.0.0
+v4.2.0
 ```

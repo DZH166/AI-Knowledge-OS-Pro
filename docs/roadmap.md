@@ -127,10 +127,21 @@
 - Frontend hooks dependency suppression cleanup.
 - Architecture and module-boundary docs aligned with the current codebase.
 
-## V4.2 Candidate Direction
+## V4.2: Full Regression And Release Readiness
 
+- Visible version unified to `V4.2 / 4.2.0`.
+- Synthetic demo seed now covers document, image, audio, video and code-repository evidence.
+- Demo readiness checks source types, task statuses, QA statuses, multimodal chunks, locators, keyframes, transcripts and learning assets.
+- RAG evaluation checks grounded answers, insufficient-context refusal, valid citations, timestamp locators, code locators and source-specific locator JSON.
+- `scripts/check_full_regression.py` validates backend route files, frontend smoke routes, demo data, task center evidence, learning assets and release-support docs/scripts.
+- CI runs full regression after demo seed/readiness and RAG evaluation.
+- README and release docs now include V4.2 verification commands and boundaries.
+
+## V4.3 Candidate Direction
+
+- Add browser E2E smoke checks for citation jumps, media playback and demo walkthrough.
+- Add provider-backed RAG quality evaluation with a small controlled corpus.
 - Split large frontend pages into domain component folders.
-- Add browser E2E smoke checks for citation jumps and media playback.
 - Split backend runtime and development requirements after CI is adjusted.
 - Continue consolidating overlapping RAG/media/citation documentation.
 - Project version diffs and technical storytelling.

@@ -1227,3 +1227,29 @@ V4.1 的重点不是堆新功能，而是把大项目变得可维护：先用资
 
 ### 面试表达
 V4.1 体现的是长期项目治理能力：我不是继续堆新功能，而是先建立资产清单和僵尸代码判断标准，再做低风险清理、历史归档、模块边界文档和质量门禁复验。这个过程保留真实功能和历史学习档案，不伪造 provider 能力，也不把测试失败当作删除测试的理由。
+
+<!-- learning:v4-2-full-regression-demo-release-readiness-20260703 -->
+## V4.2：全链路回归、Demo 稳定与发布前准备
+
+### 本次做了什么
+- 将可见版本统一到 `V4.2 / 4.2.0`，同步后端配置、前端 package、README、CI release artifact 和版本检查脚本。
+- 强化 synthetic demo seed：加入 document、image、audio、video、code_repository、grounded QA、insufficient_context refusal、任务中心三种状态和学习资产。
+- 增强 `scripts/evaluate_rag.py`，验证 citation id、used citation、CitationLocator、音视频时间戳、代码文件行号 locator、多模态 locator JSON 和资料不足拒答。
+- 新增 `scripts/check_full_regression.py`，把后端路由、前端页面、Demo 数据、任务状态、学习资产、RAG/locator 和 release-support 文档脚本纳入一条回归检查。
+- 更新 README、Demo、RAG evaluation、release process、roadmap 和 scripts reference，让 V4.2 的能力和限制保持一致。
+
+### 我应该重点理解什么
+V4.2 的核心是“清理之后真的没坏”。V4.1 让项目结构更干净，V4.2 则用可运行脚本证明核心链路仍可演示、可测试、可发布。Demo 数据不是假功能，而是明确标注的合成证据；真实 provider 缺失时仍必须明确拒绝。
+
+### 面试表达
+在 V4.2 中，我把多模态 RAG 项目的发布准备做成了可执行质量门禁：一键 seed 合成 Demo 数据，检查文档/图片/音频/视频/代码仓库证据，验证 RAG 引用、拒答、任务中心状态、学习资产和前端关键页面，并将这些检查接入 CI 和 release dry-run。这个阶段体现的是工程回归、Demo 可信度和长期维护能力。
+
+### 当前验证结果
+- targeted regression tests：9 passed。
+- Demo readiness：通过，包含 4 类 source、9 个 multimodal chunks、9 个 citation locators、2 条 QA。
+- RAG demo evaluation：通过，包含 1 条 grounded answer、1 条 refusal、1 条 timestamp citation、2 个 code locators。
+- Full regression：通过，67 checks。
+- Full pytest：63 passed，13 warnings。
+- Frontend typecheck/build：通过，28 个 App Router routes。
+- Release dry-run：V4.2，302 files，无 secrets/database/uploads/cache。
+- Release archive check：通过，files=302，forbidden=0，missing=0。

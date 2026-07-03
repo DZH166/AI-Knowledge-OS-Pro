@@ -30,6 +30,7 @@ from app.models.learning_system import KnowledgePoint, LearningCard, QuizQuestio
 from app.models.qa_log import QALog  # noqa: E402
 from app.models.source import (  # noqa: E402
     CitationLocator,
+    IndexRevision,
     MediaAsset,
     MultimodalChunk,
     Source,
@@ -61,7 +62,7 @@ def make_frame(path: Path, title: str, subtitle: str, accent: str) -> None:
     draw.text((70, 30), "AI Knowledge OS Pro", fill="#ffffff", font=font(38))
     draw.text((130, 230), title, fill="#0f172a", font=font(52))
     draw.text((130, 325), subtitle, fill="#475569", font=font(30))
-    draw.text((130, 510), "Synthetic showcase evidence / V3.8", fill=accent, font=font(24))
+    draw.text((130, 510), "Synthetic showcase evidence / V4.2", fill=accent, font=font(24))
     image.save(path, format="PNG")
 
 
@@ -253,9 +254,30 @@ def seed(database_path: Path, reset: bool) -> None:
                 }
             ),
         )
-        db.add_all([image_source, audio_source, video_source])
+        code_source = Source(
+            space_id=space.id,
+            source_type="code_repository",
+            title="AI Knowledge OS Pro Code Walkthrough",
+            original_filename="ai-knowledge-os-pro",
+            mime_type="text/x-code-repository",
+            file_size=4096,
+            storage_path="synthetic://ai-knowledge-os-pro",
+            content_hash="showcase-code-repository",
+            status="ready",
+            metadata_json=json.dumps(
+                {
+                    "ingestion_mode": "code_repository",
+                    "file_count": 2,
+                    "chunk_count": 2,
+                    "skipped_count": 0,
+                    "safety_note": "Synthetic code evidence only; no local private path or secret content is stored.",
+                }
+            ),
+        )
+        db.add_all([image_source, audio_source, video_source, code_source])
         db.flush()
 
+        video_citation_chunk_id: int | None = None
         for source, parser_name in [
             (image_source, "showcase_ocr"),
             (audio_source, "showcase_transcript"),
@@ -266,7 +288,7 @@ def seed(database_path: Path, reset: bool) -> None:
                 revision_number=1,
                 status="active",
                 parser_name=parser_name,
-                parser_version="3.8.0",
+                parser_version="4.2.0",
                 content_hash=source.content_hash,
                 chunk_count=3 if source.source_type != "image" else 1,
                 vector_count=3 if source.source_type != "image" else 1,
@@ -333,6 +355,8 @@ def seed(database_path: Path, reset: bool) -> None:
                     )
                     db.add_all([segment, chunk])
                     db.flush()
+                    if source.source_type == "video" and index == 1:
+                        video_citation_chunk_id = chunk.id
                     db.add(CitationLocator(source_id=source.id, revision_id=revision.id, chunk_id=chunk.id, locator_json=chunk.locator_json, display_text=f"{source.title} at {start_ms // 1000}s"))
 
                 db.add(MediaAsset(source_id=source.id, asset_type="original", storage_path=source.storage_path or "", mime_type=source.mime_type, file_size=source.file_size, duration_ms=source.duration_ms, metadata_json=json.dumps({"showcase": True})))
@@ -366,6 +390,93 @@ def seed(database_path: Path, reset: bool) -> None:
                             )
                         )
 
+        code_revision = SourceRevision(
+            source_id=code_source.id,
+            revision_number=1,
+            status="active",
+            parser_name="showcase_code_repository",
+            parser_version="4.2.0",
+            content_hash=code_source.content_hash,
+            chunk_count=2,
+            vector_count=2,
+            validation_status="passed",
+            metadata_json=json.dumps({"showcase": True, "source_type": "code_repository"}),
+            activated_at=now,
+        )
+        db.add(code_revision)
+        db.flush()
+        code_source.active_revision_id = code_revision.id
+        code_source.latest_revision_id = code_revision.id
+        code_chunks = [
+            (
+                "backend/app/api/router.py",
+                1,
+                31,
+                "api_router",
+                "api_router includes dashboard, documents, media, chat, learning, portfolio, system and task routes.",
+            ),
+            (
+                "frontend/components/AppShell.tsx",
+                1,
+                90,
+                "navigationGroups",
+                "AppShell exposes the demo navigation path across Dashboard, Upload, Tasks, Chat, Learning and Portfolio.",
+            ),
+        ]
+        for index, (file_path, line_start, line_end, symbol_name, text) in enumerate(code_chunks):
+            locator = {
+                "source_type": "code_repository",
+                "source_id": code_source.id,
+                "file_path": file_path,
+                "line_start": line_start,
+                "line_end": line_end,
+                "symbol_name": symbol_name,
+                "github_url": "https://github.com/DZH166/AI-Knowledge-OS-Pro",
+            }
+            chunk = MultimodalChunk(
+                source_id=code_source.id,
+                revision_id=code_revision.id,
+                chunk_index=index,
+                modality="code_file",
+                source_type="code_repository",
+                content_text=f"File: {file_path}\nLines: {line_start}-{line_end}\n\n{text}",
+                search_text=f"{file_path} {symbol_name} {text}",
+                raw_payload_json=json.dumps({"language": "python" if file_path.endswith(".py") else "typescript-react"}),
+                locator_json=json.dumps(locator),
+                language="python" if file_path.endswith(".py") else "typescript-react",
+                status="active",
+                qdrant_point_id=f"showcase-code-{index}",
+            )
+            db.add(chunk)
+            db.flush()
+            db.add(
+                CitationLocator(
+                    source_id=code_source.id,
+                    revision_id=code_revision.id,
+                    chunk_id=chunk.id,
+                    locator_json=chunk.locator_json,
+                    display_text=f"{file_path}:{line_start}-{line_end}",
+                )
+            )
+        db.add(
+            IndexRevision(
+                source_id=code_source.id,
+                revision_id=code_revision.id,
+                status="active",
+                index_version="v2-openai-compatible-1536",
+                embedding_provider="demo_hash",
+                embedding_model="local-showcase",
+                embedding_dimensions=8,
+                embedding_fingerprint="showcase::8",
+                qdrant_collection="demo_showcase",
+                point_count=2,
+                validation_status="passed",
+                activated_at=now,
+            )
+        )
+
+        if video_citation_chunk_id is None:
+            raise RuntimeError("Showcase video citation chunk was not created.")
         citations = [
             {
                 "citation_id": "1",
@@ -373,7 +484,7 @@ def seed(database_path: Path, reset: bool) -> None:
                 "source_type": "video",
                 "source_id": video_source.id,
                 "document_id": None,
-                "chunk_id": 1,
+                "chunk_id": video_citation_chunk_id,
                 "chunk_index": 1,
                 "start_ms": 6_000,
                 "end_ms": 11_500,
@@ -383,7 +494,7 @@ def seed(database_path: Path, reset: bool) -> None:
         ]
         related_chunks = [
             {
-                "chunk_id": 1,
+                "chunk_id": video_citation_chunk_id,
                 "document_name": video_source.title,
                 "content": "Timestamp citations return the learner to the exact evidence used by the answer.",
                 "score": 0.94,
@@ -409,6 +520,24 @@ def seed(database_path: Path, reset: bool) -> None:
         )
         db.add(qa)
         db.flush()
+        refusal_qa = QALog(
+            space_id=space.id,
+            question="What private API key is configured in the project?",
+            answer=(
+                "I do not have enough source evidence to answer that. "
+                "The demo data intentionally excludes secrets and real provider keys."
+            ),
+            answer_mode="normal",
+            citations_json="[]",
+            used_citation_ids_json="[]",
+            related_chunks_json="[]",
+            answer_confidence="low",
+            retrieval_score=0.0,
+            retrieval_status="insufficient_context",
+            runtime_mode="demo",
+        )
+        db.add(refusal_qa)
+        db.flush()
         session = ChatSession(space_id=space.id, title="Traceable multimodal RAG", answer_mode="normal")
         db.add(session)
         db.flush()
@@ -416,11 +545,13 @@ def seed(database_path: Path, reset: bool) -> None:
             [
                 ChatMessage(session_id=session.id, role="user", content=qa.question, answer_mode="normal"),
                 ChatMessage(session_id=session.id, qa_log_id=qa.id, role="assistant", content=qa.answer, answer_mode="normal", citations_json=json.dumps(citations), used_citation_ids_json=json.dumps(["1"]), related_chunks_json=json.dumps(related_chunks), retrieval_status="grounded", answer_confidence="high", is_favorite=True),
+                ChatMessage(session_id=session.id, role="user", content=refusal_qa.question, answer_mode="normal"),
+                ChatMessage(session_id=session.id, qa_log_id=refusal_qa.id, role="assistant", content=refusal_qa.answer, answer_mode="normal", citations_json="[]", used_citation_ids_json="[]", related_chunks_json="[]", retrieval_status="insufficient_context", answer_confidence="low"),
             ]
         )
 
         package = VersionLearningPackage(
-            version_name="V3.8 / 3.8.0 GitHub Portfolio Demo Docs",
+            version_name="V4.2 / 4.2.0 Full Regression Demo Readiness",
             slug="v3-7-github-showcase-demo",
             status="confirmed",
             summary="A traceable multimodal RAG learning system with durable tasks, evidence navigation and source-derived study assets.",
@@ -430,7 +561,7 @@ def seed(database_path: Path, reset: bool) -> None:
             review_suggestions="Review provider boundaries, retry/cancel semantics and citation deep links.",
             interview_expression="I unified document and media processing under a durable task model and made RAG evidence navigable from answer to source timestamp.",
             next_version_suggestion="Add subtitle export and richer scene segmentation.",
-            markdown_content="## V3.8 GitHub Portfolio Demo Docs\n\nTraceable multimodal RAG, durable tasks, one-click demo readiness, resettable synthetic data and source-based learning.",
+            markdown_content="## V4.2 Full Regression Demo Readiness\n\nTraceable multimodal RAG, durable tasks, one-click demo readiness, resettable synthetic data, code locators, refusals and source-based learning.",
             confirmed_at=now,
         )
         db.add(package)
@@ -442,7 +573,7 @@ def seed(database_path: Path, reset: bool) -> None:
                 package_id=package.id,
                 name=name,
                 beginner_explanation="Long-running AI work should be observable and every generated result should point back to evidence.",
-                project_usage="V3.8 connects persistent jobs, multimodal chunks, citation locators, demo readiness and learning artifacts with clearer portfolio docs.",
+                project_usage="V4.2 connects persistent jobs, multimodal chunks, citation locators, demo readiness, refusal behavior, code locators and learning artifacts with clearer portfolio docs.",
                 code_locations_json=json.dumps(["backend/app/services/media_task_service.py", "frontend/app/media/sources/[id]/page.tsx"]),
                 review_suggestion="Review the task state machine and timestamp locator contract.",
                 interview_expression="I designed an auditable multimodal RAG workflow instead of a synchronous upload-and-chat demo.",
@@ -472,6 +603,7 @@ def seed(database_path: Path, reset: bool) -> None:
             (video_source, "video_full_pipeline", "completed", "completed", 100, "Video keyframes, visual evidence and transcript are ready."),
             (audio_source, "audio_transcription", "running", "transcription", 68, "Worker is transcribing timestamped audio segments."),
             (image_source, "image_ocr", "failed", "ocr", 22, "OCR provider is not configured; no fake text was generated."),
+            (code_source, "code_repository_ingestion", "completed", "indexing", 100, "Synthetic code repository evidence is indexed for locator regression."),
         ]
         for offset, (source, job_type, status, step, progress, message) in enumerate(job_specs):
             created = now - timedelta(minutes=offset * 7)

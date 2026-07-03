@@ -19,7 +19,7 @@ Built an end-to-end multimodal RAG learning system with FastAPI, Next.js, SQLAlc
 - Retrieval: Qdrant, OpenAI-compatible embeddings.
 - Tasks: Redis, RQ, persistent job events.
 - Providers: OpenAI-compatible LLM, OCR/vision and speech-to-text adapters.
-- Engineering: pytest, compileall, TypeScript typecheck, Next.js build, GitHub Actions, release dry-run and secret checks.
+- Engineering: pytest, compileall, TypeScript typecheck, Next.js build, GitHub Actions, demo readiness, RAG evaluation, full regression, release dry-run and secret checks.
 
 ## Core Features
 
@@ -28,8 +28,8 @@ Built an end-to-end multimodal RAG learning system with FastAPI, Next.js, SQLAlc
 - Image OCR, audio transcription, video transcription and video keyframes through durable media tasks.
 - Citation jumps to document chunks or media timestamps.
 - Learning artifacts: knowledge points, cards, quizzes, notes and interview expressions.
-- V3.8 demo setup/reset workflow with synthetic data and explicit real/demo mode boundaries.
-- Quickstart, demo mode, local development, release, versioning, interview QA and V4.0 roadmap module docs.
+- V4.2 demo setup/reset workflow with synthetic data, explicit real/demo boundaries and insufficient-context refusal checks.
+- Quickstart, demo mode, local development, release, versioning, interview QA and V4.x roadmap module docs.
 
 ## Technical Challenges
 
@@ -45,8 +45,9 @@ Built an end-to-end multimodal RAG learning system with FastAPI, Next.js, SQLAlc
 - `IngestionJob` supports both `document_id` and `source_id` plus `target_type`.
 - `CitationLocator`, timestamp fields and frontend deep links preserve evidence navigation.
 - Release scripts use Git-tracked files, dry-run analysis and forbidden-file checks.
-- Demo seed creates isolated synthetic sources, tasks, Q&A and learning data.
+- Demo seed creates isolated synthetic document, image, audio, video, code, task, Q&A and learning data.
 - Demo reset rebuilds only the isolated synthetic database and refuses non-demo database paths.
+- Full regression checks prove the seeded demo, key frontend routes, backend route files, RAG locators and release-support docs still hold after cleanup.
 
 ## Project Highlights
 
@@ -57,8 +58,8 @@ Built an end-to-end multimodal RAG learning system with FastAPI, Next.js, SQLAlc
 
 ## Quantified Expressions
 
-- 40+ backend tests cover ingestion, RAG, media tasks, video transcription, citation links, learning artifacts and release safety.
-- 15 Next.js routes build successfully in the current frontend.
+- 60+ backend tests cover ingestion, RAG, media tasks, video transcription, citation links, learning artifacts, full regression and release safety.
+- 28 Next.js app routes build successfully in the current frontend.
 - 7 checked-in screenshots document the main workflow.
 - One release dry-run reports included/excluded file counts and checks for secrets, databases, uploads and caches.
 - 30 interview Q&A prompts explain architecture, RAG, multimodal processing, task orchestration and engineering quality.
@@ -83,7 +84,7 @@ Real mode requires provider configuration. Missing LLM, embedding, OCR or transc
 
 ### How did you make this GitHub-ready?
 
-I added CI, issue/PR templates, security and contribution docs, release dry-run checks, secret scanning, UTF-8 checks, demo seed scripts, screenshots, architecture diagrams and a README that states both capabilities and limits.
+I added CI, issue/PR templates, security and contribution docs, release dry-run checks, secret scanning, UTF-8 checks, demo seed/readiness scripts, RAG evaluation, full regression checks, screenshots, architecture diagrams and a README that states both capabilities and limits.
 
 ## Connecting The Project To AI Application Development Ability
 

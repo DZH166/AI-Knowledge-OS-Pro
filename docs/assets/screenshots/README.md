@@ -5,14 +5,14 @@ These PNG files document the AI Knowledge OS Pro product workflow for GitHub and
 ## Current checked-in screenshots
 
 - `dashboard.png` - Dashboard learning workspace.
-- `upload-center.png` - Upload center for documents, images, audio and video.
+- `upload-center.png` - Upload center for documents, images, audio, video and code repositories.
 - `knowledge-chat.png` - Knowledge Q&A with recent grounded answer.
 - `media-library.png` - Media source library.
 - `video-detail.png` - Video learning page with keyframes and timestamp transcript.
 - `learning-archive.png` - Learning roadmap and version archive.
 - `task-center.png` - Unified task center.
 
-## V3.8 screenshot backlog
+## V4.2 screenshot backlog
 
 - Dashboard learning workspace.
 - Upload center.
@@ -24,5 +24,7 @@ These PNG files document the AI Knowledge OS Pro product workflow for GitHub and
 - Task center.
 - Learning center.
 - System status page with capability availability.
+- Code repository ingestion page.
+- Full regression or release-readiness evidence page.
 
 Capture rules and route mapping are defined in `docs/demo_showcase.md` and `scripts/capture_showcase.py`. Screenshots must use synthetic data and must not expose credentials, private documents, databases, uploads or personal transcripts.

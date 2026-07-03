@@ -44,7 +44,7 @@ def get_dashboard_summary(db: Session = Depends(get_db)) -> DashboardSummary:
             )
             for log in recent_qa_models
         ],
-        current_version="V3.8: GitHub portfolio demo docs and reset workflow",
+        current_version="V4.2: full regression, demo stability and release readiness",
         current_capabilities=[
             "Real/demo mode governance with explicit NOT_CONFIGURED provider errors",
             "Document and media jobs share the durable Task Center",

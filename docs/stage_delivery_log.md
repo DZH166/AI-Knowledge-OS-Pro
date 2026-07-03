@@ -813,3 +813,32 @@ V4.1 已启动并完成第一批真实清理：代码资产清单、历史报告
 ### 环境说明
 - 当前 PowerShell 默认 `python` 是未安装 FastAPI 的 Anaconda 环境；项目兼容 bundled Python 可完整通过测试。
 - 当前 PowerShell 没有全局 `npm`，`pnpm exec` 会触发 pnpm approve-builds 限制；前端使用 bundled Node 调用项目本地 CLI 完成验证。
+
+<!-- stage:v4-2-full-regression-demo-release-readiness-20260703 -->
+## V4.2 交付：全链路回归、Demo 稳定与发布前准备
+
+### 交付内容
+- 版本同步到 `V4.2 / 4.2.0`。
+- Demo seed 增强为文档、图片、音频、视频、代码仓库、RAG、拒答、任务中心和学习资产完整链路。
+- 新增 `scripts/check_full_regression.py`。
+- 增强 `scripts/check_demo_ready.py` 和 `scripts/evaluate_rag.py`。
+- 新增 `backend/tests/test_v4_2_full_regression.py`，并增强 RAG evaluation 测试断言。
+- CI backend job 新增 full regression gate。
+- 新增 V4.2 full regression、demo validation、RAG quality、test、acceptance、learning package 和 GitHub release notes 文档。
+- README、roadmap、demo mode、RAG evaluation、release process 和 scripts reference 已同步 V4.2。
+
+### 当前验证
+- targeted V4.2 regression tests：9 passed。
+- Demo readiness：passed。
+- RAG demo evaluation：passed。
+- Full regression checklist：passed，67 checks。
+- compileall 与 version check 已通过。
+- full pytest：63 passed，13 warnings。
+- frontend typecheck/build：passed，28 routes。
+- release dry-run：passed，V4.2，302 files。
+- release archive check：passed，files=302，forbidden=0，missing=0。
+
+### 当前边界
+- Demo 数据为 synthetic 且明确标注，不代表真实 provider 输出。
+- live browser E2E 尚未自动化；V4.2 使用 static frontend smoke 与 seeded full regression 作为发布前门禁。
+- 当前 release zip 保留在本地 `releases/`，不纳入 Git；推送后仍需以 GitHub Actions 结果作为远端最终证明。

@@ -13,7 +13,7 @@ DEFAULT_DATABASE = BACKEND / "data" / "demo_showcase.db"
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Seed an isolated synthetic V3.8 demo database.")
+    parser = argparse.ArgumentParser(description="Seed an isolated synthetic V4.2 demo database.")
     parser.add_argument("--database-path", type=Path, default=DEFAULT_DATABASE)
     parser.add_argument("--reset", action="store_true", help="Replace the existing demo database.")
     args = parser.parse_args()

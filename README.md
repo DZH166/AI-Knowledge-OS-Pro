@@ -3,7 +3,7 @@
 > Multimodal personal knowledge OS for AI application learners: project sources become searchable evidence, RAG answers, durable media tasks and versioned learning archives.
 
 [![CI](https://github.com/DZH166/AI-Knowledge-OS-Pro/actions/workflows/ci.yml/badge.svg)](https://github.com/DZH166/AI-Knowledge-OS-Pro/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-V3.8%20%2F%203.8.0-0f766e)](docs/archive/v4/v4_0_long_run_predevelopment_audit.md)
+[![Version](https://img.shields.io/badge/version-V4.2%20%2F%204.2.0-0f766e)](docs/v4_2_acceptance_report.md)
 [![Python](https://img.shields.io/badge/Python-3.12-2563eb)](backend/requirements.txt)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688)](backend/requirements.txt)
 [![Next.js](https://img.shields.io/badge/Next.js-15-111827)](frontend/package.json)
@@ -13,7 +13,7 @@
 
 ## 30-60 Second Demo
 
-A Demo GIF is planned under `docs/assets/demo/v3_8_demo_walkthrough.gif`. It is not referenced as an image until captured, to avoid broken README media. Use the current walkthrough script instead:
+A Demo GIF is planned under `docs/assets/demo/v4_2_demo_walkthrough.gif`. It is not referenced as an image until captured, to avoid broken README media. Use the current walkthrough script instead:
 
 - [Quickstart](docs/quickstart.md)
 - [Demo mode boundary](docs/demo_mode.md)
@@ -39,7 +39,7 @@ AI Knowledge OS Pro turns that workflow into a local product: sources are ingest
 - Multimodal citation jumps: documents jump to chunks, images to detail pages, audio/video to timestamps with transcript highlighting.
 - Video learning page: player, transcript timeline, keyframes, evidence chunks and learning actions work together.
 - Learning loop: real source chunks become knowledge points, cards, quizzes, notes and interview expressions.
-- Engineering trust: CI, UTF-8 checks, secret checks, repo cleanliness checks and release dry-run protect the GitHub portfolio.
+- Engineering trust: CI, UTF-8 checks, secret checks, repo cleanliness checks, RAG evaluation, full regression smoke and release dry-run protect the GitHub portfolio.
 
 ## Feature Matrix
 
@@ -56,7 +56,7 @@ AI Knowledge OS Pro turns that workflow into a local product: sources are ingest
 | Video upload and keyframes | Implemented | FFmpeg/imageio-ffmpeg | Keyframes are real extracted/generated assets, not LLM output |
 | Video transcription | Implemented | Speech-to-text provider | No fake subtitles |
 | Task Center retry/cancel/events | Implemented | Redis/RQ for background dispatch | DB records remain visible without worker |
-| Demo seed data | Implemented in V3.7/V3.8 | `scripts/seed_demo_data.py`, `scripts/reset_demo_data.py` | Synthetic and labelled |
+| Demo seed data | Implemented and hardened in V4.2 | `scripts/seed_demo_data.py`, `scripts/reset_demo_data.py`, `scripts/check_full_regression.py` | Synthetic, labelled and includes refusal/provider-boundary evidence |
 | Subtitle export | Planned | Not implemented | Do not claim as delivered |
 | Shot-level scene segmentation | Planned | Not implemented | Roadmap only |
 
@@ -252,8 +252,10 @@ python scripts/check_encoding.py
 python scripts/check_secrets.py
 python scripts/check_repo_clean.py
 python scripts/check_frontend_smoke.py
+python scripts/check_demo_ready.py --database-path backend/data/demo_showcase.db
 python scripts/evaluate_rag.py --demo --database-path backend/data/demo_showcase.db
-python scripts/release.py --version V3.8 --dry-run
+python scripts/check_full_regression.py --database-path backend/data/demo_showcase.db
+python scripts/release.py --version V4.2 --dry-run
 ```
 
 ```powershell
@@ -282,7 +284,7 @@ scripts/                 Demo, verification, learning package and release utilit
 | Demo and setup | [Quickstart](docs/quickstart.md), [Demo Mode](docs/demo_mode.md), [Local Development](docs/local_development.md), [Environment Variables](docs/environment_variables.md), [Provider Diagnostics](docs/provider_diagnostics.md) |
 | Architecture and flows | [Architecture](docs/architecture.md), [Architecture Diagrams](docs/architecture_diagram.md), [RAG Flow](docs/rag_flow.md), [Multimodal Pipeline](docs/multimodal_pipeline.md), [Task Queue Flow](docs/task_queue_flow.md), [Citation Flow](docs/citation_flow.md), [Learning Loop](docs/learning_loop.md) |
 | Release and governance | [Release Process](docs/release_process.md), [Versioning](docs/versioning.md), [Commit Convention](docs/commit_convention.md), [Document Quality Checklist](docs/document_quality_checklist.md), [Release Checklist](docs/github_release_checklist.md) |
-| V4.0 roadmap modules | [RAG Evaluation](docs/rag_evaluation.md), [Hybrid Retrieval](docs/hybrid_retrieval.md), [Code Repository Ingestion](docs/code_repository_ingestion.md), [Portfolio System](docs/portfolio_system.md), [Interview System](docs/interview_system.md), [Observability](docs/observability.md), [Performance Notes](docs/performance_notes.md) |
+| V4.x modules and reports | [RAG Evaluation](docs/rag_evaluation.md), [Hybrid Retrieval](docs/hybrid_retrieval.md), [Code Repository Ingestion](docs/code_repository_ingestion.md), [Portfolio System](docs/portfolio_system.md), [Interview System](docs/interview_system.md), [Observability](docs/observability.md), [V4.2 Full Regression](docs/v4_2_full_regression_report.md), [V4.2 Acceptance](docs/v4_2_acceptance_report.md) |
 
 ## Current Limitations
 
@@ -301,8 +303,10 @@ scripts/                 Demo, verification, learning package and release utilit
 - V3.6: Unified media tasks, citation deep links, multi-keyframes and source-derived learning artifacts.
 - V3.7: GitHub showcase, one-click demo setup, release dry-run, secret checks, architecture/resume docs and clearer capability boundaries.
 - V3.8: GitHub portfolio documentation map, demo reset workflow, quickstart/demo/development docs and V4.0 roadmap module specifications.
-- V3.9 planned: product experience hardening, RAG evaluation and lightweight UI smoke checks.
-- V4.0 planned: knowledge-enhanced portfolio and interview edition with code repository understanding.
+- V3.9: RAG demo evaluation, frontend smoke gates and navigation IA split.
+- V4.0: Learning roadmap relations, hybrid retrieval foundation, code repository ingestion and portfolio pages.
+- V4.1: Codebase inventory, dead-code review, historical report archive and architecture boundary cleanup.
+- V4.2: Full regression checklist, hardened synthetic demo, stronger RAG quality evaluation, release-readiness gates and updated portfolio documentation.
 
 See [Roadmap](docs/roadmap.md).
 

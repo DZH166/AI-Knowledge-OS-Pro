@@ -1,6 +1,6 @@
 # Quickstart
 
-This guide starts the current V3.8 baseline locally for portfolio review and V4.0 development. It does not require paid AI provider calls unless you enable real mode.
+This guide starts the current V4.2 baseline locally for portfolio review and release-readiness validation. It does not require paid AI provider calls unless you enable real mode.
 
 ## Implemented
 
@@ -8,7 +8,7 @@ This guide starts the current V3.8 baseline locally for portfolio review and V4.
 - Next.js frontend.
 - Redis and Qdrant through Docker Compose.
 - Synthetic demo database seeding.
-- Demo readiness checks.
+- Demo readiness, RAG evaluation and full regression checks.
 - Real provider refusal when required keys are missing.
 
 ## Prerequisites
@@ -64,6 +64,8 @@ http://127.0.0.1:3000
 
 ```powershell
 python scripts/check_demo_ready.py --database-path backend/data/demo_showcase.db
+python scripts/evaluate_rag.py --demo --database-path backend/data/demo_showcase.db
+python scripts/check_full_regression.py --database-path backend/data/demo_showcase.db
 ```
 
 Expected result:

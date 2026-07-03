@@ -25,6 +25,9 @@ def test_demo_rag_evaluation_passes_on_seeded_demo_database(tmp_path, monkeypatc
     assert "rag_evaluation_mode=demo" in completed.stdout
     assert "result=passed" in completed.stdout
     assert "timestamp_citations=" in completed.stdout
+    assert "refusal_answers=1" in completed.stdout
+    assert "valid_citations=1" in completed.stdout
+    assert "code_locators=2" in completed.stdout
     assert "does not measure real LLM quality" in completed.stdout
 
 

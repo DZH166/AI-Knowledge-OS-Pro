@@ -1,6 +1,6 @@
 # RAG Evaluation
 
-RAG evaluation is a V3.9/V4.0 quality gate. The current baseline includes a demo-safe evaluator at `scripts/evaluate_rag.py`.
+RAG evaluation is a V4.2 release-readiness gate. The current baseline includes a demo-safe evaluator at `scripts/evaluate_rag.py` and targeted backend tests for hybrid retrieval fallback.
 
 ## Target Evaluation Inputs
 
@@ -15,7 +15,9 @@ RAG evaluation is a V3.9/V4.0 quality gate. The current baseline includes a demo
 - Retrieval hit rate.
 - Citation presence.
 - Citation validity.
-- Refusal correctness when providers are missing.
+- Refusal correctness when source evidence is insufficient.
+- Multimodal locator validity for image, audio, video and code-repository evidence.
+- Hybrid retrieval fallback coverage.
 - Latency.
 - Error code clarity.
 
@@ -32,17 +34,19 @@ python scripts/evaluate_rag.py --demo
 The script checks deterministic seeded evidence and citation plumbing:
 
 - demo QA logs exist;
-- answers are marked grounded;
+- grounded answers and insufficient-context refusals both exist;
 - citation ids match used citation ids;
+- citations point to existing `CitationLocator` rows;
 - related chunks are present;
 - at least one audio/video timestamp citation exists;
-- multimodal chunks and citation locators exist.
+- code-repository file/line locators exist;
+- multimodal chunks and citation locators contain valid source-specific locator JSON.
 
 It returns a non-zero exit code when required checks fail.
 
 ## Current Status
 
-- Demo evidence-chain evaluation implemented.
-- Backend CI seeds demo data and runs the demo evaluator.
-- V4.0 hybrid retrieval tests cover keyword fallback when dense search misses and ensure rerank scores are not faked.
+- Demo evidence-chain evaluation implemented and strengthened in V4.2.
+- Backend CI seeds demo data and runs demo readiness, RAG evaluation and full regression checks.
+- Hybrid retrieval tests cover keyword fallback when dense search misses and ensure rerank scores are not faked.
 - Real provider quality evaluation remains planned.

@@ -1,4 +1,4 @@
-# V3.8 60-Second Demo Script
+# V4.2 60-Second Demo Script
 
 This script is designed for a short portfolio walkthrough. Use the synthetic demo database created by `scripts/setup_demo.py` or `scripts/seed_demo_data.py`.
 
@@ -17,7 +17,7 @@ Open `/system`. Point out the capability matrix:
 
 ## 18-26s: Upload A Source
 
-Open `/upload`. Show the four intake tracks: documents, images, audio and video. Mention that provider-backed work is queued as durable tasks and missing providers return NOT_CONFIGURED errors.
+Open `/upload`. Show the five intake tracks: documents, images, audio, video and code repositories. Mention that provider-backed work is queued as durable tasks and missing providers return NOT_CONFIGURED errors.
 
 ## 26-34s: Task Progress
 
@@ -25,7 +25,7 @@ Open `/tasks`. Show active/completed/failed media jobs, stage events, retry/canc
 
 ## 34-43s: Ask A Question
 
-Open `/chat`. Ask a short question about traceable multimodal RAG. Explain that grounded answers keep validated citations instead of inventing sources.
+Open `/chat`. Ask a short question about traceable multimodal RAG. Explain that grounded answers keep validated citations, while insufficient-context questions refuse instead of inventing sources.
 
 ## 43-50s: Click Evidence
 

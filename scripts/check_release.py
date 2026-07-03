@@ -32,6 +32,8 @@ REQUIRED_ENTRIES = {
     "SECURITY.md",
     "backend/app/main.py",
     "docs/archive/v3/v3_6_acceptance_report.md",
+    "docs/v4_2_acceptance_report.md",
+    "docs/v4_2_full_regression_report.md",
     "frontend/package.json",
     "scripts/check_encoding.py",
 }
@@ -46,7 +48,7 @@ def latest_release(version: str) -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Inspect an AI Knowledge OS Pro release archive.")
-    parser.add_argument("--version", default="V3.8")
+    parser.add_argument("--version", default="V4.2")
     parser.add_argument("--path", type=Path)
     args = parser.parse_args()
 

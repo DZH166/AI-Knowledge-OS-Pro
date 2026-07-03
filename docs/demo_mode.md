@@ -4,7 +4,7 @@ Demo mode exists to make the product workflow understandable without private dat
 
 ## Implemented
 
-- Synthetic knowledge space, documents, media sources, tasks, chat history, learning cards and learning logs.
+- Synthetic knowledge space, documents, image/audio/video/code sources, tasks, chat history, grounded/refusal QA logs, learning cards and learning logs.
 - Screenshots under `docs/assets/screenshots/` use synthetic data.
 - Demo database lives at `backend/data/demo_showcase.db`.
 - `DEMO_MODE=true` labels runtime behavior and helps presentation flows stay safe.
@@ -14,6 +14,7 @@ Demo mode exists to make the product workflow understandable without private dat
 - Show the upload, task, media, chat and learning workflows.
 - Use labelled synthetic examples.
 - Seed deterministic demo records for repeatable screenshots.
+- Demonstrate the flow from source evidence to RAG citation, refusal boundary, learning assets and portfolio explanation.
 - Let a GitHub visitor inspect the product structure without provider keys.
 
 ## What Demo Mode Must Not Do
@@ -39,6 +40,6 @@ If a required provider is missing, the system should return an explicit NOT_CONF
 
 ## Current Limitations
 
-- Demo data is useful for portfolio presentation, not quality evaluation.
-- Real RAG quality still needs a dedicated `scripts/evaluate_rag.py` flow in V3.9/V4.0.
-- Demo mode currently validates seeded database readiness, not full browser E2E interaction.
+- Demo data is useful for portfolio presentation and deterministic plumbing checks, not real LLM quality scoring.
+- V4.2 validates seeded database readiness, RAG citation/refusal behavior and a static frontend smoke path.
+- Full browser E2E with live Redis/Qdrant/backend/frontend remains a future optional gate.
