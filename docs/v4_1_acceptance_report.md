@@ -1,6 +1,6 @@
 # V4.1 Acceptance Report
 
-Generated at: 2026-07-02 Asia/Shanghai
+Generated at: 2026-07-03 Asia/Shanghai
 
 ## Scope
 
@@ -24,20 +24,27 @@ V4.1 is a codebase cleanup, dead-code review, architecture consolidation and eng
 | Gate | Result |
 | --- | --- |
 | `python -m compileall backend/app scripts` | Passed |
-| `python -m pytest` | Passed, 61 tests and 8 warnings |
-| Frontend TypeScript check | Passed |
-| Frontend production build | Passed, 28 app routes |
+| `python -m pytest` | Passed with bundled Python 3.12.13, 61 tests and 9 warnings |
+| Frontend TypeScript check | Passed with bundled Node and local TypeScript CLI |
+| Frontend production build | Passed with bundled Node and local Next.js CLI, 28 app routes |
 | Alembic upgrade/current on isolated SQLite | Passed, `0006_v3_6_unified_media_tasks (head)` |
-| `python scripts/check_encoding.py` | Passed, 282 UTF-8 files; immutable legacy log warnings preserved |
+| `python scripts/check_encoding.py` | Passed, 284 UTF-8 files; 96 immutable legacy log lines preserved append-only |
 | `python scripts/check_version.py` | Passed, `V3.8 / 3.8.0` |
 | `python scripts/check_frontend_smoke.py` | Passed, `required_routes=27`, `nav_targets=24`, `warnings=0` |
 | `python scripts/check_secrets.py` | Passed, scanned 282 tracked text files, findings 0 |
 | `python scripts/check_repo_clean.py` | Passed, forbidden tracked files 0 |
-| `python scripts/release.py --version V3.8 --dry-run` | Passed, included files 293, secrets/database/uploads/cache all `no` |
+| `python scripts/evaluate_rag.py --demo` | Passed, seeded citation plumbing and multimodal locator checks succeeded |
+| `python scripts/release.py --dry-run` | Passed, version `V3.8`, included files 293, secrets/database/uploads/cache all `no` |
 
 ## Final Staged Gates
 
-The final safety gates were run after staging the V4.1 file set, so tracked-file scans included the new audit, architecture, archive and learning-package files.
+The final safety gates were run after staging and again after the 2026-07-03 post-push revalidation. Tracked-file scans included the new audit, architecture, archive and learning-package files.
+
+## Environment Notes
+
+- The machine default `python` points to an Anaconda environment without FastAPI installed, so direct pytest in that interpreter fails before loading tests. The bundled project-compatible Python runtime passes the full suite.
+- Global `npm` is not present in the current PowerShell PATH and `pnpm exec` is blocked by pnpm's ignored-build approval policy. Frontend verification therefore uses bundled Node with the project-local TypeScript and Next.js CLIs.
+- These environment differences do not change CI expectations: CI installs project dependencies from the tracked manifests and runs the same backend, frontend and release gates without real provider keys.
 
 ## Cleanup Summary
 

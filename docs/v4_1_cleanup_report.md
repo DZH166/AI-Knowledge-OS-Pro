@@ -59,15 +59,16 @@ No tracked historical learning archive was deleted. No database, upload, log, ca
 
 - `python scripts/check_encoding.py`: passed for 272 UTF-8 text files, with preserved immutable legacy log warnings.
 - `python -m compileall backend/app scripts`: passed.
-- `python -m pytest`: passed, 61 tests and 8 warnings.
+- `python -m pytest`: passed with bundled Python, 61 tests and 9 warnings.
 - Frontend `tsc --noEmit`: passed after hooks cleanup.
 - Frontend production build: passed, 28 generated routes.
 - Alembic upgrade/current on an isolated `.pytest_tmp` SQLite database: passed, current head `0006_v3_6_unified_media_tasks`.
-- `python scripts/check_encoding.py`: passed after new V4.1 docs, 282 UTF-8 files with preserved immutable legacy log warnings.
+- `python scripts/check_encoding.py`: passed after new V4.1 docs, 284 UTF-8 files with 96 preserved immutable legacy log lines.
 - `python scripts/check_version.py`: passed as `V3.8 / 3.8.0`.
 - `python scripts/check_frontend_smoke.py`: passed, `required_routes=27`, `nav_targets=24`, `warnings=0`.
 - `python scripts/check_secrets.py`: passed, scanned 282 tracked text files, findings=0.
 - `python scripts/check_repo_clean.py`: passed, forbidden tracked files=0.
-- `python scripts/release.py --version V3.8 --dry-run`: passed, included_files=293, secrets/database/uploads/cache all no.
+- `python scripts/evaluate_rag.py --demo`: passed, seeded citation and multimodal locator checks succeeded.
+- `python scripts/release.py --dry-run`: passed, release_dry_run_version=V3.8, included_files=293, secrets/database/uploads/cache all no.
 
-Final tracked-file safety checks were run after staging the V4.1 file set.
+Final tracked-file safety checks were run after staging the V4.1 file set and again during the 2026-07-03 post-push revalidation.

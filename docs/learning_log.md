@@ -1202,3 +1202,28 @@ V4.1 的重点不是堆新功能，而是把大项目变得可维护：先用资
 - `python scripts/check_encoding.py`：通过，282 个 UTF-8 文本文件；legacy append-only log 警告保留。
 - `python scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
 - `python scripts/check_frontend_smoke.py`：通过，required_routes=27，nav_targets=24，warnings=0。
+
+<!-- learning:v4-1-final-reverification-20260703 -->
+## V4.1 最终复验：代码体检、架构收口与发布门禁完成
+
+### 本次追加做了什么
+- 对 V4.1 已提交分支重新执行最终质量门禁，确认代码体检、历史报告归档、前端 hook 清理、架构文档、脚本审计和发布安全检查仍然成立。
+- 用隔离 `.pytest_tmp` SQLite 数据库重新运行 Alembic `upgrade head` 和 `current`，不接触用户真实数据库。
+- 记录本机环境边界：默认 Anaconda Python 缺少 FastAPI，项目兼容的 bundled Python 可完整通过后端测试；全局 npm 不在 PATH，前端使用 bundled Node 调用项目本地 TypeScript/Next.js CLI 通过。
+
+### 最终复验结果
+- `python -m compileall backend/app scripts`：通过。
+- bundled Python `-m pytest`：61 passed，9 warnings。
+- frontend typecheck：通过。
+- frontend production build：通过，28 个 App Router routes。
+- Alembic isolated SQLite upgrade/current：通过，`0006_v3_6_unified_media_tasks (head)`。
+- `python scripts/check_encoding.py`：通过，284 个 UTF-8 文本文件，96 条不可逆 legacy 日志行保留 append-only。
+- `python scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
+- `python scripts/check_frontend_smoke.py`：通过，required_routes=27，nav_targets=24，warnings=0。
+- `python scripts/evaluate_rag.py --demo`：通过。
+- `python scripts/check_secrets.py`：通过，scanned=282，findings=0。
+- `python scripts/check_repo_clean.py`：通过，forbidden tracked files=0。
+- `python scripts/release.py --dry-run`：通过，release_dry_run_version=V3.8，included_files=293，未发现 secrets/database/uploads/cache。
+
+### 面试表达
+V4.1 体现的是长期项目治理能力：我不是继续堆新功能，而是先建立资产清单和僵尸代码判断标准，再做低风险清理、历史归档、模块边界文档和质量门禁复验。这个过程保留真实功能和历史学习档案，不伪造 provider 能力，也不把测试失败当作删除测试的理由。

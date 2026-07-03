@@ -270,7 +270,7 @@ python scripts/check_frontend_smoke.py
 
 - `python scripts/check_encoding.py`: passed after docs cleanup.
 - `python -m compileall backend/app scripts`: passed.
-- `python -m pytest`: passed, 61 tests and 8 warnings.
+- `python -m pytest`: passed, 61 tests and 9 warnings.
 - Frontend `tsc --noEmit`: passed after hooks cleanup.
 - Frontend production build: passed, 28 generated routes.
 - Alembic upgrade/current against an isolated `.pytest_tmp` SQLite database: passed, current head `0006_v3_6_unified_media_tasks`.
@@ -306,11 +306,11 @@ V4.1 is a codebase cleanup, dead-code review, architecture consolidation and eng
 | Gate | Result |
 | --- | --- |
 | `python -m compileall backend/app scripts` | Passed |
-| `python -m pytest` | Passed, 61 tests and 8 warnings |
+| `python -m pytest` | Passed, 61 tests and 9 warnings |
 | Frontend TypeScript check | Passed |
 | Frontend production build | Passed, 28 app routes |
 | Alembic upgrade/current on isolated SQLite | Passed, `0006_v3_6_unified_media_tasks (head)` |
-| `python scripts/check_encoding.py` | Passed, 282 UTF-8 files; immutable legacy log warnings preserved |
+| `python scripts/check_encoding.py` | Passed, 284 UTF-8 files; immutable legacy log warnings preserved |
 | `python scripts/check_version.py` | Passed, `V3.8 / 3.8.0` |
 | `python scripts/check_frontend_smoke.py` | Passed, `required_routes=27`, `nav_targets=24`, `warnings=0` |
 
@@ -618,11 +618,11 @@ V4.1 is a codebase cleanup, dead-code review, architecture consolidation and eng
 | Gate | Result |
 | --- | --- |
 | `python -m compileall backend/app scripts` | Passed |
-| `python -m pytest` | Passed, 61 tests and 8 warnings |
+| `python -m pytest` | Passed, 61 tests and 9 warnings |
 | Frontend TypeScript check | Passed |
 | Frontend production build | Passed, 28 app routes |
 | Alembic upgrade/current on isolated SQLite | Passed, `0006_v3_6_unified_media_tasks (head)` |
-| `python scripts/check_encoding.py` | Passed, 282 UTF-8 files; immutable legacy log warnings preserved |
+| `python scripts/check_encoding.py` | Passed, 284 UTF-8 files; immutable legacy log warnings preserved |
 | `python scripts/check_version.py` | Passed, `V3.8 / 3.8.0` |
 | `python scripts/check_frontend_smoke.py` | Passed, `required_routes=27`, `nav_targets=24`, `warnings=0` |
 

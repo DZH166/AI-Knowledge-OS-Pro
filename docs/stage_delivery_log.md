@@ -786,3 +786,30 @@ V4.1 已启动并完成第一批真实清理：代码资产清单、历史报告
 - V4.1 是工程治理与架构收口阶段，不新增假 AI 能力。
 - 历史报告已归档但未删除；`learning_log.md` 和 `stage_delivery_log.md` 继续 append-only。
 - 最终 release dry-run、secret check、repo clean check 和 V4.1 验收报告仍需在最终 staged 文件集上完成。
+
+<!-- stage:v4-1-final-reverification-20260703 -->
+## V4.1 最终复验：全量代码体检与架构收口完成
+
+### 交付状态
+- V4.1 代码资产清单、dead-code report、cleanup plan、cleanup report、dependency/test/config/CI/docs audit、backend/frontend/module boundary 文档和 learning package draft 均已生成。
+- V2、V3、V4.0 历史报告已移动到 `docs/archive`，未删除历史学习档案。
+- `docs/learning_log.md` 与 `docs/stage_delivery_log.md` 继续只追加维护。
+- 当前稳定可见版本仍保持 `V3.8 / 3.8.0`；V4.1 是工程治理和架构收口分支，不冒充新增 provider-backed AI 能力。
+
+### 最终验证
+- compileall：通过。
+- pytest：bundled Python 环境 61 passed，9 warnings。
+- frontend typecheck：通过。
+- frontend build：通过，28 个 App Router routes。
+- Alembic isolated SQLite upgrade/current：通过，`0006_v3_6_unified_media_tasks (head)`。
+- encoding check：通过，284 个 UTF-8 文本文件，96 条 legacy append-only 日志行保留。
+- version check：通过，`V3.8 / 3.8.0`。
+- frontend smoke：通过，required_routes=27，nav_targets=24，warnings=0。
+- RAG demo evaluation：通过。
+- secret check：通过，scanned=282，findings=0。
+- repo clean check：通过，forbidden tracked files=0。
+- release dry-run：通过，release_dry_run_version=V3.8，included_files=293，未发现 secrets/database/uploads/cache。
+
+### 环境说明
+- 当前 PowerShell 默认 `python` 是未安装 FastAPI 的 Anaconda 环境；项目兼容 bundled Python 可完整通过测试。
+- 当前 PowerShell 没有全局 `npm`，`pnpm exec` 会触发 pnpm approve-builds 限制；前端使用 bundled Node 调用项目本地 CLI 完成验证。
