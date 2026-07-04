@@ -23,6 +23,8 @@ V4.4 adds provider readiness evaluation that preserves real-mode honesty.
 
 The script prints endpoint fingerprints only, never API keys.
 
+V4.4 CI hardening note: dry-run mode does not import backend provider adapters or Pydantic, so the GitHub quality job can run it before installing backend dependencies. `--demo` and `--real-if-configured` still load the real backend provider adapter layer.
+
 ## Boundary
 
 Missing providers are not converted into fake OCR, fake transcripts, fake answers or fake rerank scores.

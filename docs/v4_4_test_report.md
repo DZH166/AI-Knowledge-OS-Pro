@@ -7,11 +7,14 @@ This report is updated during V4.4 release closure.
 | Command | Status | Notes |
 | --- | --- | --- |
 | `python -m compileall backend/app scripts` | Passed | Local `.venv` Python |
-| `python -m pytest` | Passed | 74 tests, 23 warnings |
+| `python -m pytest` | Passed | 74 tests, 22 warnings after CI provider dry-run hardening |
 | `python -m pytest backend/tests/test_v4_4_observability.py backend/tests/test_citation_jump_contracts.py` | Passed | 3 tests |
 | `python -m pytest backend/tests/test_observability.py backend/tests/test_v4_4_observability.py backend/tests/test_citation_jump_contracts.py -q` | Passed | 4 tests |
 | `python scripts/check_version.py` | Passed | `V4.4 / 4.4.0` |
 | `python scripts/evaluate_providers.py --dry-run` | Passed | No external calls |
+| `python scripts/evaluate_providers.py --dry-run` with default Python and no backend dependency install | Passed | CI quality-job compatibility |
+| `python scripts/evaluate_providers.py --demo` | Passed | Local demo embedding/LLM only, OCR/transcription/rerank remain not configured |
+| `python scripts/evaluate_providers.py --real-if-configured` | Passed | No keys present, explicit NOT_CONFIGURED skips |
 | `python scripts/check_e2e.py` | Passed | Static scaffold check |
 | `python scripts/run_demo_e2e.py` | Skipped | `PLAYWRIGHT_NOT_INSTALLED`; no live browser claim |
 | `frontend tsc --noEmit` | Passed | Optional E2E excluded from default app typecheck |
@@ -29,7 +32,7 @@ This report is updated during V4.4 release closure.
 | `python scripts/release.py --version V4.4 --dry-run` | Passed | `included_files=347`, no secrets/databases/uploads/cache after staging new V4.4 files |
 | `python scripts/release.py --version V4.4` | Passed | Generated `releases/AI-Knowledge-OS-Pro-V4.4-20260705.zip` |
 | `python scripts/check_release.py --version V4.4` | Passed | `files=347`, `forbidden=0`, `missing=0` |
-| `python scripts/check_all.py --full` | Passed | compileall, pytest, frontend, quick, provider, E2E, demo and release gates |
+| `python scripts/check_all.py --full` | Passed | re-run after CI provider dry-run hardening; compileall, pytest, frontend, quick, provider, E2E, demo and release gates |
 
 ## Package Gate
 

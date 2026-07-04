@@ -28,5 +28,7 @@ V4.4 extends the unified quality gate with observability tests, provider dry-run
 - Release dry-run inside the final gate: passed with no secrets/databases/uploads/cache.
 - Final staged release dry-run after adding V4.4 files: passed with `included_files=347`.
 - Final release archive inspection: passed with `files=347`, `forbidden=0`, `missing=0`.
+- CI push-run hardening: `evaluate_providers.py --dry-run` was changed to avoid importing backend dependencies, fixing the GitHub quality job path that runs provider dry-run before dependency installation.
+- Post-fix final `python scripts/check_all.py --full`: passed; backend pytest `74 passed, 22 warnings`, frontend build generated 28 routes, release dry-run included 347 files.
 
 Final full validation results are recorded in `docs/v4_4_test_report.md` and the append-only delivery logs.

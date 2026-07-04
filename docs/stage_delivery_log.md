@@ -906,6 +906,18 @@ Open a PR from `feature/v4.3-real-demo-ux-hardening` to `main`, wait for CI to p
 - SHA256: recorded in the local `.sha256` sidecar file rather than embedded here, to avoid self-referential archive hashes.
 - Release artifacts remain local and untracked by design.
 
+<!-- stage:v4-4-ci-provider-dry-run-hardening-20260705 -->
+### V4.4 CI provider dry-run hardening addendum
+- PR #2 was created from `feature/v4.4-demo-e2e-observability` to `main`.
+- The earlier push CI exposed one quality-job issue: provider dry-run imported backend dependencies before the quality job installed them.
+- Fixed dry-run mode to be dependency-light while preserving real backend adapters for `--demo` and `--real-if-configured`.
+- Local verification after the fix:
+  - default `python scripts/evaluate_providers.py --dry-run`: passed.
+  - `.venv` `evaluate_providers.py --dry-run`: passed.
+  - `.venv` `evaluate_providers.py --demo`: passed.
+  - `.venv` `evaluate_providers.py --real-if-configured`: passed.
+- Re-ran final `python scripts/check_all.py --full` after the fix: passed.
+
 <!-- stage:v4-3-post-release-hardening-20260704 -->
 ### V4.3 post-release hardening addendum
 - Added missing final evidence reports:

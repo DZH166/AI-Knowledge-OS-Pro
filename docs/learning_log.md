@@ -1363,3 +1363,11 @@ Review how request ids flow through response envelopes, how retrieval traces are
 - `python scripts/release.py --version V4.4` generated `releases/AI-Knowledge-OS-Pro-V4.4-20260705.zip`.
 - `python scripts/check_release.py --version V4.4` passed with `files=347`, `forbidden=0`, `missing=0`.
 - SHA256 is recorded in the local `.sha256` sidecar file, not embedded in this tracked log.
+
+<!-- learning:v4-4-ci-provider-dry-run-hardening-20260705 -->
+### V4.4 CI provider dry-run hardening addendum
+- GitHub push CI showed the quality job ran `scripts/evaluate_providers.py --dry-run` before backend dependencies were installed.
+- Fixed `evaluate_providers.py` so dry-run mode reads environment/default configuration without importing backend provider adapters or Pydantic.
+- Verified default `python scripts/evaluate_providers.py --dry-run` passes without backend dependency installation.
+- Reverified `.venv` modes: `--dry-run`, `--demo` and `--real-if-configured` all pass; missing keys still produce explicit NOT_CONFIGURED-style states without fake outputs.
+- Re-ran `python scripts/check_all.py --full` after the CI hardening fix: passed, including backend pytest `74 passed, 22 warnings`, frontend build, demo/RAG/full regression and release dry-run.

@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import asdict, dataclass
+import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -14,13 +16,6 @@ ROOT = Path(__file__).resolve().parents[1]
 BACKEND = ROOT / "backend"
 if str(BACKEND) not in sys.path:
     sys.path.insert(0, str(BACKEND))
-
-from app.core.config import Settings, settings  # noqa: E402
-from app.core.errors import ConfigurationError, DependencyUnavailableError  # noqa: E402
-from app.services.ocr_service import get_ocr_provider  # noqa: E402
-from app.services.providers import get_embedding_provider, get_llm_provider, safe_endpoint_fingerprint  # noqa: E402
-from app.services.rerank_provider import get_rerank_provider  # noqa: E402
-from app.services.transcription_service import get_transcription_provider  # noqa: E402
 
 
 NOT_CONFIGURED = {
@@ -45,11 +40,65 @@ class ProviderEvalResult:
     note: str
 
 
+@dataclass(frozen=True)
+class DryRunSettings:
+    llm_provider: str = "openai_compatible"
+    llm_model: str = "gpt-4o-mini"
+    llm_base_url: str = "https://api.openai.com/v1"
+    llm_api_key: str | None = None
+    embedding_provider: str = "openai_compatible"
+    embedding_model: str = "text-embedding-3-small"
+    embedding_base_url: str = "https://api.openai.com/v1"
+    embedding_api_key: str | None = None
+    ocr_provider: str = "openai_compatible_vision"
+    ocr_model: str = "gpt-4o-mini"
+    ocr_base_url: str = "https://api.openai.com/v1"
+    ocr_api_key: str | None = None
+    transcription_provider: str = "openai_compatible_audio"
+    transcription_model: str = "whisper-1"
+    transcription_base_url: str = "https://api.openai.com/v1"
+    transcription_api_key: str | None = None
+
+
+def env_first(*names: str, default: str | None = None) -> str | None:
+    for name in names:
+        value = os.environ.get(name)
+        if value:
+            return value
+    return default
+
+
+def dry_run_settings() -> DryRunSettings:
+    return DryRunSettings(
+        llm_provider=env_first("LLM_PROVIDER", default="openai_compatible") or "openai_compatible",
+        llm_model=env_first("LLM_MODEL", "CHAT_MODEL", default="gpt-4o-mini") or "gpt-4o-mini",
+        llm_base_url=env_first("LLM_BASE_URL", "OPENAI_BASE_URL", default="https://api.openai.com/v1") or "https://api.openai.com/v1",
+        llm_api_key=env_first("LLM_API_KEY", "OPENAI_API_KEY"),
+        embedding_provider=env_first("EMBEDDING_PROVIDER", default="openai_compatible") or "openai_compatible",
+        embedding_model=env_first("EMBEDDING_MODEL", default="text-embedding-3-small") or "text-embedding-3-small",
+        embedding_base_url=env_first("EMBEDDING_BASE_URL", "OPENAI_BASE_URL", default="https://api.openai.com/v1") or "https://api.openai.com/v1",
+        embedding_api_key=env_first("EMBEDDING_API_KEY", "OPENAI_API_KEY"),
+        ocr_provider=env_first("OCR_PROVIDER", default="openai_compatible_vision") or "openai_compatible_vision",
+        ocr_model=env_first("OCR_MODEL", default="gpt-4o-mini") or "gpt-4o-mini",
+        ocr_base_url=env_first("OCR_BASE_URL", "OPENAI_BASE_URL", default="https://api.openai.com/v1") or "https://api.openai.com/v1",
+        ocr_api_key=env_first("OCR_API_KEY", "OPENAI_API_KEY"),
+        transcription_provider=env_first("TRANSCRIPTION_PROVIDER", default="openai_compatible_audio") or "openai_compatible_audio",
+        transcription_model=env_first("TRANSCRIPTION_MODEL", default="whisper-1") or "whisper-1",
+        transcription_base_url=env_first("TRANSCRIPTION_BASE_URL", "OPENAI_BASE_URL", default="https://api.openai.com/v1") or "https://api.openai.com/v1",
+        transcription_api_key=env_first("TRANSCRIPTION_API_KEY", "OPENAI_API_KEY"),
+    )
+
+
 def ms(started: float) -> int:
     return int((time.perf_counter() - started) * 1000)
 
 
-def endpoint_for(config: Settings, name: str) -> str | None:
+def safe_endpoint_fingerprint(url: str) -> str:
+    host = url.rstrip("/").replace("https://", "").replace("http://", "").split("/")[0]
+    return hashlib.sha256(host.encode("utf-8")).hexdigest()[:12]
+
+
+def endpoint_for(config: object, name: str) -> str | None:
     if name == "llm":
         return safe_endpoint_fingerprint(config.llm_base_url)
     if name == "embedding":
@@ -61,7 +110,7 @@ def endpoint_for(config: Settings, name: str) -> str | None:
     return None
 
 
-def configured_map(config: Settings) -> dict[str, bool]:
+def configured_map(config: object) -> dict[str, bool]:
     return {
         "llm": bool(config.llm_api_key),
         "embedding": bool(config.embedding_api_key),
@@ -72,7 +121,7 @@ def configured_map(config: Settings) -> dict[str, bool]:
     }
 
 
-def dry_run(config: Settings) -> list[ProviderEvalResult]:
+def dry_run(config: object) -> list[ProviderEvalResult]:
     configured = configured_map(config)
     providers = {
         "llm": (config.llm_provider, config.llm_model),
@@ -80,7 +129,7 @@ def dry_run(config: Settings) -> list[ProviderEvalResult]:
         "ocr": (config.ocr_provider, config.ocr_model),
         "vision_description": (config.ocr_provider, config.ocr_model),
         "transcription": (config.transcription_provider, config.transcription_model),
-        "rerank": (get_rerank_provider().name, "none"),
+        "rerank": ("disabled", "none"),
     }
     results: list[ProviderEvalResult] = []
     for name, (provider, model) in providers.items():
@@ -101,6 +150,10 @@ def dry_run(config: Settings) -> list[ProviderEvalResult]:
 
 
 def demo_eval() -> list[ProviderEvalResult]:
+    from app.core.config import Settings
+    from app.services.providers import get_embedding_provider, get_llm_provider
+    from app.services.rerank_provider import get_rerank_provider
+
     config = Settings(demo_mode=True)
     started = time.perf_counter()
     embedding = get_embedding_provider(config)
@@ -200,7 +253,13 @@ def result_from_error(name: str, provider: str, model: str, started: float, exc:
     )
 
 
-def probe_real_if_configured(config: Settings) -> list[ProviderEvalResult]:
+def probe_real_if_configured(config: object) -> list[ProviderEvalResult]:
+    from app.core.errors import ConfigurationError, DependencyUnavailableError
+    from app.services.ocr_service import get_ocr_provider
+    from app.services.providers import get_embedding_provider, get_llm_provider
+    from app.services.rerank_provider import get_rerank_provider
+    from app.services.transcription_service import get_transcription_provider
+
     results: list[ProviderEvalResult] = []
 
     embedding = get_embedding_provider(config)
@@ -322,11 +381,13 @@ def main() -> None:
         selected = "demo"
         results = demo_eval()
     elif args.real_if_configured:
+        from app.core.config import settings
+
         selected = "real-if-configured"
         results = probe_real_if_configured(settings)
     else:
         selected = "dry-run"
-        results = dry_run(settings)
+        results = dry_run(dry_run_settings())
     write_reports(results, mode=selected, json_output=args.json_output, markdown_output=args.markdown_output)
     print_results(results, mode=selected)
 
