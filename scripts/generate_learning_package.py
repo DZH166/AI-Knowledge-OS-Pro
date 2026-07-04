@@ -153,7 +153,52 @@ TOPICS: tuple[LearningTopic, ...] = (
         project_usage="V4.2 updates version consistency checks, health tests, package metadata, README badge and CI release artifact naming.",
         review_suggestion="Review check_version.py and every version-bearing file after a version bump.",
         interview_expression="I treated versioning as a testable contract across backend, frontend, docs and CI instead of a README-only label.",
-        file_patterns=("check_version", "package.json", "package-lock.json", "app_version", "app_semver", "Version", "V4.2"),
+        file_patterns=("check_version", "package.json", "package-lock.json", "app_version", "app_semver", "Version", "V4.2", "V4.3"),
+    ),
+    LearningTopic(
+        key="repository_governance",
+        name="Repository Source Governance",
+        beginner_explanation="Before releasing, the team must know which branch contains the latest code and whether main is stale.",
+        project_usage="V4.2.1 records remote URLs, branch lag, tag status, mainline diff, merge plan, release preparation and branch governance before V4.3 work continues.",
+        review_suggestion="Review git remote, branch graph, ahead/behind counts, PR strategy and tag/release preparation.",
+        interview_expression="I treated repository state as a release artifact: before adding more features, I audited where the latest code lived and documented the safest PR/tag path.",
+        file_patterns=("v4_2_1", "repository_source_audit", "mainline_diff", "merge_plan", "branch_governance"),
+    ),
+    LearningTopic(
+        key="docs_link_integrity",
+        name="Documentation Link Integrity",
+        beginner_explanation="A portfolio README is only trustworthy if its links and referenced files actually exist.",
+        project_usage="V4.3 adds check_docs_links.py to validate local README/docs links and Mermaid fences without requiring network access.",
+        review_suggestion="Review Markdown parsing, local-path resolution, archive exclusions and failure messages.",
+        interview_expression="I added a docs link gate so GitHub visitors do not hit broken quickstart, demo, roadmap or release references.",
+        file_patterns=("check_docs_links", "docs_link_report", "README.md", "quickstart", "demo_showcase"),
+    ),
+    LearningTopic(
+        key="readme_asset_safety",
+        name="README Asset Safety",
+        beginner_explanation="Screenshots and GIFs should not be referenced until they exist and are safe to publish.",
+        project_usage="V4.3 adds check_readme_assets.py to verify local README images, required screenshot files and missing demo GIF risks.",
+        review_suggestion="Review screenshot inventory, local image parsing, demo GIF placeholders and sensitive-data boundaries.",
+        interview_expression="I made README media part of CI so the portfolio page cannot silently ship broken screenshots or missing demo assets.",
+        file_patterns=("check_readme_assets", "assets/screenshots", "assets/demo", "readme_assets"),
+    ),
+    LearningTopic(
+        key="quality_gate_orchestration",
+        name="Quality Gate Orchestration",
+        beginner_explanation="A release checklist becomes safer when one command can run the same gates consistently.",
+        project_usage="V4.3 adds check_all.py with quick, demo, release and full modes for compile, tests, frontend, docs, demo, RAG and release checks.",
+        review_suggestion="Review subprocess orchestration, frontend runtime fallback, isolated demo DB paths and release dry-run integration.",
+        interview_expression="I grouped the project quality gates into one script with mode-specific scopes, which makes local validation and CI easier to explain and repeat.",
+        file_patterns=("check_all", "quality_gate_report", "check_full_regression", "evaluate_rag", "release.py"),
+    ),
+    LearningTopic(
+        key="provider_boundary_regression",
+        name="Provider Boundary Regression",
+        beginner_explanation="Tests should prove that missing providers fail clearly instead of producing fake AI results.",
+        project_usage="V4.3 adds provider-boundary tests for LLM, embeddings, OCR, vision description, transcription and disabled rerank.",
+        review_suggestion="Review ConfigurationError codes, provider adapters and tests that avoid calling paid APIs.",
+        interview_expression="I locked real-mode boundaries with tests, so missing keys return explicit NOT_CONFIGURED errors and never pollute the knowledge base with fake OCR, transcripts or answers.",
+        file_patterns=("test_provider_boundaries", "LLM_NOT_CONFIGURED", "EMBEDDING_NOT_CONFIGURED", "VISION_DESCRIPTION_NOT_CONFIGURED", "TRANSCRIPTION_NOT_CONFIGURED"),
     ),
 )
 
@@ -294,10 +339,9 @@ def collect_migration_changes(changes: Iterable[GitChange]) -> list[str]:
 
 
 def infer_topics(changes: list[GitChange]) -> list[dict]:
-    changed_text = "\n".join(change.path for change in changes)
     selected: list[dict] = []
     for topic in TOPICS:
-        matched = [change.path for change in changes if any(pattern in change.path or pattern in changed_text for pattern in topic.file_patterns)]
+        matched = [change.path for change in changes if any(pattern in change.path for pattern in topic.file_patterns)]
         if matched:
             selected.append(
                 {

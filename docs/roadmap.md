@@ -139,6 +139,15 @@
 
 ## V4.3 Candidate Direction
 
+- README/docs local link checker and README asset checker.
+- Unified `scripts/check_all.py` quick/demo/release/full quality gate orchestration.
+- Provider-boundary regression tests for missing LLM, embedding, OCR, vision, transcription and disabled rerank.
+- Demo walkthrough validation tied to isolated synthetic data.
+- Core API regression coverage for status, task list, media list, chat refusal, learning source action and portfolio summary.
+- V4.3 release-readiness reports and GitHub release notes.
+
+## V4.4 Candidate Direction
+
 - Add browser E2E smoke checks for citation jumps, media playback and demo walkthrough.
 - Add provider-backed RAG quality evaluation with a small controlled corpus.
 - Split large frontend pages into domain component folders.

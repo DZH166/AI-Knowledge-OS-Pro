@@ -1,6 +1,6 @@
 # Quickstart
 
-This guide starts the current V4.2 baseline locally for portfolio review and release-readiness validation. It does not require paid AI provider calls unless you enable real mode.
+This guide starts the current V4.3 baseline locally for portfolio review, demo validation and release-readiness checks. It does not require paid AI provider calls unless you enable real mode.
 
 ## Implemented
 

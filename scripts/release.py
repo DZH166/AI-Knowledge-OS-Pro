@@ -161,7 +161,7 @@ def make_release(version: str) -> tuple[Path, Path, str]:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--version", default="V4.2")
+    parser.add_argument("--version", default="V4.3")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     if args.dry_run:

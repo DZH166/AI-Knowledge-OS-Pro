@@ -62,7 +62,7 @@ def make_frame(path: Path, title: str, subtitle: str, accent: str) -> None:
     draw.text((70, 30), "AI Knowledge OS Pro", fill="#ffffff", font=font(38))
     draw.text((130, 230), title, fill="#0f172a", font=font(52))
     draw.text((130, 325), subtitle, fill="#475569", font=font(30))
-    draw.text((130, 510), "Synthetic showcase evidence / V4.2", fill=accent, font=font(24))
+    draw.text((130, 510), "Synthetic showcase evidence / V4.3", fill=accent, font=font(24))
     image.save(path, format="PNG")
 
 
@@ -288,7 +288,7 @@ def seed(database_path: Path, reset: bool) -> None:
                 revision_number=1,
                 status="active",
                 parser_name=parser_name,
-                parser_version="4.2.0",
+                parser_version="4.3.0",
                 content_hash=source.content_hash,
                 chunk_count=3 if source.source_type != "image" else 1,
                 vector_count=3 if source.source_type != "image" else 1,
@@ -395,7 +395,7 @@ def seed(database_path: Path, reset: bool) -> None:
             revision_number=1,
             status="active",
             parser_name="showcase_code_repository",
-            parser_version="4.2.0",
+            parser_version="4.3.0",
             content_hash=code_source.content_hash,
             chunk_count=2,
             vector_count=2,
@@ -551,7 +551,7 @@ def seed(database_path: Path, reset: bool) -> None:
         )
 
         package = VersionLearningPackage(
-            version_name="V4.2 / 4.2.0 Full Regression Demo Readiness",
+            version_name="V4.3 / 4.3.0 Real Demo UX Hardening",
             slug="v3-7-github-showcase-demo",
             status="confirmed",
             summary="A traceable multimodal RAG learning system with durable tasks, evidence navigation and source-derived study assets.",
@@ -561,7 +561,7 @@ def seed(database_path: Path, reset: bool) -> None:
             review_suggestions="Review provider boundaries, retry/cancel semantics and citation deep links.",
             interview_expression="I unified document and media processing under a durable task model and made RAG evidence navigable from answer to source timestamp.",
             next_version_suggestion="Add subtitle export and richer scene segmentation.",
-            markdown_content="## V4.2 Full Regression Demo Readiness\n\nTraceable multimodal RAG, durable tasks, one-click demo readiness, resettable synthetic data, code locators, refusals and source-based learning.",
+            markdown_content="## V4.3 Real Demo UX Hardening\n\nTraceable multimodal RAG, durable tasks, one-click demo readiness, resettable synthetic data, code locators, refusals, source-based learning, README link checks and release-ready quality gates.",
             confirmed_at=now,
         )
         db.add(package)
@@ -573,7 +573,7 @@ def seed(database_path: Path, reset: bool) -> None:
                 package_id=package.id,
                 name=name,
                 beginner_explanation="Long-running AI work should be observable and every generated result should point back to evidence.",
-                project_usage="V4.2 connects persistent jobs, multimodal chunks, citation locators, demo readiness, refusal behavior, code locators and learning artifacts with clearer portfolio docs.",
+                project_usage="V4.3 connects persistent jobs, multimodal chunks, citation locators, demo readiness, refusal behavior, code locators, learning artifacts and docs/release quality gates with clearer portfolio docs.",
                 code_locations_json=json.dumps(["backend/app/services/media_task_service.py", "frontend/app/media/sources/[id]/page.tsx"]),
                 review_suggestion="Review the task state machine and timestamp locator contract.",
                 interview_expression="I designed an auditable multimodal RAG workflow instead of a synchronous upload-and-chat demo.",

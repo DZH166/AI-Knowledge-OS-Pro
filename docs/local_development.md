@@ -77,15 +77,18 @@ python scripts/check_encoding.py
 python scripts/check_secrets.py
 python scripts/check_repo_clean.py
 python scripts/check_version.py
-python scripts/seed_demo_data.py --database-path .pytest_tmp/v4_2_demo_showcase.db --reset
-python scripts/check_demo_ready.py --database-path .pytest_tmp/v4_2_demo_showcase.db
-python scripts/evaluate_rag.py --demo --database-path .pytest_tmp/v4_2_demo_showcase.db
-python scripts/check_full_regression.py --database-path .pytest_tmp/v4_2_demo_showcase.db
-python scripts/release.py --version V4.2 --dry-run
+python scripts/seed_demo_data.py --database-path .pytest_tmp/v4_3_demo_showcase.db --reset
+python scripts/check_demo_ready.py --database-path .pytest_tmp/v4_3_demo_showcase.db
+python scripts/evaluate_rag.py --demo --database-path .pytest_tmp/v4_3_demo_showcase.db
+python scripts/check_full_regression.py --database-path .pytest_tmp/v4_3_demo_showcase.db
+python scripts/check_docs_links.py
+python scripts/check_readme_assets.py
+python scripts/check_all.py --quick
+python scripts/release.py --version V4.3 --dry-run
 ```
 
 ## Current Limitations
 
 - Global `npm` may not be available on every Windows PATH; the Codex desktop environment can use its bundled Node runtime.
-- Full browser E2E tests are not implemented yet; V4.2 uses static frontend smoke and seeded full regression checks.
+- Full browser E2E tests are not implemented yet; V4.3 uses static frontend smoke, README/docs link checks and seeded full regression checks.
 - Real provider checks require user-owned API keys and should not run in public CI.

@@ -28,14 +28,14 @@ python scripts/seed_demo_data.py --database-path backend/data/demo_showcase.db -
 python scripts/check_demo_ready.py --database-path backend/data/demo_showcase.db
 python scripts/evaluate_rag.py --demo --database-path backend/data/demo_showcase.db
 python scripts/check_full_regression.py --database-path backend/data/demo_showcase.db
-python scripts/release.py --version V4.2 --dry-run
+python scripts/release.py --version V4.3 --dry-run
 ```
 
 ## Generate Archive
 
 ```powershell
-python scripts/release.py --version V4.2
-python scripts/check_release.py --version V4.2
+python scripts/release.py --version V4.3
+python scripts/check_release.py --version V4.3
 ```
 
 ## Excluded Content
@@ -56,5 +56,5 @@ python scripts/check_release.py --version V4.2
 
 ## Current Limitations
 
-- V4.2 release preparation updates the visible version to `V4.2 / 4.2.0` only after demo, RAG, full-regression and release-safety gates pass.
+- V4.3 release preparation updates the visible version to `V4.3 / 4.3.0` only after docs links, README assets, demo, RAG, full-regression and release-safety gates pass.
 - GitHub Release creation is prepared by documentation; it is not automatically published from this local workflow.

@@ -28,7 +28,7 @@ def test_portfolio_summary_uses_real_database_counts(db_session, knowledge_space
     summary = portfolio_service.summary(db_session)
 
     metric_values = {metric.key: metric.value for metric in summary.metrics}
-    assert summary.version == "V4.2"
+    assert summary.version == "V4.3"
     assert metric_values["knowledge_spaces"] == 1
     assert metric_values["documents"] == 1
     assert metric_values["sources"] == 1
@@ -53,7 +53,7 @@ def test_portfolio_summary_route_returns_display_contract(db_session, knowledge_
         assert response.status_code == 200
         payload = response.json()["data"]
         assert payload["project_name"] == "AI Knowledge OS Pro"
-        assert payload["semantic_version"] == "4.2.0"
+        assert payload["semantic_version"] == "4.3.0"
         assert len(payload["metrics"]) >= 6
         assert len(payload["resume_bullets"]) >= 3
         assert "fake" not in json.dumps(payload, ensure_ascii=False).lower()

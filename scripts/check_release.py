@@ -24,7 +24,7 @@ FORBIDDEN_PATTERNS = (
     re.compile(r"(^|/)__pycache__/"),
     re.compile(r"\.(db|sqlite|sqlite3|log|pyc|tsbuildinfo)$"),
 )
-REQUIRED_ENTRIES = {
+COMMON_REQUIRED_ENTRIES = {
     ".github/workflows/ci.yml",
     "CONTRIBUTING.md",
     "LICENSE",
@@ -32,10 +32,22 @@ REQUIRED_ENTRIES = {
     "SECURITY.md",
     "backend/app/main.py",
     "docs/archive/v3/v3_6_acceptance_report.md",
-    "docs/v4_2_acceptance_report.md",
-    "docs/v4_2_full_regression_report.md",
     "frontend/package.json",
     "scripts/check_encoding.py",
+}
+
+VERSION_REQUIRED_ENTRIES = {
+    "V4.2": {
+        "docs/v4_2_acceptance_report.md",
+        "docs/v4_2_full_regression_report.md",
+    },
+    "V4.3": {
+        "docs/v4_3_release_readiness_report.md",
+        "docs/v4_3_quality_gate_report.md",
+        "scripts/check_all.py",
+        "scripts/check_docs_links.py",
+        "scripts/check_readme_assets.py",
+    },
 }
 
 
@@ -48,7 +60,7 @@ def latest_release(version: str) -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Inspect an AI Knowledge OS Pro release archive.")
-    parser.add_argument("--version", default="V4.2")
+    parser.add_argument("--version", default="V4.3")
     parser.add_argument("--path", type=Path)
     args = parser.parse_args()
 
@@ -56,7 +68,8 @@ def main() -> None:
     with zipfile.ZipFile(archive_path) as archive:
         names = set(archive.namelist())
     forbidden = sorted(name for name in names if any(pattern.search(name) for pattern in FORBIDDEN_PATTERNS))
-    missing = sorted(REQUIRED_ENTRIES - names)
+    required_entries = COMMON_REQUIRED_ENTRIES | VERSION_REQUIRED_ENTRIES.get(args.version, set())
+    missing = sorted(required_entries - names)
     if forbidden or missing:
         if forbidden:
             print("Forbidden release entries:")
