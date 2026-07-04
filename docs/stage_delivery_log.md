@@ -842,3 +842,66 @@ V4.1 已启动并完成第一批真实清理：代码资产清单、历史报告
 - Demo 数据为 synthetic 且明确标注，不代表真实 provider 输出。
 - live browser E2E 尚未自动化；V4.2 使用 static frontend smoke 与 seeded full regression 作为发布前门禁。
 - 当前 release zip 保留在本地 `releases/`，不纳入 Git；推送后仍需以 GitHub Actions 结果作为远端最终证明。
+<!-- stage:v4-3-real-demo-ux-hardening-release-usability-20260704 -->
+## V4.3 delivery: real demo UX hardening and release usability
+
+### Delivery status
+V4.3 has completed the core implementation pass for repository governance, docs integrity, README asset safety, provider-boundary regression, API regression and unified quality-gate orchestration. Final release zip generation remains the last local packaging step after these append-only logs are committed.
+
+### Delivered files and changes
+- Added V4.2.1 repository governance reports:
+  - `docs/v4_2_1_repository_source_audit.md`
+  - `docs/v4_2_1_mainline_diff_report.md`
+  - `docs/v4_2_1_merge_plan.md`
+  - `docs/v4_2_1_release_preparation.md`
+  - `docs/v4_2_1_branch_governance.md`
+- Added V4.3 quality scripts:
+  - `scripts/check_docs_links.py`
+  - `scripts/check_readme_assets.py`
+  - `scripts/check_all.py`
+- Added tests:
+  - `backend/tests/test_provider_boundaries.py`
+  - `backend/tests/test_v4_3_api_regression.py`
+- Updated current version to `V4.3 / 4.3.0`.
+- Updated CI to include V4.3 docs/assets checks and V4.3 release artifact validation.
+- Updated README and core docs for V4.3 startup, demo, release and roadmap guidance.
+- Generated V4.3 reports:
+  - `docs/v4_3_docs_link_report.md`
+  - `docs/v4_3_demo_walkthrough_validation.md`
+  - `docs/v4_3_provider_boundary_report.md`
+  - `docs/v4_3_smoke_test_report.md`
+  - `docs/v4_3_api_regression_report.md`
+  - `docs/v4_3_quality_gate_report.md`
+  - `docs/v4_3_release_readiness_report.md`
+  - `docs/v4_3_release_notes.md`
+  - `docs/v4_3_learning_package_draft.md`
+
+### Verification evidence
+- Backend compileall: passed.
+- Backend pytest: 70 passed, 9 warnings.
+- Frontend typecheck/build: passed.
+- Docs link check: passed.
+- README asset check: passed.
+- Demo readiness, RAG demo evaluation and full regression: passed.
+- Alembic isolated SQLite upgrade/current: passed at `0006_v3_6_unified_media_tasks (head)`.
+- Secret check: passed, findings=0.
+- Repo clean check: passed, forbidden tracked files=0.
+- Release dry-run: passed for V4.3, 307 tracked files, no secrets/databases/uploads/cache.
+
+### Boundaries
+- Demo data is synthetic and labelled.
+- Missing real providers still return explicit NOT_CONFIGURED-style failures.
+- No fake OCR, fake vision description, fake transcription, fake answer or fake rerank score was added.
+- `main` still requires PR merge before GitHub default branch shows the latest V4.3 state.
+- Live browser E2E remains future work.
+
+### Recommended release path
+Open a PR from `feature/v4.3-real-demo-ux-hardening` to `main`, wait for CI to pass, merge, tag `v4.3.0`, and create a GitHub Release from `docs/v4_3_release_notes.md`.
+<!-- stage:v4-3-final-release-archive-20260704 -->
+### V4.3 final release archive addendum
+- Final `check_all --full`: passed.
+- Final release dry-run: passed with `included_files=321`.
+- Local release zip: `releases/AI-Knowledge-OS-Pro-V4.3-20260704.zip`.
+- Release safety inspection: `files=321`, `forbidden=0`, `missing=0`.
+- SHA256: recorded in the local `.sha256` sidecar file rather than embedded here, to avoid self-referential archive hashes.
+- Release artifacts remain local and untracked by design.

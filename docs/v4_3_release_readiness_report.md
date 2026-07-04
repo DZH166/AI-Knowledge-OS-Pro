@@ -28,7 +28,8 @@ V4.3 makes the GitHub project easier to open, run, verify, explain and release. 
 | Alembic isolated upgrade/current | Passed |
 | Secret check | Passed |
 | Repo clean check | Passed |
-| Release dry-run | Passed |
+| Release dry-run | Passed, `included_files=321` |
+| Release archive check | Passed, `files=321`, `forbidden=0`, `missing=0` |
 
 ## Current Limitations
 
@@ -36,7 +37,14 @@ V4.3 makes the GitHub project easier to open, run, verify, explain and release. 
 - Live browser E2E is still not automated.
 - Real LLM, embedding, OCR, vision and transcription still require configured providers.
 - Redis/Qdrant/Worker are required for production-like background tasks and semantic retrieval.
-- Final release zip and SHA256 will be generated after final docs/log updates are staged.
+- Local release zip is generated under `releases/` and intentionally remains untracked.
+
+## Local Release Artifact
+
+- Zip: `releases/AI-Knowledge-OS-Pro-V4.3-20260704.zip`
+- SHA256 file: `releases/AI-Knowledge-OS-Pro-V4.3-20260704.zip.sha256`
+- SHA256: recorded in the local `.sha256` sidecar file rather than embedded here, to avoid self-referential archive hashes.
+- Archive inspection: `files=321`, `forbidden=0`, `missing=0`
 
 ## Suggested PR
 

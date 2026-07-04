@@ -28,12 +28,15 @@ V4.3 adds `scripts/check_all.py` as a unified quality-gate entrypoint while keep
 - `python scripts/check_frontend_smoke.py`: passed, `required_routes=27`, `nav_targets=24`, `warnings=0`.
 - Demo readiness/RAG/full regression on `.pytest_tmp/v4_3_demo_showcase.db`: passed.
 - Alembic isolated SQLite upgrade/current: passed, `0006_v3_6_unified_media_tasks (head)`.
-- `python scripts/check_secrets.py`: passed, `scanned=296`, `findings=0`.
+- `python scripts/check_secrets.py`: passed, `scanned=310`, `findings=0`.
 - `python scripts/check_repo_clean.py`: passed, `forbidden tracked files=0`.
-- `python scripts/release.py --version V4.3 --dry-run`: passed, `included_files=307`, no secrets/databases/uploads/cache.
+- `python scripts/release.py --version V4.3 --dry-run`: passed, `included_files=321`, no secrets/databases/uploads/cache.
 - `python scripts/check_all.py --quick`: passed.
 - `python scripts/check_all.py --release`: passed.
 
-## Pending Final Gate
+## Final Gate
 
-`python scripts/check_all.py --full` will be run after final docs/log updates are staged so release packaging and docs checks reflect the final file set.
+- `python scripts/check_all.py --full`: passed.
+- `python scripts/release.py --version V4.3`: generated `releases/AI-Knowledge-OS-Pro-V4.3-20260704.zip`.
+- `python scripts/check_release.py --version V4.3`: passed, `files=321`, `forbidden=0`, `missing=0`.
+- Final SHA256 is recorded in the local `.sha256` sidecar file rather than embedded here, to avoid self-referential archive hashes.

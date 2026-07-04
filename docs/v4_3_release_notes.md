@@ -26,6 +26,8 @@ AI Knowledge OS Pro V4.3 - Real Demo UX Hardening And Release Usability
 - Demo readiness/RAG/full regression: passed.
 - Alembic isolated upgrade/current: passed.
 - Secret/repo-clean/release dry-run: passed.
+- Release archive check: `files=321`, `forbidden=0`, `missing=0`.
+- Release SHA256: recorded in the local `.sha256` sidecar file rather than embedded here, to avoid self-referential archive hashes.
 
 ## Honest Boundaries
 

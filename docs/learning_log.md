@@ -1253,3 +1253,45 @@ V4.2 的核心是“清理之后真的没坏”。V4.1 让项目结构更干净�
 - Frontend typecheck/build：通过，28 个 App Router routes。
 - Release dry-run：V4.2，302 files，无 secrets/database/uploads/cache。
 - Release archive check：通过，files=302，forbidden=0，missing=0。
+<!-- learning:v4-3-real-demo-ux-hardening-release-usability-20260704 -->
+## V4.3: Repository governance, real demo UX hardening and release usability
+
+### What changed
+- Confirmed repository source state in V4.2.1: latest complete code was on `feature/v4.2-full-regression-demo-release-readiness`, `main` lagged by 15 commits, no `v4.2.0` tag existed, and PR-to-main remained the safest merge path.
+- Added V4.2.1 governance docs for source audit, mainline diff, merge plan, release preparation and branch governance.
+- Promoted current product version to `V4.3 / 4.3.0` across backend config, health/status responses, frontend package metadata, README and CI release artifact naming.
+- Added `scripts/check_docs_links.py` for README/docs local links and Mermaid fence validation.
+- Added `scripts/check_readme_assets.py` for README images, screenshot inventory and missing demo GIF safety.
+- Added `scripts/check_all.py` with `--quick`, `--demo`, `--release` and `--full` modes.
+- Added provider-boundary tests covering missing LLM, embedding, OCR, vision description, transcription and disabled rerank behavior.
+- Added V4.3 API regression tests for health/status/list routes, Chat missing-provider refusal, source-based learning action and portfolio summary.
+- Updated README, architecture, quickstart, release process, scripts reference, roadmap, demo showcase and release checklist for V4.3.
+- Generated V4.3 reports and learning package draft from real Git diff, route scan, dependency changes and validation results.
+
+### What to understand
+V4.3 is not a new AI capability layer. It is the release usability layer: make the repository source of truth clear, make the README safe to trust, make demo data repeatable, make provider boundaries testable, and make the quality gates easy to rerun. A portfolio project is not credible just because features exist; it becomes credible when a stranger can open it, follow the docs, see what is real, run checks, and understand the release path.
+
+### Interview expression
+In V4.3, I turned AI Knowledge OS Pro from a feature-rich branch into a more release-ready GitHub portfolio artifact. I audited branch/source truth before changing code, added local docs and README asset gates, grouped verification into `check_all.py`, and locked real-mode provider boundaries with regression tests so missing keys refuse clearly instead of producing fake OCR, transcripts or answers.
+
+### Verification so far
+- `python -m compileall backend/app scripts`: passed.
+- `python -m pytest`: 70 passed, 9 warnings.
+- Frontend typecheck/build: passed, 28 App Router routes.
+- `check_docs_links`: passed, 88 files, 45 local links, 7 local images, 11 Mermaid blocks.
+- `check_readme_assets`: passed, 7 local images, 6 external badge images, 7 screenshots found.
+- Demo readiness/RAG/full regression on `.pytest_tmp/v4_3_demo_showcase.db`: passed.
+- Alembic isolated SQLite upgrade/current: `0006_v3_6_unified_media_tasks (head)`.
+- `check_secrets`: passed, scanned=296, findings=0.
+- `check_repo_clean`: passed, forbidden tracked files=0.
+- `release.py --version V4.3 --dry-run`: passed, 307 files, no secrets/databases/uploads/cache.
+
+### Next review focus
+Review Git PR/tag/release flow, README link hygiene, provider-boundary error codes, check orchestration, and the difference between static smoke tests and future live browser E2E.
+<!-- learning:v4-3-final-release-archive-20260704 -->
+### V4.3 final release archive addendum
+- `python scripts/check_all.py --full`: passed.
+- Final staged release dry-run: `included_files=321`, no secrets/databases/uploads/cache.
+- `python scripts/release.py --version V4.3`: generated `releases/AI-Knowledge-OS-Pro-V4.3-20260704.zip`.
+- `python scripts/check_release.py --version V4.3`: passed, `files=321`, `forbidden=0`, `missing=0`.
+- Final SHA256: recorded in the local `.sha256` sidecar file rather than embedded here, to avoid self-referential archive hashes.
