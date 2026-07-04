@@ -918,3 +918,88 @@ Open a PR from `feature/v4.3-real-demo-ux-hardening` to `main`, wait for CI to p
 - Added shared UI primitives in `frontend/components/ui.tsx` for structured error state, provider-missing warning, demo banner, task log drawer, source locator button and learning action bar.
 - Full validation after this addendum: `check_all --full` passed; pytest `70 passed, 10 warnings`; frontend build generated 28 routes; release dry-run included 324 files.
 - Regenerated local V4.3 release zip and verified package safety: `files=324`, `forbidden=0`, `missing=0`.
+
+<!-- stage:v4-4-demo-e2e-observability-20260705 -->
+## V4.4 delivery: demo E2E contracts and runtime observability
+
+### Delivery status
+V4.4 has completed the implementation pass for version alignment, citation-jump contracts, runtime observability, optional browser E2E scaffolding, provider dry-run evaluation, documentation updates and V4.4 report generation. Final `check_all --full`, release zip generation and release archive inspection remain the last packaging steps after this append-only log update.
+
+### Delivered files and changes
+- Added runtime observability:
+  - `backend/app/core/observability.py`
+  - `backend/app/core/responses.py`
+  - `backend/app/schemas/system_schema.py`
+  - `backend/app/services/system_service.py`
+  - `backend/app/api/routes_system.py`
+  - `frontend/app/system/observability/page.tsx`
+- Added observability and citation tests:
+  - `backend/tests/test_v4_4_observability.py`
+  - `backend/tests/test_observability.py`
+  - `backend/tests/test_citation_jump_contracts.py`
+- Added optional E2E infrastructure:
+  - `frontend/playwright.config.ts`
+  - `frontend/e2e/demo-smoke.spec.ts`
+  - `frontend/e2e/citation-jump.spec.ts`
+  - `frontend/e2e/system-observability.spec.ts`
+  - `frontend/e2e/run-optional-e2e.mjs`
+  - `scripts/check_e2e.py`
+  - `scripts/run_demo_e2e.py`
+- Added optional provider evaluation:
+  - `scripts/evaluate_providers.py`
+  - `docs/v4_4_provider_eval_report.md`
+- Updated current version to `V4.4 / 4.4.0`.
+- Updated CI, quality gates, release scripts and release archive required entries for V4.4.
+- Generated V4.4 reports:
+  - `docs/v4_4_predevelopment_audit.md`
+  - `docs/v4_4_browser_e2e_report.md`
+  - `docs/v4_4_citation_jump_report.md`
+  - `docs/v4_4_observability_report.md`
+  - `docs/v4_4_provider_eval_report.md`
+  - `docs/v4_4_frontend_consolidation_report.md`
+  - `docs/v4_4_quality_gate_report.md`
+  - `docs/v4_4_acceptance_report.md`
+  - `docs/v4_4_test_report.md`
+  - `docs/v4_4_release_notes.md`
+  - `docs/v4_4_learning_package_draft.md`
+
+### Verification evidence so far
+- Backend compileall: passed.
+- Backend pytest: 73 passed, 15 warnings before the final compatibility wrapper rerun.
+- Alembic isolated SQLite upgrade/current: passed at `0006_v3_6_unified_media_tasks (head)`.
+- Frontend typecheck/build: passed.
+- Docs links, README assets, frontend smoke and E2E scaffold: passed through `check_all --quick`.
+- Observability/citation contract gate: passed.
+- Provider dry-run gate: passed and reported NOT_CONFIGURED boundaries without external calls.
+- Demo readiness, RAG demo evaluation and full regression: passed on `.pytest_tmp/v4_4_demo_showcase.db`.
+- Optional browser E2E runner: skipped honestly with `PLAYWRIGHT_NOT_INSTALLED`.
+- Secret check and repo-clean check: passed.
+- Release dry-run: passed for V4.4, included_files=324, no secrets/databases/uploads/cache.
+
+### Boundaries
+- Demo data remains synthetic and labelled.
+- Missing real providers still return explicit NOT_CONFIGURED-style failures.
+- No fake OCR, fake vision description, fake transcription, fake answer, fake embedding, fake rerank score or fake citation jump was added.
+- Live browser E2E is not claimed in the current local environment because Playwright is not installed.
+- Release artifacts remain local under `releases/` and untracked by design.
+
+### Recommended release path
+Run final `check_all --full`, generate and inspect the V4.4 release zip, commit the V4.4 implementation/docs, push `feature/v4.4-demo-e2e-observability`, open a PR to `main`, wait for CI, then tag `v4.4.0` and draft the GitHub Release from `docs/v4_4_release_notes.md`.
+
+<!-- stage:v4-4-final-full-gate-20260705 -->
+### V4.4 final full-gate addendum
+- Final `python scripts/check_all.py --full`: passed.
+- Backend pytest: `74 passed, 23 warnings`.
+- Frontend typecheck/build: passed.
+- Docs, README assets, frontend smoke, provider dry-run, E2E scaffold, demo readiness, RAG evaluation, full regression, secret scan, repo-clean and release dry-run all passed.
+- Optional live browser E2E was not claimed; current local runtime lacks Playwright and reports `PLAYWRIGHT_NOT_INSTALLED`.
+- Remaining packaging step: generate final V4.4 release zip and run `scripts/check_release.py --version V4.4`.
+
+<!-- stage:v4-4-final-release-archive-20260705 -->
+### V4.4 final release archive addendum
+- Staged V4.4 files so `release.py` could include new reports, E2E specs and scripts through `git ls-files`.
+- Final staged release dry-run: passed with `included_files=347`, no secrets/databases/uploads/cache.
+- Local release zip: `releases/AI-Knowledge-OS-Pro-V4.4-20260705.zip`.
+- Release safety inspection: `files=347`, `forbidden=0`, `missing=0`.
+- SHA256: recorded in the local `.sha256` sidecar file rather than embedded here, to avoid self-referential archive hashes.
+- Release artifacts remain local and untracked by design.

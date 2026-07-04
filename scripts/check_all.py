@@ -12,9 +12,9 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 FRONTEND = ROOT / "frontend"
-DEMO_DB = ROOT / ".pytest_tmp" / "v4_3_demo_showcase.db"
-DEFAULT_VERSION = "V4.3"
-REPORT_PATH = "docs/v4_3_quality_gate_report.md"
+DEMO_DB = ROOT / ".pytest_tmp" / "v4_4_demo_showcase.db"
+DEFAULT_VERSION = "V4.4"
+REPORT_PATH = "docs/v4_4_quality_gate_report.md"
 
 
 @dataclass
@@ -118,6 +118,7 @@ def quick() -> None:
     run([sys.executable, "scripts/check_docs_links.py"], name="docs links")
     run([sys.executable, "scripts/check_readme_assets.py"], name="README assets")
     run([sys.executable, "scripts/check_frontend_smoke.py"], name="frontend smoke")
+    run([sys.executable, "scripts/check_e2e.py"], name="E2E scaffolding")
 
 
 def demo() -> None:
@@ -134,9 +135,32 @@ def release() -> None:
     run([sys.executable, "scripts/release.py", "--version", DEFAULT_VERSION, "--dry-run"], name="release dry-run")
 
 
+def observability() -> None:
+    run(
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "backend/tests/test_v4_4_observability.py",
+            "backend/tests/test_citation_jump_contracts.py",
+        ],
+        name="V4.4 observability and citation contracts",
+    )
+
+
+def provider_eval() -> None:
+    run([sys.executable, "scripts/evaluate_providers.py", "--dry-run"], name="provider eval dry-run")
+
+
+def e2e() -> None:
+    run([sys.executable, "scripts/check_e2e.py"], name="E2E scaffolding")
+    run([sys.executable, "scripts/run_demo_e2e.py"], name="optional demo browser E2E")
+
+
 def full(*, skip_frontend: bool = False) -> None:
     run([sys.executable, "-m", "compileall", "backend/app", "scripts"], name="backend compileall")
     run([sys.executable, "-m", "pytest"], name="backend pytest")
+    observability()
     if skip_frontend:
         record_skipped("frontend typecheck", "--skip-frontend requested")
         record_skipped("frontend build", "--skip-frontend requested")
@@ -144,6 +168,8 @@ def full(*, skip_frontend: bool = False) -> None:
         frontend_typecheck()
         frontend_build()
     quick()
+    provider_eval()
+    e2e()
     demo()
     release()
 
@@ -171,6 +197,9 @@ def main() -> None:
     mode.add_argument("--quick", action="store_true", help="Run lightweight local static checks.")
     mode.add_argument("--demo", action="store_true", help="Run synthetic demo readiness/RAG/full-regression checks.")
     mode.add_argument("--release", action="store_true", help="Run release-safety checks.")
+    mode.add_argument("--observability", action="store_true", help="Run V4.4 observability and citation contract tests.")
+    mode.add_argument("--provider-eval", action="store_true", help="Run provider readiness dry-run without external calls.")
+    mode.add_argument("--e2e", action="store_true", help="Run optional browser E2E scaffolding checks.")
     mode.add_argument("--full", action="store_true", help="Run backend, frontend, quick, demo and release gates.")
     parser.add_argument(
         "--skip-frontend",
@@ -188,6 +217,15 @@ def main() -> None:
         elif args.release:
             release()
             selected = "release"
+        elif args.observability:
+            observability()
+            selected = "observability"
+        elif args.provider_eval:
+            provider_eval()
+            selected = "provider-eval"
+        elif args.e2e:
+            e2e()
+            selected = "e2e"
         elif args.full or args.skip_frontend:
             full(skip_frontend=args.skip_frontend)
             selected = "full-skip-frontend" if args.skip_frontend else "full"

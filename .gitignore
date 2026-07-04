@@ -27,6 +27,9 @@ logs/
 frontend/.env.local
 frontend/.env.*
 !frontend/.env.local.example
+frontend/playwright-report/
+frontend/test-results/
+frontend/.playwright/
 *.sqlite3
 *.sqlite
 *.db

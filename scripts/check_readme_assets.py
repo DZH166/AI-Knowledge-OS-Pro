@@ -79,9 +79,9 @@ def check_readme_assets() -> ReadmeAssetResult:
     for target in missing_demo_gifs:
         failures.append(f"README embeds a missing demo GIF: {target}")
 
-    if "docs/assets/demo/v4_3_demo_walkthrough.gif" in text and not (DEMO_ASSETS / "v4_3_demo_walkthrough.gif").exists():
+    if "docs/assets/demo/v4_4_demo_walkthrough.gif" in text and not (DEMO_ASSETS / "v4_4_demo_walkthrough.gif").exists():
         if "![Demo" in text or "![AI Knowledge OS Pro Demo" in text:
-            failures.append("README embeds v4_3_demo_walkthrough.gif before the file exists.")
+            failures.append("README embeds v4_4_demo_walkthrough.gif before the file exists.")
 
     return ReadmeAssetResult(
         local_images=local_images,

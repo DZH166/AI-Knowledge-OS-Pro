@@ -52,9 +52,16 @@ feature/v4.4-demo-e2e-observability
 
 ## Suggested Acceptance Gates
 
-- Browser E2E smoke passes locally or documents the exact browser/runtime blocker.
+- Browser E2E scaffolding is present; `scripts/run_demo_e2e.py` documents `PLAYWRIGHT_NOT_INSTALLED` when the local runtime lacks Playwright.
 - Existing backend pytest and frontend typecheck/build remain green.
-- `scripts/check_all.py --full` remains green.
+- `scripts/check_all.py --full` remains the final release gate.
 - Optional provider-backed checks skip clearly with NOT_CONFIGURED when keys are absent.
 - Learning and stage logs append a V4.4 entry without rewriting V1-V4.3 records.
 
+## Implementation Status
+
+- Observability API and `/system/observability` are implemented.
+- Citation jump contract tests are implemented.
+- Provider dry-run/demo/real-if-configured evaluation is implemented.
+- Optional Playwright scaffolding and demo runner are implemented.
+- Final release archive generation remains the last local packaging step after docs/log updates.

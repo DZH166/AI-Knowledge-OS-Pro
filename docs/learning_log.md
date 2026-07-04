@@ -1304,3 +1304,62 @@ Review Git PR/tag/release flow, README link hygiene, provider-boundary error cod
 - Standardized required task/runtime labels: queued, running, completed, failed, cancelled, retrying, not_configured, demo and real now map to readable Chinese labels.
 - Revalidated full quality gates after the hardening pass: compileall passed, pytest `70 passed, 10 warnings`, frontend typecheck/build passed, docs/assets checks passed, demo/RAG/full regression passed, release dry-run included 324 files.
 - Regenerated the V4.3 release zip and verified `files=324`, `forbidden=0`, `missing=0`; SHA remains in the `.sha256` sidecar rather than inside tracked docs.
+
+<!-- learning:v4-4-demo-e2e-observability-20260705 -->
+## V4.4: Browser demo E2E contracts, citation jumps and runtime observability
+
+### What changed
+- Promoted the current visible version to `V4.4 / 4.4.0` across backend config, health/status tests, frontend package metadata, README, CI release artifact names and version checks.
+- Added lightweight request observability: API request ids, an in-process recent request buffer, error-code headers, and system observability endpoints for recent requests, tasks, retrievals, providers and error categories.
+- Replaced the static `/system/observability` page with a data-driven runtime page that avoids keys, raw private data and fake provider claims.
+- Strengthened citation deep-link behavior for document, media and code locators through `CitationPanel`, `/code` query handling and backend contract tests.
+- Added optional Playwright scaffolding for demo smoke, citation-jump and observability routes, plus `scripts/run_demo_e2e.py` for seeded local browser validation when Playwright is installed.
+- Added `scripts/evaluate_providers.py` with dry-run, demo and real-if-configured modes for LLM, embedding, OCR, vision, transcription and rerank readiness.
+- Extended `scripts/check_all.py` with `--observability`, `--provider-eval`, `--e2e` and V4.4 full-gate coverage.
+- Updated README, architecture, quickstart, demo mode, demo showcase, citation locator, observability, RAG evaluation, release process, roadmap, planning, versioning and script docs.
+- Generated V4.4 reports and a learning package draft from real working-tree changes.
+
+### What to understand
+V4.4 is an evidence layer, not a new fake AI layer. It proves more of the product surface through contracts and optional browser automation while keeping default CI free of API keys and browser assumptions. Missing providers still return explicit NOT_CONFIGURED-style results, and missing Playwright is reported as `PLAYWRIGHT_NOT_INSTALLED` rather than being presented as a browser pass.
+
+### Interview expression
+In V4.4, I added runtime observability and browser-demo validation infrastructure to a multimodal RAG portfolio project. I connected request ids, task state, retrieval traces, provider readiness and citation jump contracts into testable APIs and UI, while keeping CI honest: no paid keys required, no fake OCR/transcripts/answers, and optional browser E2E skips with a clear reason when the runtime is missing.
+
+### Verification so far
+- `python -m compileall backend/app scripts`: passed.
+- `python -m pytest`: 73 passed, 15 warnings before adding the compatibility `test_observability.py` wrapper.
+- Alembic isolated SQLite upgrade/current: passed at `0006_v3_6_unified_media_tasks (head)`.
+- Frontend typecheck: passed.
+- Frontend production build: passed, 28 routes generated after adding a Suspense boundary for `/code`.
+- Demo seed/readiness/RAG/full regression on `.pytest_tmp/v4_4_demo_showcase.db`: passed.
+- `check_all --quick`: passed.
+- `check_all --observability`: passed.
+- `check_all --provider-eval`: passed.
+- `check_all --e2e`: passed with optional browser execution skipped as `PLAYWRIGHT_NOT_INSTALLED`.
+- `check_secrets`: passed, scanned=313, findings=0.
+- `check_repo_clean`: passed, forbidden tracked files=0.
+- `release.py --version V4.4 --dry-run`: passed, included_files=324, no secrets/databases/uploads/cache.
+
+### Next review focus
+Review how request ids flow through response envelopes, how retrieval traces are derived from persisted QA logs, how provider dry-run avoids external calls, how Playwright output is kept untracked, and how citation locators map to document, media and code routes.
+
+<!-- learning:v4-4-final-full-gate-20260705 -->
+### V4.4 final full-gate addendum
+- Final `python scripts/check_all.py --full`: passed.
+- Full pytest inside the final gate: `74 passed, 23 warnings`.
+- V4.4 observability/citation contract gate: passed.
+- Frontend typecheck/build: passed, 28 routes generated.
+- Encoding/docs links/README assets/frontend smoke: passed.
+- Provider dry-run: passed with explicit NOT_CONFIGURED-style states and no external calls.
+- Optional demo browser E2E: skipped honestly with `PLAYWRIGHT_NOT_INSTALLED`.
+- Demo seed/readiness/RAG/full regression: passed on `.pytest_tmp/v4_4_demo_showcase.db`.
+- Secret scan, repo-clean and release dry-run: passed; release dry-run included 324 files with no secrets/databases/uploads/cache.
+
+<!-- learning:v4-4-final-release-archive-20260705 -->
+### V4.4 final release archive addendum
+- After staging the new V4.4 files, `python scripts/check_secrets.py` passed with `scanned=335`, `findings=0`.
+- `python scripts/check_repo_clean.py` passed with forbidden tracked files `0`.
+- `python scripts/release.py --version V4.4 --dry-run` passed with `included_files=347` and no secrets/databases/uploads/cache.
+- `python scripts/release.py --version V4.4` generated `releases/AI-Knowledge-OS-Pro-V4.4-20260705.zip`.
+- `python scripts/check_release.py --version V4.4` passed with `files=347`, `forbidden=0`, `missing=0`.
+- SHA256 is recorded in the local `.sha256` sidecar file, not embedded in this tracked log.

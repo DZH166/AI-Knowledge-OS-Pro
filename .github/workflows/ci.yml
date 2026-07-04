@@ -66,14 +66,17 @@ jobs:
       - run: python scripts/check_docs_links.py
       - run: python scripts/check_readme_assets.py
       - run: python scripts/check_frontend_smoke.py
+      - run: python scripts/check_e2e.py
+      - run: python scripts/run_demo_e2e.py
+      - run: python scripts/evaluate_providers.py --dry-run
       - run: python scripts/check_all.py --quick
-      - run: python scripts/release.py --version V4.3 --dry-run
-      - run: python scripts/release.py --version V4.3
-      - run: python scripts/check_release.py --version V4.3
+      - run: python scripts/release.py --version V4.4 --dry-run
+      - run: python scripts/release.py --version V4.4
+      - run: python scripts/check_release.py --version V4.4
       - uses: actions/upload-artifact@v4
         with:
-          name: AI-Knowledge-OS-Pro-V4.3
+          name: AI-Knowledge-OS-Pro-V4.4
           path: |
-            releases/AI-Knowledge-OS-Pro-V4.3-*.zip
-            releases/AI-Knowledge-OS-Pro-V4.3-*.zip.sha256
+            releases/AI-Knowledge-OS-Pro-V4.4-*.zip
+            releases/AI-Knowledge-OS-Pro-V4.4-*.zip.sha256
           if-no-files-found: error

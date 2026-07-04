@@ -9,25 +9,30 @@ Observability means the system can explain what happened, where it failed and ho
 - System status page shows configured capabilities and service checks.
 - Provider missing states are intended to be explicit.
 - Hybrid retrieval exposes citation-level trace fields: `dense_score`, `keyword_score`, `rerank_score`, `final_score`, `retrieval_reason` and `citation_ready`.
-- `/system/observability` exists as a lightweight entry page.
+- `/api/system/observability` returns recent request, task, retrieval, provider and error-category signals.
+- `/system/observability` renders the runtime snapshot instead of a static placeholder.
+- API error envelopes include an `x-error-code` response header for faster triage.
 
-## Target V4.0 Fields
+## V4.4 Fields
 
 - `request_id`
 - `task_id`
-- `generation_id`
 - `retrieval_trace_id`
 - `error_code`
 - `latency_ms`
-- provider latency
-- token usage when available
+- provider configuration status
 - task duration
 - retrieval count
-- citation validation status
+- citation validation status where present in QA logs
 
-## Target Page
+## Runtime Routes
 
 ```text
+/api/system/observability
+/api/system/observability/recent-requests
+/api/system/observability/recent-tasks
+/api/system/observability/recent-retrievals
+/api/system/observability/provider-status
 /system/observability
 ```
 
@@ -37,6 +42,6 @@ Normal user screens should show understandable status and recovery actions. Adva
 
 ## Current Status
 
-- Foundation exists.
-- Dedicated observability page exists.
-- Structured trace reports, latency metrics and provider token usage are still planned.
+- V4.4 implements a lightweight in-process request ring buffer and DB-backed task/retrieval snapshots.
+- The request buffer is intentionally process-local; it resets when the API process restarts.
+- Provider token usage, distributed tracing and long-term metrics storage remain planned.

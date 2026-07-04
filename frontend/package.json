@@ -1,13 +1,14 @@
 {
   "name": "ai-knowledge-os-pro-frontend",
-  "version": "4.3.0",
+  "version": "4.4.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "node e2e/run-optional-e2e.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

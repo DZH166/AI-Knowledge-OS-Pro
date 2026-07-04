@@ -3,7 +3,7 @@
 > Multimodal personal knowledge OS for AI application learners: project sources become searchable evidence, RAG answers, durable media tasks and versioned learning archives.
 
 [![CI](https://github.com/DZH166/AI-Knowledge-OS-Pro/actions/workflows/ci.yml/badge.svg)](https://github.com/DZH166/AI-Knowledge-OS-Pro/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-V4.3%20%2F%204.3.0-0f766e)](docs/v4_3_release_readiness_report.md)
+[![Version](https://img.shields.io/badge/version-V4.4%20%2F%204.4.0-0f766e)](docs/v4_4_acceptance_report.md)
 [![Python](https://img.shields.io/badge/Python-3.12-2563eb)](backend/requirements.txt)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688)](backend/requirements.txt)
 [![Next.js](https://img.shields.io/badge/Next.js-15-111827)](frontend/package.json)
@@ -13,7 +13,7 @@
 
 ## 30-60 Second Demo
 
-A Demo GIF is planned under `docs/assets/demo/v4_3_demo_walkthrough.gif`. It is not referenced as an image until captured, to avoid broken README media. Use the current walkthrough script instead:
+A Demo GIF is planned under `docs/assets/demo/v4_4_demo_walkthrough.gif`. It is not referenced as an image until captured, to avoid broken README media. Use the current walkthrough script instead:
 
 - [Quickstart](docs/quickstart.md)
 - [Demo mode boundary](docs/demo_mode.md)
@@ -40,7 +40,7 @@ AI Knowledge OS Pro turns that workflow into a local product: sources are ingest
 - Video learning page: player, transcript timeline, keyframes, evidence chunks and learning actions work together.
 - Learning loop: real source chunks become knowledge points, cards, quizzes, notes and interview expressions.
 - Engineering trust: CI, UTF-8 checks, secret checks, repo cleanliness checks, RAG evaluation, full regression smoke and release dry-run protect the GitHub portfolio.
-- V4.3 release usability: README/docs links, README assets, demo closure, provider boundaries, API smoke and release checks are grouped behind executable quality gates.
+- V4.4 runtime evidence: optional browser E2E scaffolding, citation-jump contracts, provider dry-run evaluation and API observability snapshots are grouped behind executable quality gates.
 
 ## Feature Matrix
 
@@ -59,6 +59,8 @@ AI Knowledge OS Pro turns that workflow into a local product: sources are ingest
 | Task Center retry/cancel/events | Implemented | Redis/RQ for background dispatch | DB records remain visible without worker |
 | Demo seed data | Implemented and hardened in V4.2 | `scripts/seed_demo_data.py`, `scripts/reset_demo_data.py`, `scripts/check_full_regression.py` | Synthetic, labelled and includes refusal/provider-boundary evidence |
 | README/docs integrity | Implemented in V4.3 | `scripts/check_docs_links.py`, `scripts/check_readme_assets.py`, `scripts/check_all.py` | Checks local links/assets only; external GitHub availability is verified by CI |
+| Browser E2E scaffolding | Implemented in V4.4 | `frontend/playwright.config.ts`, `frontend/e2e/*`, `scripts/check_e2e.py` | Live browser execution skips honestly when Playwright/browser binaries are not installed |
+| Runtime observability | Implemented in V4.4 | `/api/system/observability`, `/system/observability` | In-process request ring buffer resets with the API process |
 | Subtitle export | Planned | Not implemented | Do not claim as delivered |
 | Shot-level scene segmentation | Planned | Not implemented | Roadmap only |
 
@@ -259,7 +261,10 @@ python scripts/check_frontend_smoke.py
 python scripts/check_demo_ready.py --database-path backend/data/demo_showcase.db
 python scripts/evaluate_rag.py --demo --database-path backend/data/demo_showcase.db
 python scripts/check_full_regression.py --database-path backend/data/demo_showcase.db
-python scripts/release.py --version V4.3 --dry-run
+python scripts/evaluate_providers.py --dry-run
+python scripts/check_e2e.py
+python scripts/run_demo_e2e.py
+python scripts/release.py --version V4.4 --dry-run
 python scripts/check_all.py --full
 ```
 
@@ -267,9 +272,10 @@ python scripts/check_all.py --full
 cd frontend
 npm run typecheck
 npm run build
+npm run test:e2e
 ```
 
-CI runs these checks without calling paid provider APIs.
+CI runs default checks without calling paid provider APIs. `npm run test:e2e` reports `skipped` when Playwright or browser binaries are not installed; it should be made a hard gate only in environments that install them.
 
 ## Project Structure
 
@@ -289,7 +295,7 @@ scripts/                 Demo, verification, learning package and release utilit
 | Demo and setup | [Quickstart](docs/quickstart.md), [Demo Mode](docs/demo_mode.md), [Local Development](docs/local_development.md), [Environment Variables](docs/environment_variables.md), [Provider Diagnostics](docs/provider_diagnostics.md) |
 | Architecture and flows | [Architecture](docs/architecture.md), [Architecture Diagrams](docs/architecture_diagram.md), [RAG Flow](docs/rag_flow.md), [Multimodal Pipeline](docs/multimodal_pipeline.md), [Task Queue Flow](docs/task_queue_flow.md), [Citation Flow](docs/citation_flow.md), [Learning Loop](docs/learning_loop.md) |
 | Release and governance | [Release Process](docs/release_process.md), [Versioning](docs/versioning.md), [Commit Convention](docs/commit_convention.md), [Document Quality Checklist](docs/document_quality_checklist.md), [Release Checklist](docs/github_release_checklist.md) |
-| V4.x modules and reports | [RAG Evaluation](docs/rag_evaluation.md), [Hybrid Retrieval](docs/hybrid_retrieval.md), [Code Repository Ingestion](docs/code_repository_ingestion.md), [Portfolio System](docs/portfolio_system.md), [Interview System](docs/interview_system.md), [Observability](docs/observability.md), [V4.2 Full Regression](docs/v4_2_full_regression_report.md), [V4.2 Acceptance](docs/v4_2_acceptance_report.md), [V4.3 Release Readiness](docs/v4_3_release_readiness_report.md), [V4.3 Quality Gates](docs/v4_3_quality_gate_report.md), [V4.3 README Assets](docs/v4_3_readme_asset_report.md), [V4.3 UX Error States](docs/v4_3_ux_error_state_report.md), [V4.4 Planning](docs/v4_4_planning.md) |
+| V4.x modules and reports | [RAG Evaluation](docs/rag_evaluation.md), [Hybrid Retrieval](docs/hybrid_retrieval.md), [Code Repository Ingestion](docs/code_repository_ingestion.md), [Portfolio System](docs/portfolio_system.md), [Interview System](docs/interview_system.md), [Observability](docs/observability.md), [V4.2 Full Regression](docs/v4_2_full_regression_report.md), [V4.2 Acceptance](docs/v4_2_acceptance_report.md), [V4.3 Release Readiness](docs/v4_3_release_readiness_report.md), [V4.3 Quality Gates](docs/v4_3_quality_gate_report.md), [V4.4 Browser E2E](docs/v4_4_browser_e2e_report.md), [V4.4 Observability](docs/v4_4_observability_report.md), [V4.4 Acceptance](docs/v4_4_acceptance_report.md) |
 
 ## Current Limitations
 
@@ -313,7 +319,7 @@ scripts/                 Demo, verification, learning package and release utilit
 - V4.1: Codebase inventory, dead-code review, historical report archive and architecture boundary cleanup.
 - V4.2: Full regression checklist, hardened synthetic demo, stronger RAG quality evaluation, release-readiness gates and updated portfolio documentation.
 - V4.3: README/docs link integrity, README asset checks, demo walkthrough validation, provider-boundary tests, API regression coverage and unified quality gate orchestration.
-- V4.4 planned: browser E2E demo smoke, citation-jump validation, runtime observability snapshots and optional provider-backed evaluation.
+- V4.4: browser E2E scaffolding with honest skip behavior, citation-jump validation, runtime observability snapshots and optional provider-backed evaluation.
 
 See [Roadmap](docs/roadmap.md).
 

@@ -70,7 +70,7 @@ def test_v4_3_core_api_routes_return_enveloped_contracts(db_session, knowledge_s
     app.dependency_overrides[get_db] = override_db
     try:
         client = TestClient(app)
-        assert client.get("/health").json()["version"] == "V4.3"
+        assert client.get("/health").json()["version"] == "V4.4"
 
         endpoints = [
             "/api/dashboard/summary",
@@ -90,7 +90,7 @@ def test_v4_3_core_api_routes_return_enveloped_contracts(db_session, knowledge_s
             assert payload["request_id"]
 
         status = client.get("/api/system/status").json()["data"]
-        assert status["runtime"]["app_version"] == "V4.3"
+        assert status["runtime"]["app_version"] == "V4.4"
         assert status["llm"]["status"] in {"not_configured", "configured", "demo"}
     finally:
         app.dependency_overrides.pop(get_db, None)

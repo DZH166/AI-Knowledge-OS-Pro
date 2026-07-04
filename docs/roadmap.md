@@ -137,7 +137,7 @@
 - CI runs full regression after demo seed/readiness and RAG evaluation.
 - README and release docs now include V4.2 verification commands and boundaries.
 
-## V4.3 Candidate Direction
+## V4.3: Real Demo UX Hardening And Release Usability
 
 - README/docs local link checker and README asset checker.
 - Unified `scripts/check_all.py` quick/demo/release/full quality gate orchestration.
@@ -146,15 +146,24 @@
 - Core API regression coverage for status, task list, media list, chat refusal, learning source action and portfolio summary.
 - V4.3 release-readiness reports and GitHub release notes.
 
-## V4.4 Candidate Direction
+## V4.4: Demo E2E Contracts And Runtime Observability
 
-- Add browser E2E smoke checks for citation jumps, media playback and demo walkthrough.
+- Add optional Playwright scaffolding for demo smoke, citation jumps and observability pages.
+- Validate citation jump contracts for document, image, audio, video and code locators.
+- Add runtime observability endpoints for recent requests, tasks, retrievals, provider status and error categories.
+- Add provider evaluation in dry-run, demo and real-if-configured modes without making default CI depend on paid keys.
+- Extend `scripts/check_all.py` with observability, provider-eval and E2E modes.
+- Produce V4.4 evidence reports, release notes and a learning package draft from real Git changes.
+- Planning details: [V4.4 Planning](v4_4_planning.md).
+
+## V4.5 Candidate Direction
+
+- Run live browser E2E as a hard gate in an environment that installs Playwright browsers and starts backend/frontend services.
 - Add provider-backed RAG quality evaluation with a small controlled corpus.
 - Split large frontend pages into domain component folders.
 - Split backend runtime and development requirements after CI is adjusted.
 - Continue consolidating overlapping RAG/media/citation documentation.
 - Project version diffs and technical storytelling.
-- Planning details: [V4.4 Planning](v4_4_planning.md).
 
 ## V4.0 Target: Interview And Portfolio System
 

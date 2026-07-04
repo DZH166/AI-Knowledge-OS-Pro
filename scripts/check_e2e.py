@@ -1,0 +1,87 @@
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+
+
+ROOT = Path(__file__).resolve().parents[1]
+FRONTEND = ROOT / "frontend"
+
+REQUIRED_FILES = (
+    FRONTEND / "playwright.config.ts",
+    FRONTEND / "e2e" / "demo-smoke.spec.ts",
+    FRONTEND / "e2e" / "citation-jump.spec.ts",
+    FRONTEND / "e2e" / "system-observability.spec.ts",
+    FRONTEND / "e2e" / "run-optional-e2e.mjs",
+    ROOT / "scripts" / "run_demo_e2e.py",
+)
+
+
+def bundled_node() -> Path | None:
+    candidates = [
+        Path.home() / ".cache" / "codex-runtimes" / "codex-primary-runtime" / "dependencies" / "node" / "bin" / "node.exe",
+        Path.home() / ".cache" / "codex-runtimes" / "codex-primary-runtime" / "dependencies" / "node" / "bin" / "node",
+        Path.home() / ".cache" / "codex-runtimes" / "codex-primary-runtime" / "dependencies" / "node" / "node.exe",
+        Path.home() / ".cache" / "codex-runtimes" / "codex-primary-runtime" / "dependencies" / "node" / "node",
+    ]
+    return next((path for path in candidates if path.exists()), None)
+
+
+def static_check() -> list[str]:
+    failures: list[str] = []
+    for path in REQUIRED_FILES:
+        if not path.exists():
+            failures.append(f"Missing E2E file: {path.relative_to(ROOT).as_posix()}")
+    package_path = FRONTEND / "package.json"
+    try:
+        package = json.loads(package_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        failures.append(f"Cannot read frontend/package.json: {exc}")
+        return failures
+    scripts = package.get("scripts") if isinstance(package.get("scripts"), dict) else {}
+    if scripts.get("test:e2e") != "node e2e/run-optional-e2e.mjs":
+        failures.append("frontend/package.json must expose scripts.test:e2e as node e2e/run-optional-e2e.mjs")
+    return failures
+
+
+def run_optional_browser() -> int:
+    npm = shutil.which("npm")
+    if npm:
+        command = [npm, "run", "test:e2e"]
+    else:
+        node = bundled_node()
+        if node is None:
+            print("e2e_status=skipped reason=NO_NODE_OR_NPM")
+            return 0
+        command = [str(node), "e2e/run-optional-e2e.mjs"]
+    completed = subprocess.run(command, cwd=FRONTEND)
+    return completed.returncode
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Validate optional browser E2E scaffolding.")
+    parser.add_argument("--run-browser", action="store_true", help="Try to run npm run test:e2e; missing Playwright/browser runtime skips honestly.")
+    args = parser.parse_args()
+
+    failures = static_check()
+    print("e2e_static_check=checked")
+    print(f"required_files={len(REQUIRED_FILES)}")
+    if failures:
+        print("result=failed")
+        for failure in failures:
+            print(f"failure: {failure}")
+        raise SystemExit(1)
+    print("e2e_static_check=passed")
+
+    if args.run_browser:
+        raise SystemExit(run_optional_browser())
+    print("e2e_status=not_run reason=STATIC_MODE")
+    print("result=passed")
+
+
+if __name__ == "__main__":
+    main()

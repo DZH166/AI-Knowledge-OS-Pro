@@ -1,6 +1,6 @@
 # RAG Evaluation
 
-RAG evaluation is a V4.2 release-readiness gate. The current baseline includes a demo-safe evaluator at `scripts/evaluate_rag.py` and targeted backend tests for hybrid retrieval fallback.
+RAG evaluation is a release-readiness gate. The current baseline includes a demo-safe evaluator at `scripts/evaluate_rag.py`, targeted backend tests for hybrid retrieval fallback, citation-jump contract tests, and V4.4 provider readiness checks that remain separate from RAG quality claims.
 
 ## Target Evaluation Inputs
 
@@ -20,6 +20,7 @@ RAG evaluation is a V4.2 release-readiness gate. The current baseline includes a
 - Hybrid retrieval fallback coverage.
 - Latency.
 - Error code clarity.
+- Citation jump readiness for document, media and code locators.
 
 ## Demo Mode Rule
 
@@ -49,4 +50,6 @@ It returns a non-zero exit code when required checks fail.
 - Demo evidence-chain evaluation implemented and strengthened in V4.2.
 - Backend CI seeds demo data and runs demo readiness, RAG evaluation and full regression checks.
 - Hybrid retrieval tests cover keyword fallback when dense search misses and ensure rerank scores are not faked.
-- Real provider quality evaluation remains planned.
+- V4.4 adds citation-jump contracts and runtime observability snapshots for recent retrievals.
+- `scripts/evaluate_providers.py --dry-run` reports provider readiness without calling external services.
+- Real provider quality scoring remains optional through `scripts/evaluate_providers.py --real-if-configured`; default CI does not require keys.

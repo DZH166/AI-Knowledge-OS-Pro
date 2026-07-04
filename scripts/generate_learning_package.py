@@ -153,7 +153,7 @@ TOPICS: tuple[LearningTopic, ...] = (
         project_usage="V4.2 updates version consistency checks, health tests, package metadata, README badge and CI release artifact naming.",
         review_suggestion="Review check_version.py and every version-bearing file after a version bump.",
         interview_expression="I treated versioning as a testable contract across backend, frontend, docs and CI instead of a README-only label.",
-        file_patterns=("check_version", "package.json", "package-lock.json", "app_version", "app_semver", "Version", "V4.2", "V4.3"),
+        file_patterns=("check_version", "package.json", "package-lock.json", "app_version", "app_semver", "Version", "V4.2", "V4.3", "V4.4"),
     ),
     LearningTopic(
         key="repository_governance",
@@ -199,6 +199,33 @@ TOPICS: tuple[LearningTopic, ...] = (
         review_suggestion="Review ConfigurationError codes, provider adapters and tests that avoid calling paid APIs.",
         interview_expression="I locked real-mode boundaries with tests, so missing keys return explicit NOT_CONFIGURED errors and never pollute the knowledge base with fake OCR, transcripts or answers.",
         file_patterns=("test_provider_boundaries", "LLM_NOT_CONFIGURED", "EMBEDDING_NOT_CONFIGURED", "VISION_DESCRIPTION_NOT_CONFIGURED", "TRANSCRIPTION_NOT_CONFIGURED"),
+    ),
+    LearningTopic(
+        key="runtime_observability",
+        name="Runtime Observability",
+        beginner_explanation="A demo-ready app should show recent requests, tasks, retrieval traces and provider status in a form that helps debugging.",
+        project_usage="V4.4 adds request-id capture, recent request/task/retrieval/provider endpoints and a data-driven observability page.",
+        review_suggestion="Review request middleware, bounded in-process buffers, DB-backed task/retrieval summaries and frontend error-state handling.",
+        interview_expression="I added a lightweight observability layer that connects API request IDs, task events, retrieval traces and provider status into a reviewer-friendly runtime page.",
+        file_patterns=("observability", "recent_requests", "recent_tasks", "recent_retrievals", "provider_status", "RequestIdMiddleware"),
+    ),
+    LearningTopic(
+        key="optional_browser_e2e",
+        name="Optional Browser E2E",
+        beginner_explanation="Browser tests prove real navigation paths, but CI should not pretend they passed when the browser runtime is missing.",
+        project_usage="V4.4 ships Playwright config and demo/citation/observability specs plus an optional runner that skips honestly without Playwright or browser binaries.",
+        review_suggestion="Review Playwright setup, skip semantics, screenshot/trace output paths and how to promote the optional gate to a hard gate in a prepared environment.",
+        interview_expression="I added browser-level E2E coverage in a way that is runnable when the environment supports it and explicit when it is skipped.",
+        file_patterns=("playwright.config", "e2e", "check_e2e", "test:e2e"),
+    ),
+    LearningTopic(
+        key="provider_readiness_evaluation",
+        name="Provider Readiness Evaluation",
+        beginner_explanation="Provider diagnostics should verify configuration and optional real calls without leaking secrets or fabricating outputs.",
+        project_usage="V4.4 adds evaluate_providers.py with dry-run, demo and real-if-configured modes for LLM, embedding, OCR, vision, transcription and rerank boundaries.",
+        review_suggestion="Review NOT_CONFIGURED codes, endpoint fingerprinting, no-key default behavior and real-if-configured failure handling.",
+        interview_expression="I made provider readiness testable without requiring paid keys in CI, while preserving the rule that missing providers refuse instead of creating fake AI results.",
+        file_patterns=("evaluate_providers", "provider_eval", "real-if-configured", "dry-run", "RERANK_NOT_CONFIGURED"),
     ),
 )
 

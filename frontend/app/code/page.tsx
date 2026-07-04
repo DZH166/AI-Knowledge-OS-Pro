@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Code2, FolderOpen, ShieldCheck } from "lucide-react";
 
 import { ButtonLoading, EmptyState, ErrorState, PageHeader, StatusBadge } from "@/components/ui";
@@ -22,7 +23,12 @@ function numberMeta(source: SourceItem, key: string) {
   return typeof value === "number" ? value : 0;
 }
 
-export default function CodeRepositoryPage() {
+function CodeRepositoryContent() {
+  const searchParams = useSearchParams();
+  const citationFile = searchParams.get("file") || "";
+  const citationLine = searchParams.get("line") || "";
+  const citationLineEnd = searchParams.get("line_end") || "";
+  const citationSource = searchParams.get("source") || "";
   const [spaces, setSpaces] = useState<KnowledgeSpace[]>([]);
   const [repositories, setRepositories] = useState<SourceItem[]>([]);
   const [spaceId, setSpaceId] = useState(0);
@@ -86,6 +92,20 @@ export default function CodeRepositoryPage() {
       />
       {error && <ErrorState message={error} onRetry={load} />}
       {message && <span className="pill">{message}</span>}
+      {citationFile && (
+        <section className="notice">
+          <Code2 size={18} />
+          <div className="stack compact">
+            <strong>引用定位</strong>
+            <span>
+              文件：{citationFile}
+              {citationLine ? ` / 行号：${citationLine}${citationLineEnd ? `-${citationLineEnd}` : ""}` : ""}
+              {citationSource ? ` / source #${citationSource}` : ""}
+            </span>
+            <span className="muted">如果文件已被接入，代码片段会保留相对路径和行号；文件不存在时不会崩溃。</span>
+          </div>
+        </section>
+      )}
 
       {spaces.length === 0 ? (
         <EmptyState
@@ -152,5 +172,13 @@ export default function CodeRepositoryPage() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function CodeRepositoryPage() {
+  return (
+    <Suspense fallback={<div className="page" />}>
+      <CodeRepositoryContent />
+    </Suspense>
   );
 }

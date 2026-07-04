@@ -630,6 +630,65 @@ export type SystemTestResponse = {
   details: Record<string, unknown>;
 };
 
+export type ObservabilityRequest = {
+  request_id: string;
+  method: string;
+  path: string;
+  status_code: number;
+  latency_ms: number;
+  error_code: string | null;
+  created_at: string;
+};
+
+export type ObservabilityTask = {
+  task_id: number;
+  target_type: string;
+  document_id: number | null;
+  source_id: number | null;
+  status: string;
+  task_stage: string | null;
+  progress: number;
+  task_duration_ms: number | null;
+  error_code: string | null;
+  latest_event: string | null;
+  created_at: string;
+  updated_at: string | null;
+};
+
+export type ObservabilityRetrieval = {
+  retrieval_trace_id: string;
+  generation_id: string;
+  qa_log_id: number;
+  runtime_mode: string;
+  answer_status: string;
+  retrieval_top_k: number;
+  retrieval_source_mix: Record<string, number>;
+  citation_count: number;
+  citation_validation_status: string;
+  latency_ms: number | null;
+  error_code: string | null;
+  created_at: string;
+};
+
+export type ObservabilityProviderStatus = {
+  provider_name: string;
+  provider_status: string;
+  provider_error_code: string | null;
+  message: string;
+  latency_ms: number | null;
+};
+
+export type ObservabilitySummary = {
+  demo_mode: boolean;
+  runtime_mode: string;
+  recent_requests: ObservabilityRequest[];
+  recent_tasks: ObservabilityTask[];
+  recent_retrievals: ObservabilityRetrieval[];
+  provider_status: ObservabilityProviderStatus[];
+  error_categories: Record<string, number>;
+  notes: string[];
+};
+
 export type OnboardingState = {
   user_key: string;
   steps: Record<string, boolean>;

@@ -1,6 +1,6 @@
 # GitHub Demo Showcase
 
-This guide presents AI Knowledge OS Pro V4.3 as a coherent product workflow rather than a collection of isolated pages.
+This guide presents AI Knowledge OS Pro V4.4 as a coherent product workflow rather than a collection of isolated pages.
 
 ## Demo data policy
 
@@ -61,9 +61,9 @@ The capture script waits for page-specific data, rejects pages containing `Faile
 - Use the same synthetic workspace across all screenshots.
 - Re-capture after material layout or workflow changes.
 
-## V4.3 one-command preparation
+## V4.4 one-command preparation
 
-V4.3 keeps setup/reset scripts that keep demo data isolated from normal application data and adds docs/readme/release quality gates:
+V4.4 keeps setup/reset scripts that keep demo data isolated from normal application data and adds docs/readme/release, provider dry-run, observability and optional E2E quality gates:
 
 ```powershell
 python scripts/setup_demo.py --reset
@@ -73,10 +73,12 @@ The script starts Redis/Qdrant through Docker Compose, seeds `backend/data/demo_
 
 Synthetic demo records include a knowledge space, documents, image/audio/video/code sources, task records, grounded and refusal Q&A, learning cards and a learning archive. They are labelled as demo/showcase data and must not be described as real provider outputs.
 
-Run the V4.3 regression checks after seeding:
+Run the V4.4 regression checks after seeding:
 
 ```powershell
 python scripts/check_demo_ready.py --database-path backend/data/demo_showcase.db
 python scripts/evaluate_rag.py --demo --database-path backend/data/demo_showcase.db
 python scripts/check_full_regression.py --database-path backend/data/demo_showcase.db
+python scripts/evaluate_providers.py --dry-run
+python scripts/check_e2e.py
 ```

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Any
+import time
 from uuid import uuid4
 
 from fastapi import Request
@@ -9,6 +10,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 import json
 
 from app.core.errors import ServiceError
+from app.core.observability import observability_store
 
 
 def request_id() -> str:
@@ -36,6 +38,7 @@ def error_envelope(
 ) -> JSONResponse:
     return JSONResponse(
         status_code=status_code,
+        headers={"x-error-code": code},
         content={
             "success": False,
             "data": None,
@@ -56,8 +59,19 @@ class RequestIdMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         rid = request.headers.get("x-request-id") or request_id()
         request.state.request_id = rid
+        started = time.perf_counter()
         response = await call_next(request)
+        latency_ms = int((time.perf_counter() - started) * 1000)
         response.headers["x-request-id"] = rid
+        if request.url.path.startswith("/api/"):
+            observability_store.record_request(
+                request_id=rid,
+                method=request.method,
+                path=request.url.path,
+                status_code=response.status_code,
+                latency_ms=latency_ms,
+                error_code=response.headers.get("x-error-code"),
+            )
         return response
 
 

@@ -9,6 +9,7 @@ Citation locators describe where evidence lives.
 - Image source detail locator.
 - Audio timestamp locator.
 - Video timestamp and frame locator.
+- Code repository file and line locator.
 
 ## Why It Matters
 
@@ -16,10 +17,11 @@ RAG answers are only useful when the user can return to the evidence. A locator 
 
 ## Current Limitations
 
-- Browser-level validation for every locator type is still limited.
-- Code repository locators with file path and line ranges are planned for V4.0.
+- V4.4 adds API/contract validation and optional browser E2E scaffolding for document, media and code citation jumps.
+- Browser execution is optional and reports `skipped` when Playwright or browser binaries are not installed.
+- Very rich document anchors still depend on parser metadata such as page number or Markdown heading path.
 
-## Planned Code Locator
+## Code Locator
 
 ```text
 file_path

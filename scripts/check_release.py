@@ -51,6 +51,19 @@ VERSION_REQUIRED_ENTRIES = {
         "scripts/check_docs_links.py",
         "scripts/check_readme_assets.py",
     },
+    "V4.4": {
+        "docs/v4_4_acceptance_report.md",
+        "docs/v4_4_browser_e2e_report.md",
+        "docs/v4_4_citation_jump_report.md",
+        "docs/v4_4_observability_report.md",
+        "docs/v4_4_provider_eval_report.md",
+        "docs/v4_4_quality_gate_report.md",
+        "docs/v4_4_release_notes.md",
+        "frontend/e2e/demo-smoke.spec.ts",
+        "frontend/playwright.config.ts",
+        "scripts/check_e2e.py",
+        "scripts/evaluate_providers.py",
+    },
 }
 
 
@@ -63,7 +76,7 @@ def latest_release(version: str) -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Inspect an AI Knowledge OS Pro release archive.")
-    parser.add_argument("--version", default="V4.3")
+    parser.add_argument("--version", default="V4.4")
     parser.add_argument("--path", type=Path)
     args = parser.parse_args()
 

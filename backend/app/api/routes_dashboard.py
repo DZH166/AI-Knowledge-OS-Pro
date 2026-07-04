@@ -44,7 +44,7 @@ def get_dashboard_summary(db: Session = Depends(get_db)) -> DashboardSummary:
             )
             for log in recent_qa_models
         ],
-        current_version="V4.3: real-demo UX hardening, docs trust and release usability",
+        current_version="V4.4: demo E2E contracts, citation jumps and runtime observability",
         current_capabilities=[
             "Real/demo mode governance with explicit NOT_CONFIGURED provider errors",
             "Document and media jobs share the durable Task Center",

@@ -8,6 +8,7 @@ Demo mode exists to make the product workflow understandable without private dat
 - Screenshots under `docs/assets/screenshots/` use synthetic data.
 - Demo database lives at `backend/data/demo_showcase.db`.
 - `DEMO_MODE=true` labels runtime behavior and helps presentation flows stay safe.
+- V4.4 adds `scripts/run_demo_e2e.py` to seed an isolated `.pytest_tmp` demo database and run optional browser E2E when Playwright is installed.
 
 ## What Demo Mode May Do
 
@@ -41,5 +42,5 @@ If a required provider is missing, the system should return an explicit NOT_CONF
 ## Current Limitations
 
 - Demo data is useful for portfolio presentation and deterministic plumbing checks, not real LLM quality scoring.
-- V4.2 validates seeded database readiness, RAG citation/refusal behavior and a static frontend smoke path.
-- Full browser E2E with live Redis/Qdrant/backend/frontend remains a future optional gate.
+- V4.4 validates seeded database readiness, RAG citation/refusal behavior, static frontend smoke, E2E scaffolding and observability contracts.
+- Live browser E2E is available through `scripts/run_demo_e2e.py` when Playwright and browser binaries are installed; otherwise it reports an explicit skip.

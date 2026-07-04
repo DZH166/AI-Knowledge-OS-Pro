@@ -1,6 +1,6 @@
 # Quickstart
 
-This guide starts the current V4.3 baseline locally for portfolio review, demo validation and release-readiness checks. It does not require paid AI provider calls unless you enable real mode.
+This guide starts the current V4.4 baseline locally for portfolio review, demo validation, citation checks and observability review. It does not require paid AI provider calls unless you enable real mode.
 
 ## Implemented
 
@@ -9,6 +9,7 @@ This guide starts the current V4.3 baseline locally for portfolio review, demo v
 - Redis and Qdrant through Docker Compose.
 - Synthetic demo database seeding.
 - Demo readiness, RAG evaluation and full regression checks.
+- Provider dry-run diagnostics and optional browser E2E scaffolding.
 - Real provider refusal when required keys are missing.
 
 ## Prerequisites
@@ -66,6 +67,9 @@ http://127.0.0.1:3000
 python scripts/check_demo_ready.py --database-path backend/data/demo_showcase.db
 python scripts/evaluate_rag.py --demo --database-path backend/data/demo_showcase.db
 python scripts/check_full_regression.py --database-path backend/data/demo_showcase.db
+python scripts/evaluate_providers.py --dry-run
+python scripts/check_e2e.py
+python scripts/run_demo_e2e.py
 ```
 
 Expected result:
@@ -73,6 +77,8 @@ Expected result:
 ```text
 Demo readiness check passed
 ```
+
+If Playwright is not installed, `run_demo_e2e.py` reports `PLAYWRIGHT_NOT_INSTALLED` and exits without claiming a browser pass.
 
 ## Reset Demo Data
 

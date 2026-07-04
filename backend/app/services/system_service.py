@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import platform
 from datetime import datetime, timedelta, timezone
 
@@ -8,8 +9,21 @@ from sqlalchemy.orm import Session
 
 from app.core.config import settings
 from app.core.errors import ServiceError
+from app.core.observability import observability_store
 from app.models.ingestion_job import IngestionJob
-from app.schemas.system_schema import ComponentStatus, RuntimeStatus, SystemStatusResponse, SystemTestResponse
+from app.models.qa_log import QALog
+from app.models.task_event import JobEvent
+from app.schemas.system_schema import (
+    ComponentStatus,
+    ObservabilityProviderStatus,
+    ObservabilityRequest,
+    ObservabilityRetrieval,
+    ObservabilitySummary,
+    ObservabilityTask,
+    RuntimeStatus,
+    SystemStatusResponse,
+    SystemTestResponse,
+)
 from app.services.embedding_service import EmbeddingService
 from app.services.llm_service import LLMService
 from app.services.ocr_service import get_ocr_provider
@@ -135,6 +149,134 @@ class SystemService:
             message=str(status["message"]),
             details={key: value for key, value in status.items() if key not in {"ok", "status", "message"}},
         )
+
+    def observability(self, db: Session) -> ObservabilitySummary:
+        recent_requests = self.recent_requests()
+        recent_tasks = self.recent_tasks(db)
+        recent_retrievals = self.recent_retrievals(db)
+        provider_status = self.provider_status(db)
+        error_categories: dict[str, int] = {}
+        for request in recent_requests:
+            if request.error_code:
+                error_categories[request.error_code] = error_categories.get(request.error_code, 0) + 1
+        for task in recent_tasks:
+            if task.error_code:
+                error_categories[task.error_code] = error_categories.get(task.error_code, 0) + 1
+            elif task.status == "failed":
+                error_categories["TASK_FAILED"] = error_categories.get("TASK_FAILED", 0) + 1
+        for retrieval in recent_retrievals:
+            if retrieval.error_code:
+                error_categories[retrieval.error_code] = error_categories.get(retrieval.error_code, 0) + 1
+
+        notes = [
+            "Request observations are an in-process rolling buffer and reset when the API process restarts.",
+            "Retrieval observations are derived from persisted QA logs and do not expose full prompts or private source text.",
+            "Provider status is diagnostic only and does not print API keys.",
+        ]
+        return ObservabilitySummary(
+            demo_mode=settings.demo_mode,
+            runtime_mode=settings.runtime_mode,
+            recent_requests=recent_requests,
+            recent_tasks=recent_tasks,
+            recent_retrievals=recent_retrievals,
+            provider_status=provider_status,
+            error_categories=error_categories,
+            notes=notes,
+        )
+
+    def recent_requests(self, limit: int = 20) -> list[ObservabilityRequest]:
+        return [ObservabilityRequest(**item) for item in observability_store.recent_requests(limit)]
+
+    def recent_tasks(self, db: Session, limit: int = 10) -> list[ObservabilityTask]:
+        jobs = list(db.scalars(select(IngestionJob).order_by(IngestionJob.updated_at.desc(), IngestionJob.id.desc()).limit(limit)).all())
+        result: list[ObservabilityTask] = []
+        for job in jobs:
+            latest_event = db.scalar(
+                select(JobEvent).where(JobEvent.job_id == job.id).order_by(JobEvent.created_at.desc(), JobEvent.id.desc()).limit(1)
+            )
+            result.append(
+                ObservabilityTask(
+                    task_id=job.id,
+                    target_type=job.target_type,
+                    document_id=job.document_id,
+                    source_id=job.source_id,
+                    status=job.status,
+                    task_stage=job.current_step or (latest_event.step if latest_event else None),
+                    progress=job.progress,
+                    task_duration_ms=job.duration_ms,
+                    error_code=job.error_code,
+                    latest_event=latest_event.message if latest_event else job.message,
+                    created_at=self._iso(job.created_at),
+                    updated_at=self._iso(job.updated_at) if job.updated_at else None,
+                )
+            )
+        return result
+
+    def recent_retrievals(self, db: Session, limit: int = 10) -> list[ObservabilityRetrieval]:
+        logs = list(db.scalars(select(QALog).order_by(QALog.created_at.desc(), QALog.id.desc()).limit(limit)).all())
+        result: list[ObservabilityRetrieval] = []
+        for log in logs:
+            citations = self._json_list(log.citations_json)
+            source_mix: dict[str, int] = {}
+            for citation in citations:
+                if not isinstance(citation, dict):
+                    continue
+                source_type = str(citation.get("source_type") or ("document" if citation.get("document_id") else "unknown"))
+                source_mix[source_type] = source_mix.get(source_type, 0) + 1
+            used_citation_ids = self._json_list(log.used_citation_ids_json)
+            if log.retrieval_status == "insufficient_context":
+                validation_status = "refused_insufficient_context"
+                error_code = "INSUFFICIENT_CONTEXT"
+            elif citations and used_citation_ids:
+                validation_status = "passed"
+                error_code = None
+            elif citations:
+                validation_status = "available_not_used"
+                error_code = None
+            else:
+                validation_status = "no_citations"
+                error_code = "NO_CITATIONS"
+            result.append(
+                ObservabilityRetrieval(
+                    retrieval_trace_id=f"qa-{log.id}-retrieval",
+                    generation_id=f"qa-{log.id}-generation",
+                    qa_log_id=log.id,
+                    runtime_mode=log.runtime_mode,
+                    answer_status=log.retrieval_status,
+                    retrieval_top_k=settings.retrieval_top_k,
+                    retrieval_source_mix=source_mix,
+                    citation_count=len(citations),
+                    citation_validation_status=validation_status,
+                    latency_ms=None,
+                    error_code=error_code,
+                    created_at=self._iso(log.created_at),
+                )
+            )
+        return result
+
+    def provider_status(self, db: Session) -> list[ObservabilityProviderStatus]:
+        status = self.status(db)
+        components = {
+            "llm": status.llm,
+            "embedding": status.embedding,
+            "ocr": status.ocr,
+            "transcription": status.transcription,
+            "qdrant": status.qdrant,
+            "redis": status.redis,
+            "worker": status.worker,
+        }
+        result: list[ObservabilityProviderStatus] = []
+        for name, component in components.items():
+            result.append(
+                ObservabilityProviderStatus(
+                    provider_name=name,
+                    provider_status=component.status,
+                    provider_error_code=None if component.ok else component.status.upper(),
+                    message=component.message,
+                    latency_ms=None,
+                )
+            )
+        return result
 
     def _db_status(self, db: Session) -> ComponentStatus:
         try:
@@ -282,6 +424,18 @@ class SystemService:
         prefix, rest = redis_url.split("@", 1)
         scheme = prefix.split("://", 1)[0]
         return f"{scheme}://***:***@{rest}"
+
+    @staticmethod
+    def _json_list(raw: str) -> list:
+        try:
+            value = json.loads(raw or "[]")
+        except json.JSONDecodeError:
+            return []
+        return value if isinstance(value, list) else []
+
+    @staticmethod
+    def _iso(value: datetime) -> str:
+        return value.isoformat()
 
 
 system_service = SystemService()

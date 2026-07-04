@@ -1,6 +1,6 @@
 # GitHub Release Checklist
 
-Use this checklist before publishing AI Knowledge OS Pro `V4.3 / 4.3.0` or drafting a GitHub Release.
+Use this checklist before publishing AI Knowledge OS Pro `V4.4 / 4.4.0` or drafting a GitHub Release.
 
 ## Product Integrity
 
@@ -24,8 +24,10 @@ Use this checklist before publishing AI Knowledge OS Pro `V4.3 / 4.3.0` or draft
 - [ ] `python scripts/check_full_regression.py --database-path backend/data/demo_showcase.db` passes.
 - [ ] `python scripts/check_docs_links.py` passes.
 - [ ] `python scripts/check_readme_assets.py` passes.
+- [ ] `python scripts/evaluate_providers.py --dry-run` passes without leaking keys or calling paid APIs.
+- [ ] `python scripts/check_e2e.py` passes and live browser E2E is either run or explicitly skipped because runtime dependencies are unavailable.
 - [ ] `python scripts/check_all.py --full` passes.
-- [ ] `python scripts/release.py --version V4.3 --dry-run` passes.
+- [ ] `python scripts/release.py --version V4.4 --dry-run` passes.
 
 ## Documentation
 
@@ -44,6 +46,6 @@ Use this checklist before publishing AI Knowledge OS Pro `V4.3 / 4.3.0` or draft
 
 ## GitHub Release Draft Notes
 
-- Tag: `v4.3.0`.
-- Title: `AI Knowledge OS Pro V4.3 - Real Demo UX Hardening And Release Usability`.
+- Tag: `v4.4.0`.
+- Title: `AI Knowledge OS Pro V4.4 - Demo E2E Contracts And Runtime Observability`.
 - Attach release zip only after local and CI checks pass.

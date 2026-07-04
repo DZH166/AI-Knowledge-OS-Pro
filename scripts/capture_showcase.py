@@ -14,7 +14,7 @@ DEFAULT_BROWSER_PATHS = (
     Path("C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe"),
 )
 ROUTES = {
-    "dashboard.png": ("/dashboard", "V4.3: real-demo UX hardening, docs trust and release usability"),
+    "dashboard.png": ("/dashboard", "V4.4: demo E2E contracts, citation jumps and runtime observability"),
     "upload-center.png": ("/upload", "Upload Center"),
     "knowledge-chat.png": ("/chat", "How does the system keep multimodal RAG answers traceable?"),
     "media-library.png": ("/media", "Multimodal RAG Walkthrough"),
@@ -32,7 +32,7 @@ def default_browser() -> Path:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Capture synthetic V4.3 GitHub showcase screenshots.")
+    parser = argparse.ArgumentParser(description="Capture synthetic V4.4 GitHub showcase screenshots.")
     parser.add_argument("--base-url", default="http://127.0.0.1:3010")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--browser-path", type=Path, default=default_browser())
