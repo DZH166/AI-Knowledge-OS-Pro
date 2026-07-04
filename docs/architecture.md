@@ -1,6 +1,6 @@
 # Architecture
 
-AI Knowledge OS Pro V3.6 uses a Next.js frontend, FastAPI backend, SQLite relational store, Qdrant vector store, and Redis/RQ task engine.
+AI Knowledge OS Pro currently uses a Next.js frontend, FastAPI backend, SQLite relational store, Qdrant vector store, and Redis/RQ task engine. V4.3 is a real-demo UX hardening and release-usability pass after the V4.2 full regression checkpoint. It does not add fake provider-backed capabilities; it makes the repository easier to open, run, validate, explain and release.
 
 ## Backend
 
@@ -74,6 +74,21 @@ The public task contract mirrors the nullable database ownership model: document
 
 - GitHub Actions runs backend compilation/tests/migrations, frontend typecheck/build, UTF-8 checks, version checks and release archive inspection.
 - `scripts/seed_showcase.py` creates only an isolated synthetic database whose filename must contain `showcase`.
+- `scripts/check_demo_ready.py`, `scripts/evaluate_rag.py` and `scripts/check_full_regression.py` validate synthetic demo readiness, RAG evidence plumbing and full regression coverage.
+- `scripts/check_docs_links.py`, `scripts/check_readme_assets.py` and `scripts/check_all.py` validate V4.3 docs integrity, README media safety and quality-gate orchestration.
 - `scripts/capture_showcase.py` waits for real page data and rejects failed or blank captures before writing the seven README screenshots.
 - `scripts/check_release.py` validates the generated zip against the same exclusions used by the release builder.
 - Real `.env` files, SQLite databases, uploads, logs, dependencies, build caches and previous releases are excluded from release artifacts.
+
+## V4.1 Architecture Consolidation
+
+V4.1 adds a repository-wide code inventory, dead-code review plan, archive structure and module-boundary docs. Historical reports are preserved under `docs/archive`, while active architecture, setup, release and learning docs remain in `docs/`.
+
+New V4.1 architecture references:
+
+- `docs/backend_architecture.md`
+- `docs/frontend_architecture.md`
+- `docs/module_boundaries.md`
+- `docs/scripts_reference.md`
+- `docs/v4_1_code_inventory.md`
+- `docs/v4_1_cleanup_report.md`

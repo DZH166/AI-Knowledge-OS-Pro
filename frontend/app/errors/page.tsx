@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Bug, ExternalLink } from "lucide-react";
 
@@ -16,19 +16,18 @@ export default function ErrorArchivesPage() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  async function load() {
+  const load = useCallback(async () => {
     setError("");
     try {
       setArchives(await api.listErrors({ status: status || undefined }));
     } catch (exc) {
       setError(exc instanceof Error ? exc.message : "报错档案加载失败");
     }
-  }
+  }, [status]);
 
   useEffect(() => {
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
+  }, [load]);
 
   const filtered = useMemo(() => {
     const keyword = query.trim().toLowerCase();

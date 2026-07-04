@@ -1,170 +1,182 @@
 # AI Knowledge OS Pro
 
-> 面向 AI 应用开发学习者的多模态个人知识操作系统：把项目资料、RAG 问答、媒体证据、后台任务和版本学习档案连接成一条可追溯的学习工作流。
+> Multimodal personal knowledge OS for AI application learners: project sources become searchable evidence, RAG answers, durable media tasks and versioned learning archives.
 
 [![CI](https://github.com/DZH166/AI-Knowledge-OS-Pro/actions/workflows/ci.yml/badge.svg)](https://github.com/DZH166/AI-Knowledge-OS-Pro/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-V3.6%20%2F%203.6.0-0f766e)](docs/v3_6_acceptance_report.md)
+[![Version](https://img.shields.io/badge/version-V4.3%20%2F%204.3.0-0f766e)](docs/v4_3_release_readiness_report.md)
 [![Python](https://img.shields.io/badge/Python-3.12-2563eb)](backend/requirements.txt)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688)](backend/requirements.txt)
 [![Next.js](https://img.shields.io/badge/Next.js-15-111827)](frontend/package.json)
 [![License](https://img.shields.io/badge/license-MIT-334155)](LICENSE)
 
 ![AI Knowledge OS Pro Dashboard](docs/assets/screenshots/dashboard.png)
 
-## 项目定位
+## 30-60 Second Demo
 
-AI Knowledge OS Pro 不是一个只会“上传文件再聊天”的演示页面。它针对真实 AI 应用学习过程中的三个问题：
+A Demo GIF is planned under `docs/assets/demo/v4_3_demo_walkthrough.gif`. It is not referenced as an image until captured, to avoid broken README media. Use the current walkthrough script instead:
 
-1. 项目资料分散，无法形成可检索、可引用的个人知识库。
-2. 图片、音频、视频虽然能保存，但处理过程、失败原因和证据位置不可追踪。
-3. 做完一个版本后，只剩代码，没有可复习、可讲解、可用于面试表达的学习档案。
+- [Quickstart](docs/quickstart.md)
+- [Demo mode boundary](docs/demo_mode.md)
+- [60-second demo script](docs/demo_script.md)
+- [Demo storyboard](docs/demo_storyboard.md)
+- [Demo showcase guide](docs/demo_showcase.md)
+- [Screenshot inventory](docs/assets/screenshots/README.md)
 
-V3.6 / 3.6.0 将文档、图片、音频和视频统一到持久化任务中心，并让 RAG 引用能返回文档片段、图片详情或媒体时间戳。所有模型能力都遵守真实模式边界：缺少 provider 配置时明确拒绝，不生成假 OCR、假字幕、假引用或假学习资料。
+## Why This Project Exists
 
-## 核心亮点
+AI application learning often leaves three gaps:
 
-- **可追溯 RAG**：文档 chunk、图片 OCR、音频/视频转写统一进入 Qdrant，回答携带真实来源定位。
-- **统一任务中心**：文档解析、图片 OCR、截图分析、音频转写、视频转写、关键帧和视觉分析共享 Redis/RQ 任务模型。
-- **多模态证据跳转**：文档定位页码/章节，图片打开来源详情，音频和视频跳到时间戳并高亮转写片段。
-- **视频学习工作台**：播放器、转写时间线、多关键帧、片段证据和学习操作在同一页面联动。
-- **来源驱动学习资产**：从真实 chunk 生成知识点、卡片、练习题、笔记和面试表达，并保留来源 locator。
-- **工程化交付**：Alembic 迁移、pytest、Next.js build、UTF-8 检查、版本一致性检查和 release 安全检查全部进入 CI。
+1. Source material is scattered across documents, screenshots, audio and video.
+2. RAG demos answer questions but do not reliably bring users back to the exact evidence.
+3. Learners finish a version but lose the ability to explain what changed, why it matters and how to discuss it in interviews.
 
-## 产品截图
+AI Knowledge OS Pro turns that workflow into a local product: sources are ingested, processed through observable tasks, retrieved with citations and converted into versioned learning records.
 
-截图使用本地演示数据，不包含真实 API Key、私人资料、数据库或用户上传内容。完整演示顺序见 [Demo Showcase](docs/demo_showcase.md)。
+## Core Highlights
 
-| 上传与知识问答 | 媒体资料库 |
+- Traceable RAG: document chunks and multimodal chunks keep source locators.
+- Unified Task Center: document parsing, image OCR, screenshot analysis, audio transcription, video transcription and keyframes share durable job/event records.
+- Multimodal citation jumps: documents jump to chunks, images to detail pages, audio/video to timestamps with transcript highlighting.
+- Video learning page: player, transcript timeline, keyframes, evidence chunks and learning actions work together.
+- Learning loop: real source chunks become knowledge points, cards, quizzes, notes and interview expressions.
+- Engineering trust: CI, UTF-8 checks, secret checks, repo cleanliness checks, RAG evaluation, full regression smoke and release dry-run protect the GitHub portfolio.
+- V4.3 release usability: README/docs links, README assets, demo closure, provider boundaries, API smoke and release checks are grouped behind executable quality gates.
+
+## Feature Matrix
+
+| Capability | Status | Requirement | Honest boundary |
+| --- | --- | --- | --- |
+| Knowledge spaces | Implemented | Local DB | Directly usable |
+| txt/md/pdf upload and chunks | Implemented | Local backend | Scanned PDF OCR is not automatic |
+| Qdrant semantic retrieval | Implemented | Qdrant + embedding provider | Missing embedding provider blocks real indexing |
+| RAG answer | Implemented | LLM provider | Missing LLM returns explicit refusal |
+| Image upload and metadata | Implemented | Pillow | Directly usable |
+| Image OCR | Implemented | OCR/vision provider | Missing provider returns `OCR_NOT_CONFIGURED` |
+| Audio upload and duration | Implemented | Mutagen/WAV parser | Directly usable for metadata |
+| Audio transcription | Implemented | Speech-to-text provider | Missing provider returns `TRANSCRIPTION_NOT_CONFIGURED` |
+| Video upload and keyframes | Implemented | FFmpeg/imageio-ffmpeg | Keyframes are real extracted/generated assets, not LLM output |
+| Video transcription | Implemented | Speech-to-text provider | No fake subtitles |
+| Task Center retry/cancel/events | Implemented | Redis/RQ for background dispatch | DB records remain visible without worker |
+| Demo seed data | Implemented and hardened in V4.2 | `scripts/seed_demo_data.py`, `scripts/reset_demo_data.py`, `scripts/check_full_regression.py` | Synthetic, labelled and includes refusal/provider-boundary evidence |
+| README/docs integrity | Implemented in V4.3 | `scripts/check_docs_links.py`, `scripts/check_readme_assets.py`, `scripts/check_all.py` | Checks local links/assets only; external GitHub availability is verified by CI |
+| Subtitle export | Planned | Not implemented | Do not claim as delivered |
+| Shot-level scene segmentation | Planned | Not implemented | Roadmap only |
+
+## Product Screenshots
+
+Screenshots use synthetic demo data and do not contain API keys, private documents or user uploads.
+
+| Upload Center | Media Library |
 | --- | --- |
 | ![Upload Center](docs/assets/screenshots/upload-center.png) | ![Media Library](docs/assets/screenshots/media-library.png) |
 | ![Knowledge Chat](docs/assets/screenshots/knowledge-chat.png) | ![Video Detail](docs/assets/screenshots/video-detail.png) |
 
-| 任务中心 | 学习档案 |
+| Task Center | Learning Archive |
 | --- | --- |
 | ![Task Center](docs/assets/screenshots/task-center.png) | ![Learning Archive](docs/assets/screenshots/learning-archive.png) |
 
-## 技术架构
+## System Architecture
 
 ```mermaid
 flowchart LR
-    UI["Next.js / React UI"] --> API["FastAPI API"]
-    API --> SQL["SQLite + SQLAlchemy"]
-    API --> REDIS["Redis / RQ"]
-    REDIS --> WORKER["Independent Worker"]
-    WORKER --> PROVIDERS["LLM / Embedding / OCR / Transcription"]
-    WORKER --> SQL
-    WORKER --> QDRANT["Qdrant Vector Store"]
-    API --> QDRANT
-    SQL --> ARCHIVE["Version Learning Archive"]
+    UI["Next.js UI"] --> API["FastAPI API"]
+    API --> SQL["SQLite / SQLAlchemy"]
+    API --> Redis["Redis / RQ"]
+    Redis --> Worker["Worker"]
+    Worker --> SQL
+    Worker --> Qdrant["Qdrant"]
+    API --> Qdrant
+    Worker --> Providers["LLM / Embedding / OCR / Speech providers"]
+    SQL --> Learning["Learning archive"]
 ```
 
-| Layer | Technology | Responsibility |
-| --- | --- | --- |
-| Frontend | Next.js 15, React 19, TypeScript | Upload, Task Center, RAG chat, media evidence and learning UI |
-| API | FastAPI, Pydantic | Product APIs, provider boundaries and error contracts |
-| Relational data | SQLAlchemy, Alembic, SQLite | Sources, revisions, jobs, events, citations and learning artifacts |
-| Task engine | Redis, RQ | Durable dispatch for document and media processing |
-| Vector retrieval | Qdrant | Document and multimodal chunk retrieval |
-| Model adapters | OpenAI-compatible APIs | LLM, embedding, OCR/vision and transcription |
+More interview-friendly diagrams are in [Architecture Diagrams](docs/architecture_diagram.md).
 
-更详细的数据边界和任务模型见 [Architecture](docs/architecture.md)。
-
-## RAG 流程
+## RAG Flow
 
 ```mermaid
 flowchart TD
-    A["Document or multimodal source"] --> B["Parse / OCR / Transcribe"]
-    B --> C["Traceable chunks + locators"]
-    C --> D["Embedding"]
-    D --> E["Qdrant index"]
-    Q["User question"] --> F["Vector retrieval"]
-    E --> F
-    F --> G["Grounded prompt"]
-    G --> H["LLM answer"]
-    H --> I["Validated citations"]
-    I --> J["Document section / image / media timestamp"]
+    Source["Document / image / audio / video"] --> Process["Parse, OCR or transcribe"]
+    Process --> Chunk["Chunk + CitationLocator"]
+    Chunk --> Embed["Embedding"]
+    Embed --> Index["Qdrant"]
+    Question["Question"] --> Retrieve["Retrieve relevant chunks"]
+    Index --> Retrieve
+    Retrieve --> Prompt["Grounded prompt"]
+    Prompt --> Answer["LLM answer"]
+    Answer --> Citation["Validated citations"]
+    Citation --> Jump["Chunk, image detail or media timestamp"]
 ```
 
-系统不会在模型没有使用引用时强行补第一条检索结果。没有可用资料、索引不兼容或 provider 未配置时，会返回明确状态而不是伪造答案。
-
-## 多模态处理流程
+## Multimodal Processing Flow
 
 ```mermaid
 flowchart TD
-    U["Upload Center"] --> S["Source + SourceRevision"]
-    S --> T["Durable media job"]
-    T --> IMG["Image OCR / visual / screenshot analysis"]
-    T --> AUD["Audio transcription"]
-    T --> VID["Video metadata / keyframes / transcription"]
-    IMG --> CHUNK["MultimodalChunk"]
-    AUD --> SEG["Timestamped TranscriptSegment"]
-    VID --> FRAME["VisualFrame with timestamp_ms"]
-    SEG --> CHUNK
-    FRAME --> LOC["CitationLocator"]
-    CHUNK --> LOC
-    LOC --> RAG["RAG retrieval and deep link"]
-    LOC --> LEARN["Knowledge point / card / quiz / note / interview expression"]
+    Upload["Upload Center"] --> Source["Source + revision"]
+    Source --> Job["Media task"]
+    Job --> Image["Image OCR / visual / screenshot analysis"]
+    Job --> Audio["Audio transcription"]
+    Job --> Video["Video keyframes / transcription"]
+    Image --> Evidence["MultimodalChunk"]
+    Audio --> Evidence
+    Video --> Evidence
+    Evidence --> RAG["RAG citation"]
+    Evidence --> Learn["Learning artifact"]
 ```
 
-### 真实能力边界
+## Learning Loop
 
-| Capability | Configured | Missing provider |
-| --- | --- | --- |
-| LLM answer | Calls configured chat endpoint | `LLM_NOT_CONFIGURED`-style refusal |
-| Embedding | Creates real vectors | Upload/index operation is blocked |
-| Image OCR | Persists OCR chunks and locators | `OCR_NOT_CONFIGURED` |
-| Audio/video transcription | Persists timestamped segments | `TRANSCRIPTION_NOT_CONFIGURED` |
-| Visual description | Uses configured vision provider | Explicit NOT_CONFIGURED failure |
-| Learning artifacts | Uses persisted source chunks | Empty or unprocessed sources are refused |
-
-## Repository Structure
-
-```text
-backend/                 FastAPI application, models, services, migrations and tests
-frontend/                Next.js product UI
-docs/                    Architecture, learning archive, reports and demo assets
-scripts/                 Learning package, encoding, version and release checks
-.github/workflows/       GitHub Actions CI
-.github/ISSUE_TEMPLATE/  Structured issue forms
+```mermaid
+flowchart LR
+    Evidence["Source evidence"] --> Point["Knowledge point"]
+    Point --> Card["Card"]
+    Point --> Quiz["Quiz"]
+    Point --> Note["Note"]
+    Point --> Pitch["Interview expression"]
+    Pitch --> Log["Version learning archive"]
 ```
 
-## Quick Start
+## Tech Stack
 
-### 1. Configure environment
+| Layer | Technology |
+| --- | --- |
+| Frontend | Next.js 15, React 19, TypeScript |
+| Backend | FastAPI, Pydantic, SQLAlchemy, Alembic |
+| Local DB | SQLite |
+| Vector DB | Qdrant |
+| Tasks | Redis, RQ, persistent job events |
+| Providers | OpenAI-compatible LLM, Embedding, OCR/vision and Speech-to-text |
+| Verification | pytest, compileall, TypeScript typecheck, Next.js build, GitHub Actions |
+
+## Local Quick Start
+
+For the maintained step-by-step guide, see [Quickstart](docs/quickstart.md). For local engineering notes, see [Local Development](docs/local_development.md).
 
 ```powershell
+git clone https://github.com/DZH166/AI-Knowledge-OS-Pro.git
+cd AI-Knowledge-OS-Pro
 Copy-Item .env.example .env
 Copy-Item backend/.env.example backend/.env
 Copy-Item frontend/.env.local.example frontend/.env.local
 ```
 
-### 2. Start Qdrant and Redis
+Start local services:
 
 ```powershell
-docker compose up -d qdrant redis
+docker compose up -d redis qdrant
 ```
 
-### 3. Install backend and migrate
+Install backend and migrate:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r backend/requirements.txt
 python -m alembic upgrade head
-```
-
-### 4. Start API and Worker
-
-```powershell
 python -m uvicorn app.main:app --app-dir backend --reload --host 127.0.0.1 --port 8000
 ```
 
-In another terminal:
-
-```powershell
-python -m app.worker
-```
-
-### 5. Start frontend
+Start frontend in another terminal:
 
 ```powershell
 cd frontend
@@ -172,11 +184,41 @@ npm ci
 npm run dev
 ```
 
-- Product UI: `http://localhost:3000`
-- OpenAPI: `http://localhost:8000/docs`
-- System diagnostics: `http://localhost:3000/system`
+Open `http://localhost:3000`.
 
-Windows-specific FFmpeg and service notes are in [Local Setup](docs/local_setup_windows.md).
+## Docker Demo Start
+
+The current Compose file starts Redis and Qdrant. The API and frontend run locally so the demo remains easy to inspect and debug.
+
+```powershell
+python scripts/setup_demo.py --reset
+```
+
+If Docker is already running or unavailable, skip service startup and only seed/check data:
+
+```powershell
+python scripts/setup_demo.py --skip-docker --reset
+```
+
+Then start the app with the printed environment variables:
+
+```powershell
+$env:DATABASE_URL="sqlite:///C:/path/to/AI Knowledge OS Pro/backend/data/demo_showcase.db"
+$env:DEMO_MODE="true"
+python -m uvicorn app.main:app --app-dir backend --reload --host 127.0.0.1 --port 8000
+```
+
+```powershell
+cd frontend
+$env:NEXT_PUBLIC_API_BASE_URL="http://127.0.0.1:8000"
+npm run dev
+```
+
+Check demo readiness any time:
+
+```powershell
+python scripts/check_demo_ready.py --database-path backend/data/demo_showcase.db
+```
 
 ## Environment Variables
 
@@ -184,96 +226,102 @@ Never commit real values. `.env`, `backend/.env` and `frontend/.env.local` are i
 
 | Variable | Purpose | Required |
 | --- | --- | --- |
-| `DEMO_MODE` | Enables clearly labelled local demo adapters | No; defaults to `false` |
-| `DATABASE_URL` | SQLAlchemy database URL | No; local SQLite default |
-| `REDIS_URL` | RQ dispatch and Worker connection | For background tasks |
-| `QDRANT_URL` | Vector database endpoint | For indexing and RAG |
-| `LLM_API_KEY` | Chat completion provider | For real answers |
-| `EMBEDDING_API_KEY` | Embedding provider | For real indexing/retrieval |
-| `OCR_API_KEY` | OCR/vision endpoint | For image OCR and visual tasks |
-| `TRANSCRIPTION_API_KEY` | Audio transcription endpoint | For audio/video transcription |
-| `NEXT_PUBLIC_API_BASE_URL` | Browser-visible FastAPI base URL | Frontend deployment |
+| `DEMO_MODE` | Labels runtime as demo and uses demo-safe behavior where available | Optional |
+| `DATABASE_URL` | SQLAlchemy database URL | Optional, defaults to local SQLite |
+| `REDIS_URL` | Redis/RQ dispatch | Required for background workers |
+| `QDRANT_URL` | Vector database endpoint | Required for retrieval/indexing |
+| `LLM_API_KEY` | Chat completion provider | Required for real answers |
+| `EMBEDDING_API_KEY` | Embedding provider | Required for real semantic retrieval |
+| `OCR_API_KEY` | OCR/vision endpoint | Required for OCR and vision tasks |
+| `TRANSCRIPTION_API_KEY` | Speech-to-text endpoint | Required for audio/video transcription |
+| `NEXT_PUBLIC_API_BASE_URL` | Browser-visible FastAPI base URL | Required for frontend deployment |
 
-See [.env.example](.env.example), [backend/.env.example](backend/.env.example) and [frontend/.env.local.example](frontend/.env.local.example) for complete options.
+## Demo Mode vs Real Mode
 
-## Verification
+| Mode | What it can show | What it must not do |
+| --- | --- | --- |
+| Demo | Synthetic knowledge space, sources, tasks, Q&A, cards and learning logs | Pretend synthetic text is real provider output |
+| Real | Calls configured providers and persists real outputs | Silently fabricate OCR, transcripts, answers or citations |
 
-CI runs the same commands expected locally:
+Missing provider keys produce explicit NOT_CONFIGURED-style errors. Demo mode is for workflow presentation, not fake AI capability.
+
+## Tests And Build
 
 ```powershell
-python -m compileall backend/app backend/alembic scripts
+python -m compileall backend/app scripts
 python -m pytest
-python -m alembic current
 python scripts/check_encoding.py
-python scripts/check_version.py
+python scripts/check_secrets.py
+python scripts/check_repo_clean.py
+python scripts/check_docs_links.py
+python scripts/check_readme_assets.py
+python scripts/check_frontend_smoke.py
+python scripts/check_demo_ready.py --database-path backend/data/demo_showcase.db
+python scripts/evaluate_rag.py --demo --database-path backend/data/demo_showcase.db
+python scripts/check_full_regression.py --database-path backend/data/demo_showcase.db
+python scripts/release.py --version V4.3 --dry-run
+python scripts/check_all.py --full
+```
 
+```powershell
 cd frontend
 npm run typecheck
 npm run build
 ```
 
-Current verified baseline: **40 backend tests passed**, Alembic head `0006_v3_6_unified_media_tasks`, frontend typecheck passed and production build passed. The next verification run updates this count in the V3.6 acceptance report.
+CI runs these checks without calling paid provider APIs.
 
-## CI and Release
+## Project Structure
 
-[GitHub Actions CI](.github/workflows/ci.yml) validates backend, frontend, UTF-8 encoding, version consistency and release archive safety. The release job uploads a sanitized zip artifact.
-
-```powershell
-python scripts/release.py --version V3.6
-python scripts/check_release.py --version V3.6
+```text
+backend/                 FastAPI app, SQLAlchemy models, services, migrations and tests
+frontend/                Next.js product UI
+docs/                    Architecture, reports, screenshots, demo and learning archives
+scripts/                 Demo, verification, learning package and release utilities
+.github/workflows/       GitHub Actions CI
+.github/ISSUE_TEMPLATE/  Issue forms and PR template
 ```
 
-The archive must not contain `.env`, SQLite databases, uploads, logs, `node_modules`, `.next`, caches, keys or old releases. See [Release Checklist](docs/release_checklist.md).
+## Documentation Map
 
-## Learning Package
+| Area | Docs |
+| --- | --- |
+| Demo and setup | [Quickstart](docs/quickstart.md), [Demo Mode](docs/demo_mode.md), [Local Development](docs/local_development.md), [Environment Variables](docs/environment_variables.md), [Provider Diagnostics](docs/provider_diagnostics.md) |
+| Architecture and flows | [Architecture](docs/architecture.md), [Architecture Diagrams](docs/architecture_diagram.md), [RAG Flow](docs/rag_flow.md), [Multimodal Pipeline](docs/multimodal_pipeline.md), [Task Queue Flow](docs/task_queue_flow.md), [Citation Flow](docs/citation_flow.md), [Learning Loop](docs/learning_loop.md) |
+| Release and governance | [Release Process](docs/release_process.md), [Versioning](docs/versioning.md), [Commit Convention](docs/commit_convention.md), [Document Quality Checklist](docs/document_quality_checklist.md), [Release Checklist](docs/github_release_checklist.md) |
+| V4.x modules and reports | [RAG Evaluation](docs/rag_evaluation.md), [Hybrid Retrieval](docs/hybrid_retrieval.md), [Code Repository Ingestion](docs/code_repository_ingestion.md), [Portfolio System](docs/portfolio_system.md), [Interview System](docs/interview_system.md), [Observability](docs/observability.md), [V4.2 Full Regression](docs/v4_2_full_regression_report.md), [V4.2 Acceptance](docs/v4_2_acceptance_report.md), [V4.3 Release Readiness](docs/v4_3_release_readiness_report.md), [V4.3 Quality Gates](docs/v4_3_quality_gate_report.md) |
 
-Generate a V3.6 draft from real repository changes, routes, dependencies and optional verification reports:
+## Current Limitations
 
-```powershell
-python scripts/generate_learning_package.py \
-  --version V3.6 \
-  --from-ref HEAD~1 \
-  --to-ref HEAD \
-  --output docs/v3_6_learning_package_draft.json
-```
+- Real LLM, embedding, OCR and transcription need configured providers.
+- Docker Compose starts Redis/Qdrant but not a full production deployment.
+- Subtitle export is planned but not implemented.
+- Shot-level scene segmentation is planned but not implemented.
+- Multi-user permissions, cloud tenancy and Kubernetes deployment are out of scope.
 
-Confirmed learning records are appended to [learning_log.md](docs/learning_log.md); stage delivery records are appended to [stage_delivery_log.md](docs/stage_delivery_log.md).
+## Version Roadmap
 
-## Roadmap
+- V1: Knowledge spaces, document upload, chunking, embeddings, Qdrant RAG and learning archive.
+- V2/V2.5: Real-mode governance, document operations, learning cards and product UI.
+- V3: Redis/RQ task engine and multimodal source model.
+- V3.1-V3.5: Image metadata/OCR, screenshot error archive, audio and video timestamp citations.
+- V3.6: Unified media tasks, citation deep links, multi-keyframes and source-derived learning artifacts.
+- V3.7: GitHub showcase, one-click demo setup, release dry-run, secret checks, architecture/resume docs and clearer capability boundaries.
+- V3.8: GitHub portfolio documentation map, demo reset workflow, quickstart/demo/development docs and V4.0 roadmap module specifications.
+- V3.9: RAG demo evaluation, frontend smoke gates and navigation IA split.
+- V4.0: Learning roadmap relations, hybrid retrieval foundation, code repository ingestion and portfolio pages.
+- V4.1: Codebase inventory, dead-code review, historical report archive and architecture boundary cleanup.
+- V4.2: Full regression checklist, hardened synthetic demo, stronger RAG quality evaluation, release-readiness gates and updated portfolio documentation.
+- V4.3: README/docs link integrity, README asset checks, demo walkthrough validation, provider-boundary tests, API regression coverage and unified quality gate orchestration.
 
-### Delivered in V3.6
+See [Roadmap](docs/roadmap.md).
 
-- Unified document and media task model with retry, cancel, progress and events.
-- Image OCR, screenshot error archive, audio/video transcription and multi-keyframe video processing.
-- Document/media citation deep links and player synchronization.
-- Source-derived learning artifacts and version learning package automation.
-- GitHub CI, project governance, encoding/version checks and safe release packaging.
+## Resume Expression
 
-### Deliberately out of scope
+> Built a multimodal RAG personal knowledge OS with FastAPI, Next.js, Qdrant and Redis/RQ. The system ingests documents, images, audio and video; tracks provider-backed processing through durable tasks; returns citations to document chunks or media timestamps; and turns source evidence into learning cards, notes and interview-ready explanations. Added CI, demo seeding, secret checks and release dry-run to make the project credible as a GitHub portfolio.
 
-- Multi-user permissions and cloud tenancy.
-- Large-scale Kubernetes deployment.
-- Full knowledge graph and multi-agent workflow.
-- Full shot-level scene segmentation and subtitle export.
-
-See the detailed [Roadmap](docs/roadmap.md).
-
-## Resume / Interview Expression
-
-> I built a multimodal personal knowledge OS with FastAPI, Next.js, Qdrant and Redis/RQ. I unified document, image, audio and video processing under a durable task model, made RAG citations deep-link to document chunks or media timestamps, and generated learning artifacts only from persisted source evidence. I also added Alembic migrations, automated tests, GitHub Actions and sanitized release packaging so the project is demonstrable as a production-oriented AI application rather than a fake-data prototype.
-
-## Documentation
-
-- [Architecture](docs/architecture.md)
-- [Demo Showcase](docs/demo_showcase.md)
-- [RAG Pipeline](docs/rag_pipeline.md)
-- [Task Flow](docs/ingestion_job_flow.md)
-- [Roadmap](docs/roadmap.md)
-- [V3.6 Acceptance Report](docs/v3_6_acceptance_report.md)
-- [Learning Archive](docs/learning_log.md)
-- [Contributing](CONTRIBUTING.md)
-- [Security](SECURITY.md)
+Detailed interview notes: [Resume And Interview Pitch](docs/resume_pitch.md).
 
 ## License
 
-Released under the [MIT License](LICENSE).
+MIT. See [LICENSE](LICENSE).

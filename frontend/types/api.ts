@@ -278,6 +278,16 @@ export type Citation = {
   document_id?: number | null;
   start_ms?: number | null;
   end_ms?: number | null;
+  dense_score?: number | null;
+  keyword_score?: number | null;
+  rerank_score?: number | null;
+  final_score?: number | null;
+  retrieval_reason?: string | null;
+  citation_ready?: boolean | null;
+  file_path?: string | null;
+  line_start?: number | null;
+  line_end?: number | null;
+  symbol_name?: string | null;
 };
 
 export type RelatedChunk = {
@@ -293,6 +303,24 @@ export type RelatedChunk = {
   document_id?: number | null;
   start_ms?: number | null;
   end_ms?: number | null;
+  dense_score?: number | null;
+  keyword_score?: number | null;
+  rerank_score?: number | null;
+  final_score?: number | null;
+  retrieval_reason?: string | null;
+  citation_ready?: boolean | null;
+  file_path?: string | null;
+  line_start?: number | null;
+  line_end?: number | null;
+  symbol_name?: string | null;
+};
+
+export type CodeRepositoryIngestResponse = {
+  source: SourceItem;
+  file_count: number;
+  chunk_count: number;
+  skipped_count: number;
+  message: string;
 };
 
 export type AnswerMode = "normal" | "beginner" | "project" | "interview";
@@ -456,6 +484,44 @@ export type LearningArtifact = {
   created_at: string;
 };
 
+export type PortfolioMetric = {
+  key: string;
+  label: string;
+  value: number;
+  description: string;
+};
+
+export type PortfolioCapability = {
+  name: string;
+  status: string;
+  evidence: string;
+  boundary: string;
+};
+
+export type PortfolioSummary = {
+  project_name: string;
+  version: string;
+  semantic_version: string;
+  runtime_mode: string;
+  positioning: string;
+  metrics: PortfolioMetric[];
+  capabilities: PortfolioCapability[];
+  resume_bullets: string[];
+  interview_talking_points: string[];
+  recommended_storyline: string[];
+  honest_boundaries: string[];
+  next_steps: string[];
+};
+
+export type PortfolioMarkdownResponse = {
+  title: string;
+  markdown: string;
+  message: string;
+  source_branch: string | null;
+  source_commit: string | null;
+  evidence: string[];
+};
+
 export type LearningDashboard = {
   current_version: string;
   total_knowledge_points: number;
@@ -466,6 +532,34 @@ export type LearningDashboard = {
   quiz_count: number;
   note_count: number;
   next_lesson: string;
+};
+
+export type KnowledgeRelation = {
+  source_point_id: number;
+  source_name: string;
+  target_point_id: number | null;
+  target_name: string | null;
+  relation_type: string;
+  reason: string;
+};
+
+export type LearningRoadmapStep = {
+  order: number;
+  knowledge_point_id: number;
+  title: string;
+  mastery_status: string;
+  relation_hint: string;
+  action_label: string;
+  code_locations: string[];
+  interview_expression: string;
+};
+
+export type LearningRoadmap = {
+  total_steps: number;
+  review_needed_count: number;
+  generated_from: string;
+  steps: LearningRoadmapStep[];
+  relations: KnowledgeRelation[];
 };
 
 export type DashboardSummary = {

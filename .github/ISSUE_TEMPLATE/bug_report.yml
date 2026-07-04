@@ -11,7 +11,7 @@ body:
     attributes:
       label: Version
       description: Display version and semantic version.
-      placeholder: V3.6 / 3.6.0
+      placeholder: V3.8 / 3.8.0
     validations:
       required: true
   - type: dropdown

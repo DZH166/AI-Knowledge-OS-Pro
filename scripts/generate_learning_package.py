@@ -114,26 +114,124 @@ TOPICS: tuple[LearningTopic, ...] = (
         key="release_verification",
         name="Release Verification",
         beginner_explanation="A release package must be reproducible and must not include dependencies, caches, secrets or user data.",
-        project_usage="V3.6 keeps release.py exclusion rules and adds tests/checks for forbidden archive entries.",
+        project_usage="V4.2 keeps release.py exclusion rules and adds full-regression, RAG and demo-readiness checks before release.",
         review_suggestion="Review zip packaging, SHA256 checks, exclusion rules and acceptance reports.",
         interview_expression="I treated release packaging as part of the product boundary, verifying that generated archives exclude secrets, databases, uploads and build caches.",
         file_patterns=("release.py", "test_release", "stage_delivery_log", "v3_6_acceptance_report"),
+    ),
+    LearningTopic(
+        key="portfolio_documentation",
+        name="Portfolio Documentation",
+        beginner_explanation="A GitHub portfolio project needs docs that help a stranger run, understand and evaluate it.",
+        project_usage="V4.2 keeps README, demo mode, local development, release, versioning, interview QA and roadmap documents aligned with executable checks.",
+        review_suggestion="Review README navigation, quickstart commands, demo boundaries and whether planned features are clearly separated.",
+        interview_expression="I turned the repository from a code dump into a portfolio-ready project with runnable demo docs, interview notes and honest capability boundaries.",
+        file_patterns=("quickstart", "demo_mode", "local_development", "environment_variables", "interview_qa", "Documentation Map"),
+    ),
+    LearningTopic(
+        key="demo_reset_workflow",
+        name="Demo Reset Workflow",
+        beginner_explanation="A demo should be repeatable; reset scripts make it easy to recover a clean synthetic showcase state.",
+        project_usage="V4.2 strengthens demo seed/readiness scripts so the synthetic database proves the source-to-RAG-to-learning walkthrough.",
+        review_suggestion="Review path safety checks, synthetic data labels and demo readiness validation.",
+        interview_expression="I made the demo reproducible by adding a reset workflow that rebuilds only the isolated synthetic database and verifies required records.",
+        file_patterns=("reset_demo_data", "check_demo_ready", "seed_demo_data", "demo_showcase.db"),
+    ),
+    LearningTopic(
+        key="roadmap_specs",
+        name="Roadmap Specifications",
+        beginner_explanation="Large features should be specified before implementation so docs do not overpromise.",
+        project_usage="V4.2 records which V4.0/V4.1 capabilities are implemented and which release-readiness gaps remain.",
+        review_suggestion="Review each design doc and mark implemented, requires configuration, demo-only, planned and limitation states.",
+        interview_expression="I documented the V4.0 architecture direction before coding it, which keeps roadmap claims honest and reviewable.",
+        file_patterns=("rag_evaluation", "hybrid_retrieval", "code_repository_ingestion", "portfolio_system", "interview_system", "observability", "performance_notes"),
+    ),
+    LearningTopic(
+        key="version_governance",
+        name="Version Governance",
+        beginner_explanation="A visible product version must match backend config, frontend package metadata, README badges and CI release commands.",
+        project_usage="V4.2 updates version consistency checks, health tests, package metadata, README badge and CI release artifact naming.",
+        review_suggestion="Review check_version.py and every version-bearing file after a version bump.",
+        interview_expression="I treated versioning as a testable contract across backend, frontend, docs and CI instead of a README-only label.",
+        file_patterns=("check_version", "package.json", "package-lock.json", "app_version", "app_semver", "Version", "V4.2", "V4.3"),
+    ),
+    LearningTopic(
+        key="repository_governance",
+        name="Repository Source Governance",
+        beginner_explanation="Before releasing, the team must know which branch contains the latest code and whether main is stale.",
+        project_usage="V4.2.1 records remote URLs, branch lag, tag status, mainline diff, merge plan, release preparation and branch governance before V4.3 work continues.",
+        review_suggestion="Review git remote, branch graph, ahead/behind counts, PR strategy and tag/release preparation.",
+        interview_expression="I treated repository state as a release artifact: before adding more features, I audited where the latest code lived and documented the safest PR/tag path.",
+        file_patterns=("v4_2_1", "repository_source_audit", "mainline_diff", "merge_plan", "branch_governance"),
+    ),
+    LearningTopic(
+        key="docs_link_integrity",
+        name="Documentation Link Integrity",
+        beginner_explanation="A portfolio README is only trustworthy if its links and referenced files actually exist.",
+        project_usage="V4.3 adds check_docs_links.py to validate local README/docs links and Mermaid fences without requiring network access.",
+        review_suggestion="Review Markdown parsing, local-path resolution, archive exclusions and failure messages.",
+        interview_expression="I added a docs link gate so GitHub visitors do not hit broken quickstart, demo, roadmap or release references.",
+        file_patterns=("check_docs_links", "docs_link_report", "README.md", "quickstart", "demo_showcase"),
+    ),
+    LearningTopic(
+        key="readme_asset_safety",
+        name="README Asset Safety",
+        beginner_explanation="Screenshots and GIFs should not be referenced until they exist and are safe to publish.",
+        project_usage="V4.3 adds check_readme_assets.py to verify local README images, required screenshot files and missing demo GIF risks.",
+        review_suggestion="Review screenshot inventory, local image parsing, demo GIF placeholders and sensitive-data boundaries.",
+        interview_expression="I made README media part of CI so the portfolio page cannot silently ship broken screenshots or missing demo assets.",
+        file_patterns=("check_readme_assets", "assets/screenshots", "assets/demo", "readme_assets"),
+    ),
+    LearningTopic(
+        key="quality_gate_orchestration",
+        name="Quality Gate Orchestration",
+        beginner_explanation="A release checklist becomes safer when one command can run the same gates consistently.",
+        project_usage="V4.3 adds check_all.py with quick, demo, release and full modes for compile, tests, frontend, docs, demo, RAG and release checks.",
+        review_suggestion="Review subprocess orchestration, frontend runtime fallback, isolated demo DB paths and release dry-run integration.",
+        interview_expression="I grouped the project quality gates into one script with mode-specific scopes, which makes local validation and CI easier to explain and repeat.",
+        file_patterns=("check_all", "quality_gate_report", "check_full_regression", "evaluate_rag", "release.py"),
+    ),
+    LearningTopic(
+        key="provider_boundary_regression",
+        name="Provider Boundary Regression",
+        beginner_explanation="Tests should prove that missing providers fail clearly instead of producing fake AI results.",
+        project_usage="V4.3 adds provider-boundary tests for LLM, embeddings, OCR, vision description, transcription and disabled rerank.",
+        review_suggestion="Review ConfigurationError codes, provider adapters and tests that avoid calling paid APIs.",
+        interview_expression="I locked real-mode boundaries with tests, so missing keys return explicit NOT_CONFIGURED errors and never pollute the knowledge base with fake OCR, transcripts or answers.",
+        file_patterns=("test_provider_boundaries", "LLM_NOT_CONFIGURED", "EMBEDDING_NOT_CONFIGURED", "VISION_DESCRIPTION_NOT_CONFIGURED", "TRANSCRIPTION_NOT_CONFIGURED"),
     ),
 )
 
 
 def run(command: list[str], *, check: bool = False) -> str:
     try:
-        return subprocess.check_output(command, cwd=ROOT, text=True, encoding="utf-8", errors="replace").strip()
+        completed = subprocess.run(
+            command,
+            cwd=ROOT,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            capture_output=True,
+            check=True,
+        )
+        return completed.stdout.strip()
     except subprocess.CalledProcessError as exc:
         if check:
-            message = exc.output.strip() if exc.output else str(exc)
+            message = (exc.stdout or exc.stderr or str(exc)).strip()
             raise SystemExit(f"Command failed: {' '.join(command)}\n{message}") from exc
         return ""
 
 
 def git_ref_exists(ref: str) -> bool:
-    return subprocess.call(["git", "rev-parse", "--verify", "--quiet", ref], cwd=ROOT) == 0
+    return (
+        subprocess.call(
+            ["git", "rev-parse", "--verify", "--quiet", ref],
+            cwd=ROOT,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        == 0
+    )
 
 
 def should_skip(path: Path) -> bool:
@@ -179,7 +277,14 @@ def collect_git_changes(from_ref: str | None, to_ref: str) -> list[GitChange]:
     raw = run(["git", "diff", "--name-status", to_ref]) if git_ref_exists(to_ref) else ""
     changes = parse_name_status(raw)
     seen = {change.path for change in changes}
-    for line in run(["git", "status", "--short"]).splitlines():
+    status_raw = subprocess.check_output(
+        ["git", "status", "--short"],
+        cwd=ROOT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    for line in status_raw.splitlines():
         if not line.strip():
             continue
         status = line[:2].strip() or "M"
@@ -234,10 +339,9 @@ def collect_migration_changes(changes: Iterable[GitChange]) -> list[str]:
 
 
 def infer_topics(changes: list[GitChange]) -> list[dict]:
-    changed_text = "\n".join(change.path for change in changes)
     selected: list[dict] = []
     for topic in TOPICS:
-        matched = [change.path for change in changes if any(pattern in change.path or pattern in changed_text for pattern in topic.file_patterns)]
+        matched = [change.path for change in changes if any(pattern in change.path for pattern in topic.file_patterns)]
         if matched:
             selected.append(
                 {
@@ -409,6 +513,11 @@ def build_package(args: argparse.Namespace) -> dict:
     migrations = read_optional(args.migration_report)
     features = sorted(dict.fromkeys(infer_feature(change) for change in changes))
     normalized_version = args.version.lower().replace(".", "-").replace(" ", "-")
+    slug = (
+        "v3-6-unified-media-learning"
+        if args.version.strip().upper() == "V3.6"
+        else f"{normalized_version}-learning-package"
+    )
     markdown = render_markdown(
         version=args.version,
         generated_at=generated_at,
@@ -425,16 +534,16 @@ def build_package(args: argparse.Namespace) -> dict:
         topics=topics,
     )
     return {
-        "version_name": f"{args.version}: unified multimodal tasks and source-based learning artifacts",
-        "slug": f"{normalized_version}-unified-media-learning",
+        "version_name": f"{args.version}: {args.goal}",
+        "slug": slug,
         "summary": args.goal,
         "implemented_features": features,
         "major_files": infer_major_files(changes),
         "knowledge_points": topics,
-        "focus": "Understand how V3.6 unifies multimodal processing, evidence navigation and learning artifact generation around real source chunks.",
-        "review_suggestions": "Review unified task model, media task orchestration, citation deep links, player synchronization, keyframes, learning artifact audit trails and release verification.",
-        "interview_expression": "In AI Knowledge OS Pro V3.6, I unified image, audio and video processing under the durable Task Center, made RAG citations jump to document chunks or media timestamps, and generated learning assets only from real source evidence.",
-        "next_version_suggestion": "Next, add subtitle export, richer scene segmentation, stronger provider diagnostics and visual-frame retrieval.",
+        "focus": f"Understand the concrete changes, verification evidence and remaining limits for {args.version}.",
+        "review_suggestions": "Review the changed files, command outputs, generated docs, tests, release safety checks and planned follow-up boundaries.",
+        "interview_expression": f"In AI Knowledge OS Pro {args.version}, I advanced the project with evidence-backed changes, verified them with tests/builds/checks, and documented both delivered capabilities and remaining limits.",
+        "next_version_suggestion": "Continue with the next roadmap stage using measurable tests, honest provider boundaries and append-only learning records.",
         "metadata": {
             "generated_at": generated_at,
             "from_ref": args.from_ref,
@@ -474,7 +583,10 @@ def main() -> None:
     if not output.is_absolute():
         output = ROOT / output
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(package, ensure_ascii=False, indent=2), encoding="utf-8")
+    if output.suffix.lower() == ".md":
+        output.write_text(package["markdown_content"], encoding="utf-8")
+    else:
+        output.write_text(json.dumps(package, ensure_ascii=False, indent=2), encoding="utf-8")
     print(output)
 
 

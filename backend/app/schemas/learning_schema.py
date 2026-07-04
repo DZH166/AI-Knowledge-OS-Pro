@@ -168,6 +168,34 @@ class LearningDashboard(BaseModel):
     next_lesson: str
 
 
+class KnowledgeRelationRead(BaseModel):
+    source_point_id: int
+    source_name: str
+    target_point_id: int | None = None
+    target_name: str | None = None
+    relation_type: str
+    reason: str
+
+
+class LearningRoadmapStep(BaseModel):
+    order: int
+    knowledge_point_id: int
+    title: str
+    mastery_status: str
+    relation_hint: str
+    action_label: str
+    code_locations: list[str] = Field(default_factory=list)
+    interview_expression: str
+
+
+class LearningRoadmapRead(BaseModel):
+    total_steps: int
+    review_needed_count: int
+    generated_from: str
+    steps: list[LearningRoadmapStep]
+    relations: list[KnowledgeRelationRead]
+
+
 LearningArtifactType = Literal["knowledge_point", "card", "quiz", "note", "interview_expression"]
 
 

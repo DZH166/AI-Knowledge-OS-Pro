@@ -18,6 +18,8 @@ from app.schemas.learning_schema import (
     LearningNoteUpdate,
     LearningPackageCreate,
     LearningPackageRead,
+    LearningRoadmapRead,
+    KnowledgeRelationRead,
     MarkdownExportResponse,
     QuizAnswerRequest,
     QuizAnswerResponse,
@@ -112,6 +114,16 @@ def export_learning_package(slug: str, db: Session = Depends(get_db)) -> Markdow
 @router.get("/knowledge-points", response_model=list[KnowledgePointRead])
 def list_knowledge_points(db: Session = Depends(get_db)) -> list[KnowledgePointRead]:
     return learning_package_service.list_knowledge_points(db)
+
+
+@router.get("/roadmap", response_model=LearningRoadmapRead)
+def get_learning_roadmap(db: Session = Depends(get_db)) -> LearningRoadmapRead:
+    return learning_package_service.roadmap(db)
+
+
+@router.get("/knowledge-graph", response_model=list[KnowledgeRelationRead])
+def get_knowledge_graph(db: Session = Depends(get_db)) -> list[KnowledgeRelationRead]:
+    return learning_package_service.knowledge_graph(db)
 
 
 @router.get("/knowledge-points/{point_id}", response_model=KnowledgePointRead)

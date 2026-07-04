@@ -22,6 +22,16 @@ class Citation(BaseModel):
     document_id: int | None = None
     start_ms: int | None = None
     end_ms: int | None = None
+    dense_score: float | None = None
+    keyword_score: float | None = None
+    rerank_score: float | None = None
+    final_score: float | None = None
+    retrieval_reason: str | None = None
+    citation_ready: bool | None = None
+    file_path: str | None = None
+    line_start: int | None = None
+    line_end: int | None = None
+    symbol_name: str | None = None
 
 
 class RelatedChunk(BaseModel):
@@ -37,6 +47,16 @@ class RelatedChunk(BaseModel):
     document_id: int | None = None
     start_ms: int | None = None
     end_ms: int | None = None
+    dense_score: float | None = None
+    keyword_score: float | None = None
+    rerank_score: float | None = None
+    final_score: float | None = None
+    retrieval_reason: str | None = None
+    citation_ready: bool | None = None
+    file_path: str | None = None
+    line_start: int | None = None
+    line_end: int | None = None
+    symbol_name: str | None = None
 
 
 class ChatRequest(BaseModel):

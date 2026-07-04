@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import {
@@ -44,8 +44,42 @@ function parseMetadata(value: string | null | undefined) {
 function displayValue(value: unknown) {
   if (typeof value === "string" && value.trim()) return value;
   if (typeof value === "number" && Number.isFinite(value)) return String(value);
-  if (typeof value === "boolean") return value ? "yes" : "no";
-  return "not recorded";
+  if (typeof value === "boolean") return value ? "是" : "否";
+  return "未记录";
+}
+
+function metadataLabel(key: string) {
+  const labels: Record<string, string> = {
+    audio_status: "音轨提取",
+    duration_ms: "时长",
+    error_archive_status: "报错档案",
+    has_audio: "音轨",
+    height: "高度",
+    keyframe_count: "关键帧数量",
+    keyframe_status: "关键帧抽取",
+    ocr_status: "OCR",
+    parser_version: "解析器",
+    transcription_status: "转写",
+    transcript_segment_count: "转写片段",
+    video_status: "视频分析",
+    vision_description_status: "视觉描述",
+    width: "宽度"
+  };
+  return labels[key] || key.replace(/_/g, " ");
+}
+
+function metadataSummaryEntries(metadata: Record<string, unknown>) {
+  return Object.entries(metadata)
+    .filter(([, value]) => value !== null && value !== undefined && value !== "")
+    .map(([key, value]) => {
+      const label = metadataLabel(key);
+      if (key.endsWith("_ms") && typeof value === "number") return [label, formatDuration(value)] as const;
+      if (typeof value === "object") {
+        const count = Array.isArray(value) ? value.length : Object.keys(value as Record<string, unknown>).length;
+        return [label, count ? `已记录 ${count} 项` : "未记录"] as const;
+      }
+      return [label, displayValue(value)] as const;
+    });
 }
 
 function isTranscribable(source: SourceItem | null) {
@@ -116,7 +150,7 @@ export default function MediaSourceDetailPage() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  async function load() {
+  const load = useCallback(async () => {
     if (!Number.isFinite(sourceId)) return;
     setError("");
     try {
@@ -126,12 +160,11 @@ export default function MediaSourceDetailPage() {
     } catch (exc) {
       setError(exc instanceof Error ? exc.message : "Failed to load media source.");
     }
-  }
+  }, [sourceId]);
 
   useEffect(() => {
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sourceId]);
+  }, [load]);
 
   useEffect(() => {
     if (!activeJobId) return;
@@ -150,8 +183,7 @@ export default function MediaSourceDetailPage() {
       }
     }, 2500);
     return () => window.clearInterval(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeJobId]);
+  }, [activeJobId, load]);
 
   const metadata = useMemo(() => (source ? parseMetadata(source.metadata_json) : {}), [source]);
   const assets = source?.media_assets || [];
@@ -175,12 +207,28 @@ export default function MediaSourceDetailPage() {
     (source?.source_type === "image" ? ocrChunks[0] || visualChunks[0] || null : null);
   const busy = processingOperation !== null;
 
+  const seekTo = useCallback((milliseconds: number, autoplay = true) => {
+    const media = source?.source_type === "video" ? videoRef.current : audioRef.current;
+    if (media) {
+      media.currentTime = Math.max(0, milliseconds / 1000);
+      if (autoplay) media.play().catch(() => undefined);
+    }
+    const segment = transcriptSegments.find((item) => milliseconds >= item.start_ms && milliseconds <= item.end_ms) || null;
+    setActiveSegmentId(segment?.id || null);
+    if (segment) {
+      const chunk = transcriptChunks.find((item) => item.start_ms === segment.start_ms);
+      setSelectedChunkId(chunk?.id || null);
+      window.setTimeout(() => {
+        document.getElementById(`segment-${segment.id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 60);
+    }
+  }, [source?.source_type, transcriptChunks, transcriptSegments]);
+
   useEffect(() => {
     if (!source) return;
     if (requestedChunkId) setSelectedChunkId(requestedChunkId);
     if (requestedTimestamp && transcriptSegments.length) seekTo(requestedTimestamp, false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [source?.id, requestedTimestamp, requestedChunkId, transcriptSegments.length]);
+  }, [source, requestedTimestamp, requestedChunkId, transcriptSegments.length, seekTo]);
 
   async function enqueueOperation(operation: MediaOperation) {
     if (!source) return;
@@ -195,23 +243,6 @@ export default function MediaSourceDetailPage() {
     } catch (exc) {
       setError(exc instanceof Error ? exc.message : "Failed to create media task.");
       setProcessingOperation(null);
-    }
-  }
-
-  function seekTo(milliseconds: number, autoplay = true) {
-    const media = source?.source_type === "video" ? videoRef.current : audioRef.current;
-    if (media) {
-      media.currentTime = Math.max(0, milliseconds / 1000);
-      if (autoplay) media.play().catch(() => undefined);
-    }
-    const segment = transcriptSegments.find((item) => milliseconds >= item.start_ms && milliseconds <= item.end_ms) || null;
-    setActiveSegmentId(segment?.id || null);
-    if (segment) {
-      const chunk = transcriptChunks.find((item) => item.start_ms === segment.start_ms);
-      setSelectedChunkId(chunk?.id || null);
-      window.setTimeout(() => {
-        document.getElementById(`segment-${segment.id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 60);
     }
   }
 
@@ -392,9 +423,17 @@ export default function MediaSourceDetailPage() {
             </article>
 
             <article className="panel stack">
-              <h2>Technical details</h2>
-              <TechnicalDetails title="Metadata JSON">
-                <pre className="pre-wrap">{JSON.stringify(metadata, null, 2)}</pre>
+              <h2>处理详情</h2>
+              <TechnicalDetails title="元数据摘要">
+                {metadataSummaryEntries(metadata).length === 0 ? (
+                  <p>暂未记录元数据。</p>
+                ) : (
+                  metadataSummaryEntries(metadata).map(([key, value]) => (
+                    <p key={key}>
+                      {key}: {value}
+                    </p>
+                  ))
+                )}
               </TechnicalDetails>
               <div className="list">
                 {assets.length === 0 ? (

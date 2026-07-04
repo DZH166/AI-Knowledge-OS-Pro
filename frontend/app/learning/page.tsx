@@ -180,7 +180,7 @@ export default function LearningPage() {
               <LearningLogPanel log={active} />
             </>
           ) : (
-            <EmptyState description="Generate a draft to create a V3.6 learning package from the current project changes." title="No learning package yet" />
+            <EmptyState description="Generate a draft to create a learning package from the current project changes." title="No learning package yet" />
           )}
         </div>
       </section>

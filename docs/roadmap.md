@@ -106,27 +106,100 @@
 - GitHub portfolio README, reproducible synthetic screenshots, CI, governance files, encoding checks and release safety checks.
 - V3.6 learning package generation uses real Git changes, routes, dependencies and verification reports.
 
-## V3.7 Next: Richer Media Understanding
+## Future Media Understanding
 
 - Docling or equivalent parser for richer document formats.
 - Subtitle export and richer video timeline controls.
 - Shot-level scene segmentation and semantic keyframe retrieval.
 - More complete PDF page/section navigation and frame-level citation highlighting.
 
-## V5: Code Repository And Project Memory
+## V4.0 Target: Code Repository And Project Memory
 
 - Git repository sync.
 - Code file parsing and module explanation.
 - Error archive and repair notes.
+
+## V4.1: Codebase Cleanup And Architecture Consolidation
+
+- Repository-wide asset inventory and dead-code review reports.
+- Historical V2/V3/V4.0 reports archived under `docs/archive`.
+- Backend, frontend, script, dependency, configuration, CI and release audits.
+- Frontend hooks dependency suppression cleanup.
+- Architecture and module-boundary docs aligned with the current codebase.
+
+## V4.2: Full Regression And Release Readiness
+
+- Visible version unified to `V4.2 / 4.2.0`.
+- Synthetic demo seed now covers document, image, audio, video and code-repository evidence.
+- Demo readiness checks source types, task statuses, QA statuses, multimodal chunks, locators, keyframes, transcripts and learning assets.
+- RAG evaluation checks grounded answers, insufficient-context refusal, valid citations, timestamp locators, code locators and source-specific locator JSON.
+- `scripts/check_full_regression.py` validates backend route files, frontend smoke routes, demo data, task center evidence, learning assets and release-support docs/scripts.
+- CI runs full regression after demo seed/readiness and RAG evaluation.
+- README and release docs now include V4.2 verification commands and boundaries.
+
+## V4.3 Candidate Direction
+
+- README/docs local link checker and README asset checker.
+- Unified `scripts/check_all.py` quick/demo/release/full quality gate orchestration.
+- Provider-boundary regression tests for missing LLM, embedding, OCR, vision, transcription and disabled rerank.
+- Demo walkthrough validation tied to isolated synthetic data.
+- Core API regression coverage for status, task list, media list, chat refusal, learning source action and portfolio summary.
+- V4.3 release-readiness reports and GitHub release notes.
+
+## V4.4 Candidate Direction
+
+- Add browser E2E smoke checks for citation jumps, media playback and demo walkthrough.
+- Add provider-backed RAG quality evaluation with a small controlled corpus.
+- Split large frontend pages into domain component folders.
+- Split backend runtime and development requirements after CI is adjusted.
+- Continue consolidating overlapping RAG/media/citation documentation.
 - Project version diffs and technical storytelling.
 
-## V6: Interview And Portfolio System
+## V4.0 Target: Interview And Portfolio System
 
 - Project interview expression generation.
 - Knowledge-point follow-up cards.
 - Portfolio page and project story line.
 
-## V7: Business Brain Integration
+## Future: Business Brain Integration
 
 - Connect Business Growth Engine materials.
 - Business document analysis, plan generation and review memory.
+
+## V3.7: GitHub Showcase Demo And Engineering Trust
+
+- Professional GitHub README with honest capability matrix and demo path.
+- `scripts/setup_demo.py`, `scripts/seed_demo_data.py` and `scripts/check_demo_ready.py` for isolated synthetic demo setup.
+- Release dry-run, secret scan and repository cleanliness checks.
+- CI quality job runs encoding, version, secret, repo-clean and release dry-run checks.
+- Mermaid architecture diagrams and resume/interview pitch documentation.
+- System Status capability matrix groups direct, local-service, provider-backed, demo-only and planned features.
+- V3.7 learning package documents open-source project hygiene, CI/CD and portfolio presentation.
+
+## V3.8: GitHub Portfolio Demo Docs And Reset Workflow
+
+- Version unified to `V3.8 / 3.8.0`.
+- Added quickstart, demo mode, local development, environment variables, release, versioning and commit convention docs.
+- Added storyboard and interview QA docs for GitHub and interview explanation.
+- Added V4.0 design notes for RAG evaluation, hybrid retrieval, code repository ingestion, portfolio system, interview system, observability and performance.
+- Added `scripts/reset_demo_data.py` to safely rebuild the isolated synthetic demo database.
+- Preserved demo/real boundaries: synthetic demo data is labelled and missing providers must not be faked.
+
+## V3.9 In Progress: Product Experience And Quality Gates
+
+- Extend `scripts/evaluate_rag.py --demo` beyond seeded evidence-chain checks into richer retrieval quality reporting.
+- `scripts/check_frontend_smoke.py` now fails on duplicate AppShell navigation targets.
+- Split duplicated navigation targets into dedicated pages for chat history, knowledge points, quizzes, notes and settings.
+- Add lightweight UI smoke checks for Dashboard, Upload, Tasks, Chat, Media, Learning and System Status.
+- Improve provider diagnostics with safer setup hints and copyable env template guidance.
+- Improve task center failure recovery, retry/cancel clarity and media result navigation.
+
+## V4.0 Next: Knowledge-Enhanced Portfolio Edition
+
+- Record and commit a short demo GIF after final UI confirmation.
+- Lightweight hybrid retrieval and rerank fallback have started; next is FTS/BM25 indexing and richer retrieval quality reports.
+- Code repository ingestion has started with safe local scanning and file/line citation locators; next is remote sync and symbol graph extraction.
+- Learning roadmap and lightweight knowledge relation pages have started; next is persistent KnowledgeRelation storage and provider-backed roadmap generation.
+- Portfolio summary API and pages have started; next is provider-backed generation with NOT_CONFIGURED refusal when unavailable.
+- Add mock interview sessions and saved feedback.
+- Observability page has started; next is structured trace reports and retrieval/provider metrics.

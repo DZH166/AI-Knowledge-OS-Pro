@@ -44,7 +44,7 @@ def get_dashboard_summary(db: Session = Depends(get_db)) -> DashboardSummary:
             )
             for log in recent_qa_models
         ],
-        current_version="V3.6: unified multimodal tasks and source-based learning artifacts",
+        current_version="V4.3: real-demo UX hardening, docs trust and release usability",
         current_capabilities=[
             "Real/demo mode governance with explicit NOT_CONFIGURED provider errors",
             "Document and media jobs share the durable Task Center",
@@ -52,10 +52,11 @@ def get_dashboard_summary(db: Session = Depends(get_db)) -> DashboardSummary:
             "RAG citations include document IDs, source IDs and media timestamps",
             "Media detail pages support player seek, transcript highlights and keyframe browsing",
             "Learning artifacts are generated only from real document or multimodal chunks",
+            "README links, local assets, demo closure and release checks are covered by executable gates",
         ],
         recent_learning_log=learning_logs[0] if learning_logs else None,
         next_step_suggestion=(
-            "Next, focus on subtitle export, richer video scene segmentation and provider diagnostics "
+            "Next, focus on live browser E2E, subtitle export and richer video scene segmentation "
             "without weakening real-mode boundaries."
         ),
     )

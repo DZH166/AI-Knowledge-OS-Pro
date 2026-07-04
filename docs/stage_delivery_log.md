@@ -467,3 +467,441 @@ V3.6 已完成 GitHub 作品集化收口：专业 README、真实 CI、项目规
 - 合成展示数据库与媒体位于被忽略目录，不进入 Git 或 release zip。
 - 发布器只选择当前仓库 Git 跟踪文件，并排除 `.env`、数据库、uploads、logs、`node_modules`、`.next`、缓存、嵌套仓库和本地代理元数据。
 - 最终摘要以 `releases/AI-Knowledge-OS-Pro-V3.6-20260621.zip.sha256` 为权威，不在归档内文档写入自引用哈希。
+
+<!-- stage:v3-7-github-showcase-demo-20260701 -->
+## V3.7 阶段交付：GitHub 作品集、一键 Demo 与工程可信度
+
+### 阶段状态
+已完成 V3.7 GitHub 作品集化收口：README、Demo seed、Demo readiness、secret/repo-clean 检查、release dry-run、架构图、简历表达、系统能力矩阵和 CI 质量门均已落地。
+
+### 代码与文档交付
+- 创建开发分支：`feature/v3.7-github-showcase-demo`。
+- 新增 `docs/v3_7_predevelopment_audit.md` 和 `docs/v3_7_acceptance_report.md`。
+- 新增 `docs/demo_script.md`、`docs/architecture_diagram.md`、`docs/resume_pitch.md`、`docs/github_release_checklist.md`。
+- 新增 `docs/assets/demo/README.md`，README 不引用尚未捕获的 GIF，避免破图。
+- 新增 Demo 脚本：`scripts/setup_demo.py`、`scripts/seed_demo_data.py`、`scripts/check_demo_ready.py`。
+- 新增安全脚本：`scripts/check_secrets.py`、`scripts/check_repo_clean.py`。
+- 增强 `scripts/release.py --dry-run`，输出 included/excluded counts 和 secret/database/uploads/cache 风险项。
+- 系统状态页新增能力矩阵，明确真实 Provider 和本地服务依赖。
+
+### 验证结果
+- compileall：通过。
+- pytest：44 passed，19 warnings。
+- frontend typecheck：全局 `npm` 不在当前 PowerShell PATH；使用 bundled Node + 项目本地 TypeScript CLI 通过。
+- frontend build：全局 `npm` 不在当前 PowerShell PATH；使用 bundled Node + 项目本地 Next.js CLI 通过。
+- encoding check：通过。
+- secret check：通过。
+- repo clean check：通过。
+- release dry-run：通过，included_files=213，excluded_files=0，secrets/database/uploads/cache 均为 no。
+- demo seed/readiness：通过，创建 synthetic `demo_showcase.db`，包含知识库、文档、图片/音频/视频记录、任务、问答、学习卡片和学习档案。
+
+### 能力边界
+- Demo 数据为合成样例，不代表真实 provider 输出。
+- 未配置真实 LLM/Embedding/OCR/Transcription provider 时继续明确拒绝，不生成假回答、假 OCR、假转写或假学习资料。
+- Docker Compose 当前启动 Redis/Qdrant 依赖服务，不是完整生产部署。
+- Demo GIF 尚未录制，README 使用脚本和占位目录说明。
+
+### 建议发布信息
+- 建议 commit message：`feat: add V3.7 GitHub showcase demo workflow`。
+- 建议 tag：`v3.7.0`。
+- 建议 GitHub Release 标题：`AI Knowledge OS Pro V3.7 - GitHub Showcase Demo and Engineering Trust`。
+
+<!-- stage:v3-8-portfolio-demo-docs-20260702 -->
+## V3.8 阶段交付：GitHub 作品集 Demo 文档化与可重置演示流程
+
+### 阶段状态
+已完成 V3.8 阶段收口：版本统一、V4.0 长期预审计、GitHub 文档地图、可重置 synthetic demo 数据、面试问答、V4.0 目标设计文档、学习包 Markdown 输出和本地验证均已落地。
+
+### 代码与文档交付
+- 创建长期开发分支：`feature/v4.0-knowledge-portfolio-os`。
+- 新增 `docs/v4_0_long_run_predevelopment_audit.md`，真实记录 V3.7 基线和 V4.0 缺口。
+- 新增 V3.8 验收与测试报告：`docs/v3_8_acceptance_report.md`、`docs/v3_8_test_report.md`。
+- 新增 `docs/v3_8_learning_package_draft.md`，由当前真实 working tree diff、路由快照和验证报告生成。
+- 新增 quickstart、demo mode、本地开发、环境变量、部署、Docker、发布流程、版本、提交规范和文档质量检查文档。
+- 新增 RAG、多模态、媒体、任务队列、引用定位、引用跳转和学习闭环流程文档。
+- 新增 RAG 评估、混合检索、代码仓库接入、作品集系统、模拟面试、可观测性和性能说明设计文档，全部标明当前状态与限制。
+- 新增 `scripts/reset_demo_data.py`，并补充路径安全测试，防止误删非 Demo 数据库。
+- 泛化 `scripts/generate_learning_package.py`，支持 Markdown 输出和版本通用学习包元信息。
+
+### 验证结果
+- compileall：通过。
+- pytest：46 passed，22 warnings。
+- frontend typecheck：通过。
+- frontend build：通过，15 个 App Router 页面构建成功。
+- encoding check：通过，235 个 UTF-8 文本文件。
+- secret check：通过，233 个 tracked text 文件 findings=0。
+- repo clean check：通过。
+- version check：通过，`V3.8 / 3.8.0`。
+- release dry-run：通过，included_files=244，secrets/database/uploads/cache 均为 no。
+- demo reset/readiness：通过。
+
+### 能力边界
+- V3.8 没有声称完成 hybrid retrieval、RAG evaluation、code repository ingestion、portfolio APIs、interview session 或 observability page。
+- 上述能力已作为 V4.0 目标文档化，等待后续真实实现、测试和验收。
+- Demo 数据继续保持 synthetic 标识，不冒充真实 LLM/OCR/transcription provider 输出。
+- 未配置 provider 时仍必须明确拒绝，不生成假回答、假 OCR、假转写或假学习资料。
+
+### 下一阶段
+- V3.9：实现 `scripts/evaluate_rag.py --demo`、轻量 UI smoke checks、provider diagnostics 和任务中心体验质量门。
+- V4.0：实现代码仓库接入、混合检索、作品集生成、模拟面试和可观测性页面。
+
+<!-- stage:v3-9-quality-gates-in-progress-20260702 -->
+## V3.9 进行中交付：RAG Demo 评估与前端 Smoke 质量门
+
+### 阶段状态
+V3.9 已启动质量门建设，但尚未最终验收。当前完成 RAG demo evidence-chain evaluation、frontend smoke check、CI 接入和 raw metadata UI 收口。
+
+### 交付内容
+- 新增 `scripts/evaluate_rag.py --demo`，不调用 provider，只验证 synthetic demo evidence 和 citation plumbing。
+- 新增 `scripts/check_frontend_smoke.py`，检查关键页面、导航目标和 raw/debug UI 文案。
+- 新增 `backend/tests/test_v3_9_rag_evaluation.py` 和 `backend/tests/test_v3_9_frontend_smoke.py`。
+- CI backend job 增加 demo seed、readiness 和 RAG evaluation；quality job 增加 frontend smoke。
+- 系统状态页和媒体详情页不再直接展示 metadata JSON，改为可读摘要。
+- 系统状态页新增能力配置向导，使用占位 env 示例并强调缺 provider 时必须明确拒绝。
+- 任务中心新增恢复建议，帮助用户区分 provider 配置、Worker 中断、索引服务和取消后重试等处理路径。
+- 新增 `docs/v3_9_quality_gate_report.md`。
+
+### 验证结果
+- 全量 pytest：49 passed，22 warnings。
+- V3.9 targeted tests：3 passed。
+- RAG demo evaluation：通过，1 条 QA、1 个时间戳 citation、7 个 multimodal chunks、7 个 citation locators。
+- Frontend smoke：通过，4 个导航复用 warning。
+- Frontend typecheck/build：通过。
+- encoding check：通过，241 个 UTF-8 文本文件。
+- secret check：通过，239 个 tracked text 文件 findings=0。
+- release dry-run：通过，included_files=250，secrets/database/uploads/cache 均为 no。
+
+### 能力边界
+- 这不是最终 V3.9 验收。
+- Demo RAG 评估不代表真实 LLM 质量。
+- Frontend smoke 不是浏览器 E2E 测试。
+- 当前导航复用 warning 会在 V4.0 UI/UX 信息架构阶段继续拆分。
+
+<!-- stage:v3-9-navigation-ia-split-20260702 -->
+## V3.9 进行中交付：导航信息架构拆分与 Smoke 门禁升级
+
+### 阶段状态
+V3.9 继续推进产品体验质量门：已将重复导航入口拆成独立页面，并让 smoke 检查在发现重复导航目标时直接失败。V3.9 尚未最终验收，版本号继续保持 `V3.8 / 3.8.0`。
+
+### 交付内容
+- 新增 `/chat/history` 会话记录页面，展示多轮会话与最近问答。
+- 新增 `/learning/knowledge-points` 知识点列表页面。
+- 新增 `/learning/quizzes` 练习中心页面。
+- 新增 `/learning/notes` 学习笔记页面，支持手动保存笔记。
+- 新增 `/system/settings` 设置说明页面，强调 Provider、Demo 模式和发布安全边界。
+- 更新 AppShell 导航，消除 `/chat`、`/learning`、`/learning/cards`、`/system` 的重复菜单目标。
+- 更新 frontend smoke 脚本和测试，覆盖 19 个必检路由，并要求 `warnings=0`。
+
+### 验证结果
+- compileall：通过。
+- 全量 pytest：49 passed，21 warnings。
+- V3.9 frontend smoke targeted test：1 passed。
+- Frontend smoke：通过，required_routes=19，nav_targets=16，warnings=0。
+- Frontend typecheck/build：通过。
+- encoding check：通过，246 个 UTF-8 文本文件。
+- secret check：通过，findings=0。
+- repo clean check：通过。
+- version check：通过，`V3.8 / 3.8.0`。
+- RAG demo evaluation：通过。
+- release dry-run：通过，secrets/database/uploads/cache 均为 no。
+
+### 能力边界
+- 新页面当前是轻量收口页，主要复用已有 API 和空状态；学习路线、作品集、模拟面试和可观测性仍属于后续 V4.0 增强范围。
+- Demo/真实模式边界不变：未配置 provider 时必须明确拒绝，不生成假回答、假 OCR 或假转写。
+
+<!-- stage:v4-0-portfolio-summary-start-20260702 -->
+## V4.0 起步交付：作品集概览 API、求职页面与可观测性入口
+
+### 阶段状态
+V4.0 知识增强与求职作品集方向已开始真实实现。当前完成 portfolio summary API、作品集求职页面、可观测性入口和 smoke 覆盖；自动简历生成、模拟面试反馈、代码仓库接入和混合检索仍在后续阶段。
+
+### 交付内容
+- 新增 `backend/app/schemas/portfolio_schema.py`。
+- 新增 `backend/app/services/portfolio_service.py`，聚合真实数据库计数和能力边界。
+- 新增 `backend/app/api/routes_portfolio.py`，公开 `GET /api/portfolio/summary`。
+- 新增 `backend/tests/test_v4_0_portfolio_summary.py`，覆盖聚合逻辑和 API 响应契约。
+- 新增 `/portfolio`、`/portfolio/resume`、`/portfolio/interview`、`/portfolio/project-review` 页面。
+- 新增 `/system/observability` 页面，明确 request/task/retrieval trace 的当前状态与后续接入边界。
+- 更新 AppShell，增加“作品集求职”导航组和可观测性入口。
+- 更新 frontend smoke，覆盖 24 个必检路由。
+
+### 验证结果
+- compileall：通过。
+- 全量 pytest：51 passed，22 warnings。
+- V4.0 portfolio + V3.9 smoke targeted tests：3 passed。
+- Frontend smoke：通过，required_routes=24，nav_targets=21，warnings=0。
+- Frontend typecheck/build：通过，25 个 build entries（含 `_not-found`）。
+- encoding check：通过，255 个 UTF-8 文本文件。
+- secret check：通过，findings=0。
+- repo clean check：通过。
+- version check：通过，`V3.8 / 3.8.0`。
+- RAG demo evaluation：通过。
+
+### 能力边界
+- 当前 portfolio 页面展示的是 deterministic project facts，不是 LLM 生成内容。
+- 自动生成简历、面试问答和项目复盘必须后续接入真实 provider；未配置时应返回 NOT_CONFIGURED 类拒绝。
+- 可观测性页面当前是入口和字段边界，结构化 retrieval/provider trace 仍待实现。
+
+<!-- stage:v4-0-hybrid-retrieval-start-20260702 -->
+## V4.0 起步交付：轻量混合检索与 Rerank 降级边界
+
+### 阶段状态
+V4.0 知识增强主线继续推进：RAGService 已从单一路径检索升级为 lightweight hybrid retrieval。当前实现覆盖 dense + keyword fusion、trace 字段和 rerank 未配置降级；完整 FTS/BM25、真实 rerank provider 和前端 debug panel 仍在后续阶段。
+
+### 交付内容
+- 新增 `backend/app/services/hybrid_retriever.py`。
+- 新增 `backend/app/services/rerank_provider.py`。
+- 更新 `backend/app/services/rag_service.py`，通过 HybridRetriever 获取候选证据。
+- 更新 `backend/app/schemas/chat_schema.py` 和 `frontend/types/api.ts`，支持可选检索 trace 字段。
+- 新增 `backend/tests/test_v4_0_hybrid_retrieval.py`。
+- 更新 `docs/hybrid_retrieval.md` 和 `docs/rag_evaluation.md`。
+
+### 验证结果
+- compileall：通过。
+- 全量 pytest：53 passed，22 warnings。
+- Hybrid retrieval + audio timestamp regression targeted tests：3 passed。
+- Frontend smoke：通过，required_routes=24，nav_targets=21，warnings=0。
+- Frontend typecheck：通过。
+- Frontend build：通过，25 个 build entries（含 `_not-found`）。
+- encoding check：通过，258 个 UTF-8 文本文件。
+- secret check：通过，findings=0。
+- repo clean check：通过。
+- RAG demo evaluation：通过。
+
+### 能力边界
+- 当前 keyword 检索是轻量 SQLite scan，不是完整 BM25/FTS5。
+- Rerank provider 尚未接真实服务；未配置时只使用 deterministic fusion，`rerank_score` 保持为空。
+- 主界面暂不直接展示 trace 字段，避免 raw/debug 信息影响普通用户体验。
+
+<!-- stage:v4-0-code-repository-ingestion-start-20260702 -->
+## V4.0 起步交付：代码仓库接入与代码 Citation Locator
+
+### 阶段状态
+V4.0 代码仓库理解能力已开始落地。当前支持安全本地仓库扫描、代码文件切片、file/line locator、向量索引、RAG 引用字段和 `/code` 页面；远程同步、AST 符号图谱、自动项目复盘和模拟面试仍在后续阶段。
+
+### 交付内容
+- 新增 `backend/app/schemas/code_repository_schema.py`。
+- 新增 `backend/app/services/code_repository_service.py`。
+- 新增 `backend/app/api/routes_code_repositories.py` 并挂载到 API router。
+- 扩展 `Citation`、`RelatedChunk` 和前端类型，支持 `file_path`、`line_start`、`line_end`、`symbol_name`。
+- 新增 `/code` 页面、AppShell 导航入口和上传中心代码仓库流程卡。
+- 更新 `docs/code_repository_ingestion.md`、`docs/roadmap.md`、学习日志和阶段交付日志。
+- 新增 `backend/tests/test_v4_0_code_repository_ingestion.py`。
+
+### 验证结果
+- compileall：通过。
+- 全量 pytest：56 passed，25 warnings。
+- Code repository targeted tests：3 passed。
+- Frontend smoke：通过，required_routes=25，nav_targets=22，warnings=0。
+- Frontend typecheck：通过。
+- Frontend build：通过，26 个 build entries（含 `_not-found`）。
+- encoding check：通过，263 个 UTF-8 文本文件。
+- secret check：通过，findings=0。
+- repo clean check：通过。
+
+### 能力边界
+- 当前只做本地路径扫描，不自动 clone 远程仓库。
+- 当前使用轻量行切片和简单 symbol 识别，不是完整 AST/语言服务器分析。
+- 代码复盘、简历生成和面试反馈仍需后续真实 LLM provider，未配置时不能输出假内容。
+
+<!-- stage:v4-0-learning-roadmap-relations-start-20260702 -->
+## V4.0 起步交付：学习路线与轻量知识关系
+
+### 阶段状态
+V4.0 学习教练方向已开始落地。当前实现派生学习路线、知识关系 API、学习路线页面和知识关系页面；持久化 KnowledgeRelation、复杂图谱和真实 LLM 个性化路线仍在后续阶段。
+
+### 交付内容
+- 新增 `LearningRoadmapRead`、`LearningRoadmapStep` 和 `KnowledgeRelationRead` schema。
+- 扩展 `learning_package_service`，从现有知识点和学习资产派生 roadmap 与 knowledge graph。
+- 新增 `/api/learning/roadmap` 与 `/api/learning/knowledge-graph`。
+- 新增 `/learning/roadmap` 与 `/learning/knowledge-graph` 页面。
+- 更新 AppShell 导航，拆分学习路线、知识关系和版本档案。
+- 新增 `backend/tests/test_v4_0_learning_roadmap.py`。
+- 更新 `docs/learning_system.md`、roadmap、学习日志和阶段交付日志。
+
+### 验证结果
+- Learning roadmap targeted tests：3 passed。
+- compileall：通过。
+- 全量 pytest：58 passed，20 warnings。
+- Frontend smoke：通过，required_routes=27，nav_targets=24，warnings=0。
+- Frontend typecheck：通过。
+- Frontend build：通过，28 个 build entries（含 `_not-found`）。
+- encoding check：通过，266 个 UTF-8 文本文件。
+- secret check：通过，findings=0。
+- repo clean check：通过。
+- version check：通过，`V3.8 / 3.8.0`。
+- RAG demo evaluation：通过。
+
+### 能力边界
+- 当前关系是 request-time 派生视图，不是持久化图数据库。
+- 当前路线不调用 LLM，不做假个性化推荐。
+- 后续可以加入 KnowledgeRelation 表、图谱可视化和真实 provider 生成路线。
+<!-- stage:v4-0-portfolio-ui-resilience-20260702 -->
+## V4.0 起步交付：作品集页的服务边界收口与 smoke 通过
+
+### 阶段状态
+已完成本轮作品集页收口：真实摘要展示与 LLM 生成动作拆分，根页补齐 smoke 需要的真实项目概览文案，前端 typecheck/build 与后端测试重新通过。
+
+### 交付内容
+- 重写 `/portfolio`、`/portfolio/resume`、`/portfolio/interview`、`/portfolio/project-review`，让真实概览与可选生成内容分离。
+- 保留 provider 缺失的明确拒绝，不把整页失败伪装成能力完成。
+- 重新验证 frontend smoke、TypeScript typecheck、Next.js build 和后端 pytest。
+
+### 验证结果
+- `E:\python3.12.9\python.exe -m pytest`：61 passed, 25 warnings。
+- `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：passed，required_routes=27，nav_targets=24，warnings=0。
+- frontend typecheck：passed。
+- frontend build：passed。
+
+### 当前边界
+- 本轮仅完成作品集页边界收口，README、版本号、release 检查和推送仍待继续。
+
+<!-- stage:v4-1-codebase-cleanup-architecture-consolidation-20260702 -->
+## V4.1 进行中交付：全量代码体检、历史归档与架构收口
+
+### 阶段状态
+V4.1 已启动并完成第一批真实清理：代码资产清单、历史报告归档、前端 hooks suppression 清理、架构边界文档和多项质量门禁。当前仍未宣布最终发布，secret/repo-clean/release dry-run 需要在最终文件集 staged 后再次验证。
+
+### 交付内容
+- 新增 `scripts/audit_codebase.py`。
+- 新增 `docs/v4_1_predevelopment_audit.md`、`docs/v4_1_code_inventory.md`、`docs/v4_1_code_inventory.json`。
+- 新增 `docs/v4_1_dead_code_report.md`、`docs/v4_1_dead_code_plan.md`、`docs/v4_1_cleanup_report.md`。
+- 新增 `docs/backend_architecture.md`、`docs/frontend_architecture.md`、`docs/module_boundaries.md`、`docs/scripts_reference.md`。
+- 新增 `docs/v4_1_dependency_audit.md`、`docs/v4_1_test_audit.md`、`docs/v4_1_config_audit.md`、`docs/v4_1_ci_release_audit.md`、`docs/v4_1_docs_cleanup_report.md`。
+- 将 V2/V3/V4.0 历史报告移动到 `docs/archive`，不删除历史学习档案。
+- 更新 README、release 检查脚本和相关测试，指向新的 archive 路径。
+- 移除本地临时 pnpm 文件，保留 npm/package-lock 作为前端标准依赖链路。
+
+### 当前验证结果
+- compileall：passed。
+- pytest：61 passed，8 warnings。
+- frontend typecheck：passed。
+- frontend build：passed，28 routes。
+- Alembic 临时库 upgrade/current：passed，`0006_v3_6_unified_media_tasks (head)`。
+- encoding check：passed，282 UTF-8 files。
+- version check：passed，`V3.8 / 3.8.0`。
+- frontend smoke：passed，warnings=0。
+
+### 当前边界
+- V4.1 是工程治理与架构收口阶段，不新增假 AI 能力。
+- 历史报告已归档但未删除；`learning_log.md` 和 `stage_delivery_log.md` 继续 append-only。
+- 最终 release dry-run、secret check、repo clean check 和 V4.1 验收报告仍需在最终 staged 文件集上完成。
+
+<!-- stage:v4-1-final-reverification-20260703 -->
+## V4.1 最终复验：全量代码体检与架构收口完成
+
+### 交付状态
+- V4.1 代码资产清单、dead-code report、cleanup plan、cleanup report、dependency/test/config/CI/docs audit、backend/frontend/module boundary 文档和 learning package draft 均已生成。
+- V2、V3、V4.0 历史报告已移动到 `docs/archive`，未删除历史学习档案。
+- `docs/learning_log.md` 与 `docs/stage_delivery_log.md` 继续只追加维护。
+- 当前稳定可见版本仍保持 `V3.8 / 3.8.0`；V4.1 是工程治理和架构收口分支，不冒充新增 provider-backed AI 能力。
+
+### 最终验证
+- compileall：通过。
+- pytest：bundled Python 环境 61 passed，9 warnings。
+- frontend typecheck：通过。
+- frontend build：通过，28 个 App Router routes。
+- Alembic isolated SQLite upgrade/current：通过，`0006_v3_6_unified_media_tasks (head)`。
+- encoding check：通过，284 个 UTF-8 文本文件，96 条 legacy append-only 日志行保留。
+- version check：通过，`V3.8 / 3.8.0`。
+- frontend smoke：通过，required_routes=27，nav_targets=24，warnings=0。
+- RAG demo evaluation：通过。
+- secret check：通过，scanned=282，findings=0。
+- repo clean check：通过，forbidden tracked files=0。
+- release dry-run：通过，release_dry_run_version=V3.8，included_files=293，未发现 secrets/database/uploads/cache。
+
+### 环境说明
+- 当前 PowerShell 默认 `python` 是未安装 FastAPI 的 Anaconda 环境；项目兼容 bundled Python 可完整通过测试。
+- 当前 PowerShell 没有全局 `npm`，`pnpm exec` 会触发 pnpm approve-builds 限制；前端使用 bundled Node 调用项目本地 CLI 完成验证。
+
+<!-- stage:v4-2-full-regression-demo-release-readiness-20260703 -->
+## V4.2 交付：全链路回归、Demo 稳定与发布前准备
+
+### 交付内容
+- 版本同步到 `V4.2 / 4.2.0`。
+- Demo seed 增强为文档、图片、音频、视频、代码仓库、RAG、拒答、任务中心和学习资产完整链路。
+- 新增 `scripts/check_full_regression.py`。
+- 增强 `scripts/check_demo_ready.py` 和 `scripts/evaluate_rag.py`。
+- 新增 `backend/tests/test_v4_2_full_regression.py`，并增强 RAG evaluation 测试断言。
+- CI backend job 新增 full regression gate。
+- 新增 V4.2 full regression、demo validation、RAG quality、test、acceptance、learning package 和 GitHub release notes 文档。
+- README、roadmap、demo mode、RAG evaluation、release process 和 scripts reference 已同步 V4.2。
+
+### 当前验证
+- targeted V4.2 regression tests：9 passed。
+- Demo readiness：passed。
+- RAG demo evaluation：passed。
+- Full regression checklist：passed，67 checks。
+- compileall 与 version check 已通过。
+- full pytest：63 passed，13 warnings。
+- frontend typecheck/build：passed，28 routes。
+- release dry-run：passed，V4.2，302 files。
+- release archive check：passed，files=302，forbidden=0，missing=0。
+
+### 当前边界
+- Demo 数据为 synthetic 且明确标注，不代表真实 provider 输出。
+- live browser E2E 尚未自动化；V4.2 使用 static frontend smoke 与 seeded full regression 作为发布前门禁。
+- 当前 release zip 保留在本地 `releases/`，不纳入 Git；推送后仍需以 GitHub Actions 结果作为远端最终证明。
+<!-- stage:v4-3-real-demo-ux-hardening-release-usability-20260704 -->
+## V4.3 delivery: real demo UX hardening and release usability
+
+### Delivery status
+V4.3 has completed the core implementation pass for repository governance, docs integrity, README asset safety, provider-boundary regression, API regression and unified quality-gate orchestration. Final release zip generation remains the last local packaging step after these append-only logs are committed.
+
+### Delivered files and changes
+- Added V4.2.1 repository governance reports:
+  - `docs/v4_2_1_repository_source_audit.md`
+  - `docs/v4_2_1_mainline_diff_report.md`
+  - `docs/v4_2_1_merge_plan.md`
+  - `docs/v4_2_1_release_preparation.md`
+  - `docs/v4_2_1_branch_governance.md`
+- Added V4.3 quality scripts:
+  - `scripts/check_docs_links.py`
+  - `scripts/check_readme_assets.py`
+  - `scripts/check_all.py`
+- Added tests:
+  - `backend/tests/test_provider_boundaries.py`
+  - `backend/tests/test_v4_3_api_regression.py`
+- Updated current version to `V4.3 / 4.3.0`.
+- Updated CI to include V4.3 docs/assets checks and V4.3 release artifact validation.
+- Updated README and core docs for V4.3 startup, demo, release and roadmap guidance.
+- Generated V4.3 reports:
+  - `docs/v4_3_docs_link_report.md`
+  - `docs/v4_3_demo_walkthrough_validation.md`
+  - `docs/v4_3_provider_boundary_report.md`
+  - `docs/v4_3_smoke_test_report.md`
+  - `docs/v4_3_api_regression_report.md`
+  - `docs/v4_3_quality_gate_report.md`
+  - `docs/v4_3_release_readiness_report.md`
+  - `docs/v4_3_release_notes.md`
+  - `docs/v4_3_learning_package_draft.md`
+
+### Verification evidence
+- Backend compileall: passed.
+- Backend pytest: 70 passed, 9 warnings.
+- Frontend typecheck/build: passed.
+- Docs link check: passed.
+- README asset check: passed.
+- Demo readiness, RAG demo evaluation and full regression: passed.
+- Alembic isolated SQLite upgrade/current: passed at `0006_v3_6_unified_media_tasks (head)`.
+- Secret check: passed, findings=0.
+- Repo clean check: passed, forbidden tracked files=0.
+- Release dry-run: passed for V4.3, 307 tracked files, no secrets/databases/uploads/cache.
+
+### Boundaries
+- Demo data is synthetic and labelled.
+- Missing real providers still return explicit NOT_CONFIGURED-style failures.
+- No fake OCR, fake vision description, fake transcription, fake answer or fake rerank score was added.
+- `main` still requires PR merge before GitHub default branch shows the latest V4.3 state.
+- Live browser E2E remains future work.
+
+### Recommended release path
+Open a PR from `feature/v4.3-real-demo-ux-hardening` to `main`, wait for CI to pass, merge, tag `v4.3.0`, and create a GitHub Release from `docs/v4_3_release_notes.md`.
+<!-- stage:v4-3-final-release-archive-20260704 -->
+### V4.3 final release archive addendum
+- Final `check_all --full`: passed.
+- Final release dry-run: passed with `included_files=321`.
+- Local release zip: `releases/AI-Knowledge-OS-Pro-V4.3-20260704.zip`.
+- Release safety inspection: `files=321`, `forbidden=0`, `missing=0`.
+- SHA256: recorded in the local `.sha256` sidecar file rather than embedded here, to avoid self-referential archive hashes.
+- Release artifacts remain local and untracked by design.

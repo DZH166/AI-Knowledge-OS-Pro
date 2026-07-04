@@ -5,11 +5,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BookOpen,
+  Briefcase,
   Brain,
   Bug,
+  Code2,
   ClipboardList,
   FileQuestion,
   FileText,
+  GitBranch,
   GraduationCap,
   Home,
   Images,
@@ -17,6 +20,7 @@ import {
   Menu,
   MessageSquare,
   NotebookPen,
+  Route,
   ServerCog,
   Settings,
   TimerReset,
@@ -37,6 +41,7 @@ const groups: NavGroup[] = [
       { href: "/upload", label: "资料上传", icon: UploadCloud },
       { href: "/documents", label: "文档管理", icon: FileText },
       { href: "/media", label: "媒体资料库", icon: Images },
+      { href: "/code", label: "代码仓库", icon: Code2 },
       { href: "/errors", label: "报错档案", icon: Bug },
       { href: "/tasks", label: "任务中心", icon: TimerReset }
     ]
@@ -45,24 +50,36 @@ const groups: NavGroup[] = [
     title: "AI 助手",
     items: [
       { href: "/chat", label: "知识问答", icon: MessageSquare },
-      { href: "/chat", label: "会话记录", icon: FileQuestion }
+      { href: "/chat/history", label: "会话记录", icon: FileQuestion }
     ]
   },
   {
     title: "学习成长",
     items: [
-      { href: "/learning", label: "学习路线", icon: GraduationCap },
-      { href: "/learning", label: "知识点", icon: ClipboardList },
+      { href: "/learning/roadmap", label: "学习路线", icon: Route },
+      { href: "/learning/knowledge-graph", label: "知识关系", icon: GitBranch },
+      { href: "/learning/knowledge-points", label: "知识点", icon: ClipboardList },
       { href: "/learning/cards", label: "学习卡片", icon: Layers },
-      { href: "/learning/cards", label: "练习中心", icon: Workflow },
-      { href: "/learning", label: "学习笔记", icon: NotebookPen }
+      { href: "/learning/quizzes", label: "练习中心", icon: Workflow },
+      { href: "/learning/notes", label: "学习笔记", icon: NotebookPen },
+      { href: "/learning", label: "版本档案", icon: GraduationCap }
+    ]
+  },
+  {
+    title: "作品集求职",
+    items: [
+      { href: "/portfolio", label: "项目复盘", icon: Briefcase },
+      { href: "/portfolio/resume", label: "简历表达", icon: FileText },
+      { href: "/portfolio/interview", label: "面试讲解", icon: FileQuestion },
+      { href: "/portfolio/project-review", label: "讲解路线", icon: Workflow }
     ]
   },
   {
     title: "系统",
     items: [
       { href: "/system", label: "模型与服务", icon: ServerCog },
-      { href: "/system", label: "设置", icon: Settings }
+      { href: "/system/observability", label: "可观测性", icon: TimerReset },
+      { href: "/system/settings", label: "设置", icon: Settings }
     ]
   }
 ];
@@ -89,7 +106,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </span>
           <span>
             <strong>AI Knowledge OS Pro</strong>
-            <small>V3.6 多模态知识中枢</small>
+            <small>V4.3 Demo 与发布收口中枢</small>
           </span>
         </Link>
         <nav className="nav-list" aria-label="主导航">
@@ -134,13 +151,25 @@ function crumbLabel(value: string) {
     upload: "资料上传",
     documents: "文档管理",
     media: "媒体资料库",
+    code: "代码仓库",
     errors: "报错档案",
     sources: "资料来源",
     tasks: "任务中心",
     chat: "知识问答",
     learning: "学习成长",
+    roadmap: "学习路线",
+    "knowledge-graph": "知识关系",
+    history: "会话记录",
+    quizzes: "练习中心",
+    notes: "学习笔记",
     cards: "学习卡片",
-    system: "系统状态"
+    portfolio: "作品集求职",
+    resume: "简历表达",
+    interview: "面试讲解",
+    "project-review": "讲解路线",
+    system: "系统状态",
+    observability: "可观测性",
+    settings: "设置"
   };
   return map[value] || value;
 }

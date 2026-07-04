@@ -18,10 +18,13 @@ from app.schemas.learning_schema import (
     LearningCardProgressUpdate,
     LearningCardRead,
     LearningDashboard,
+    KnowledgeRelationRead,
     LearningLogCreate,
     LearningNoteCreate,
     LearningNoteRead,
     LearningNoteUpdate,
+    LearningRoadmapRead,
+    LearningRoadmapStep,
     LearningPackageCreate,
     LearningPackageRead,
     MarkdownExportResponse,
@@ -133,9 +136,140 @@ class LearningPackageService:
             next_lesson=next_lesson,
         )
 
+    def roadmap(self, db: Session) -> LearningRoadmapRead:
+        points = self._roadmap_points(db)
+        relations = self.knowledge_graph(db)
+        priority = {
+            "review_needed": 0,
+            "unknown": 0,
+            "unclear": 0,
+            "reviewing": 0,
+            "not_started": 1,
+            "learning": 1,
+            "know": 2,
+            "understood": 2,
+            "mastered": 3,
+        }
+        sorted_points = sorted(points, key=lambda point: (priority.get(point.mastery_status, 2), point.package_id or 0, point.id))
+        steps = [
+            LearningRoadmapStep(
+                order=index,
+                knowledge_point_id=point.id,
+                title=point.name,
+                mastery_status=point.mastery_status,
+                relation_hint=self._relation_hint(point, relations),
+                action_label=self._action_label(point.mastery_status),
+                code_locations=point.code_locations,
+                interview_expression=point.interview_expression,
+            )
+            for index, point in enumerate(sorted_points, start=1)
+        ]
+        review_needed_count = sum(1 for point in points if priority.get(point.mastery_status, 2) == 0)
+        return LearningRoadmapRead(
+            total_steps=len(steps),
+            review_needed_count=review_needed_count,
+            generated_from="existing_knowledge_points_cards_quizzes_notes",
+            steps=steps,
+            relations=relations,
+        )
+
+    def knowledge_graph(self, db: Session) -> list[KnowledgeRelationRead]:
+        points = self._roadmap_points(db)
+        relations: list[KnowledgeRelationRead] = []
+        by_package: dict[int | None, list[KnowledgePoint]] = {}
+        for point in points:
+            by_package.setdefault(point.package_id, []).append(point)
+
+        for package_points in by_package.values():
+            ordered = sorted(package_points, key=lambda point: point.id)
+            for index, point in enumerate(ordered):
+                if index > 0:
+                    previous = ordered[index - 1]
+                    relations.append(
+                        KnowledgeRelationRead(
+                            source_point_id=point.id,
+                            source_name=point.name,
+                            target_point_id=previous.id,
+                            target_name=previous.name,
+                            relation_type="prerequisite",
+                            reason="同一版本学习包中的前序知识点，适合作为复习前置。",
+                        )
+                    )
+                if index + 1 < len(ordered):
+                    next_point = ordered[index + 1]
+                    relations.append(
+                        KnowledgeRelationRead(
+                            source_point_id=point.id,
+                            source_name=point.name,
+                            target_point_id=next_point.id,
+                            target_name=next_point.name,
+                            relation_type="next_to_learn",
+                            reason="同一版本学习包中的后续知识点，可作为下一步学习顺序。",
+                        )
+                    )
+                if point.code_locations:
+                    relations.append(
+                        KnowledgeRelationRead(
+                            source_point_id=point.id,
+                            source_name=point.name,
+                            relation_type="used_by_project",
+                            reason=f"项目文件证据：{', '.join(point.code_locations[:3])}",
+                        )
+                    )
+
+        seen: set[tuple[int, int]] = set()
+        for left in points:
+            left_terms = self._relation_terms(left)
+            if not left_terms:
+                continue
+            for right in points:
+                if left.id >= right.id or (left.id, right.id) in seen:
+                    continue
+                shared = left_terms & self._relation_terms(right)
+                if not shared:
+                    continue
+                seen.add((left.id, right.id))
+                relations.append(
+                    KnowledgeRelationRead(
+                        source_point_id=left.id,
+                        source_name=left.name,
+                        target_point_id=right.id,
+                        target_name=right.name,
+                        relation_type="related",
+                        reason=f"名称或项目用法中共享关键词：{', '.join(sorted(shared)[:3])}",
+                    )
+                )
+        return relations
+
     def list_knowledge_points(self, db: Session) -> list[KnowledgePointRead]:
         points = db.scalars(select(KnowledgePoint).order_by(KnowledgePoint.created_at.desc())).all()
         return [self.point_to_read(point) for point in points]
+
+    def _roadmap_points(self, db: Session) -> list[KnowledgePoint]:
+        return list(db.scalars(select(KnowledgePoint).order_by(KnowledgePoint.created_at.asc(), KnowledgePoint.id.asc())).all())
+
+    def _relation_hint(self, point: KnowledgePoint, relations: list[KnowledgeRelationRead]) -> str:
+        relevant = [relation for relation in relations if relation.source_point_id == point.id]
+        if not relevant:
+            return "先阅读项目用法，再用卡片和练习检查理解。"
+        first = relevant[0]
+        if first.target_name:
+            return f"{first.relation_type}: {first.target_name}"
+        return first.reason
+
+    def _action_label(self, mastery_status: str) -> str:
+        if mastery_status in {"review_needed", "unknown", "unclear", "reviewing"}:
+            return "优先复习并做练习"
+        if mastery_status in {"not_started", "learning"}:
+            return "学习概念并生成卡片"
+        if mastery_status in {"know", "understood", "mastered"}:
+            return "练习面试表达"
+        return "继续学习"
+
+    def _relation_terms(self, point: KnowledgePoint) -> set[str]:
+        text = f"{point.name} {point.project_usage}".lower()
+        terms = {token for token in text.replace("/", " ").replace("-", " ").split() if len(token) >= 3}
+        return {term.strip(".,:;()[]{}") for term in terms if term.strip(".,:;()[]{}")}
 
     def get_knowledge_point(self, db: Session, point_id: int) -> KnowledgePointRead | None:
         point = db.get(KnowledgePoint, point_id)

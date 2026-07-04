@@ -930,3 +930,368 @@ AI Knowledge OS Pro V3.6 中，我把多模态处理从分散的同步按钮升�
 - frontend typecheck/build：通过，15 个 App Router 页面构建成功。
 - UTF-8 与版本一致性检查：通过。
 - release 检查：199 files，forbidden=0，missing=0。
+
+<!-- learning:v3-7-github-showcase-demo-20260701 -->
+## V3.7：GitHub 作品集化、一键演示与工程可信度强化
+
+### 本次补充做了什么
+- 将当前版本表面升级为 `V3.7 / 3.7.0`，保留 V1-V3.6 历史记录不覆盖。
+- 新增 V3.7 开发前审计，记录分支、提交、远程、README、CI、规范文件、截图、Demo、敏感文件和验证基线。
+- 重构 README 为 GitHub 作品集首页，补齐 Demo 路径、功能矩阵、架构/RAG/多模态/学习闭环流程、Docker Demo、限制和简历表达。
+- 新增一键 Demo 准备脚本：`setup_demo.py`、`seed_demo_data.py`、`check_demo_ready.py`，使用隔离 synthetic demo 数据库。
+- 新增 `check_secrets.py`、`check_repo_clean.py`，并增强 `release.py --dry-run` 输出风险项。
+- 新增 `docs/architecture_diagram.md`、`docs/resume_pitch.md`、`docs/demo_script.md` 和 GitHub release checklist。
+- 系统状态页新增能力可用性矩阵，区分可直接使用、需要本地服务、需要真实 Provider、Demo 可展示和尚未实现。
+- CI 质量门增加 secret、repo-clean 和 release dry-run，不调用真实付费 API。
+
+### 我应该重点理解什么
+V3.7 的重点是工程可信度：一个 AI 项目要能被陌生人打开、理解、演示、验证和安全发布。Demo 数据必须隔离且标注，README 必须诚实表达 provider 边界，release 必须在打包前证明不会带入密钥、数据库、上传文件或缓存。
+
+### 面试表达方式
+AI Knowledge OS Pro V3.7 中，我把已有多模态 RAG 系统进一步作品集化：补齐 GitHub 首页、演示脚本、架构图、求职表达、一键 Demo seed、secret 检查、repo-clean 检查和 release dry-run。系统状态页也把能力按真实依赖分组，明确哪些零配置可用，哪些需要 Redis/Qdrant/Worker，哪些需要真实模型 provider，避免把 Demo 流程冒充真实 AI 能力。
+
+### 本阶段验证结果
+- `python -m compileall backend/app scripts`：通过。
+- `python -m pytest`：44 passed，19 warnings。
+- `frontend typecheck`：全局 `npm` 不在当前 PowerShell PATH；使用 bundled Node 执行项目本地 TypeScript CLI，通过。
+- `frontend build`：全局 `npm` 不在当前 PowerShell PATH；使用 bundled Node 执行项目本地 Next.js CLI，通过，15 个 App Router 页面构建成功。
+- `python scripts/check_encoding.py`：通过，204 个 UTF-8 文本文件。
+- `python scripts/check_secrets.py`：通过，202 个 tracked text 文件 findings=0。
+- `python scripts/check_repo_clean.py`：通过，forbidden tracked files=0。
+- `python scripts/release.py --version V3.7 --dry-run`：通过，included_files=213，excluded_files=0，secrets/database/uploads/cache 均为 no。
+
+<!-- learning:v3-8-portfolio-demo-docs-20260702 -->
+## V3.8：GitHub 作品集 Demo 文档化与可重置演示流程
+
+### 本次补充做了什么
+- 将当前运行版本升级为 `V3.8 / 3.8.0`，同步后端配置、健康检查测试、前端 package、README badge、CI release artifact 命名和版本检查脚本。
+- 新增 `docs/v4_0_long_run_predevelopment_audit.md`，在进入 V4.0 长期迭代前按 44 项真实审计当前仓库、文档、CI、测试、Demo、发布和能力缺口。
+- 新增 quickstart、demo mode、local development、environment variables、deployment、Docker、release process、versioning、commit convention 和 document quality checklist 文档。
+- 新增 RAG、multimodal、media、task queue、citation locator、citation flow 和 learning loop 流程文档。
+- 新增 RAG evaluation、hybrid retrieval、code repository ingestion、portfolio system、interview system、observability 和 performance notes 设计文档，明确这些是 V4.0 目标，不冒充已实现。
+- 新增 `docs/demo_storyboard.md` 和 `docs/interview_qa.md`，其中 interview QA 覆盖 30 个项目讲解问题。
+- 新增 `scripts/reset_demo_data.py`，只允许重置 `backend/data/demo_showcase.db`，拒绝非 Demo 数据库路径。
+- 泛化 `scripts/generate_learning_package.py`，支持 Markdown 输出，并减少旧 V3.6 固定文案残留。
+- README 新增 Documentation Map，把 GitHub 访客最需要的启动、Demo、架构、流程、发布和路线图文档串起来。
+
+### 我应该重点理解什么
+V3.8 的重点不是新增模型能力，而是把项目变成“陌生人可运行、可验证、可讲解”的作品集。真正专业的 AI 项目需要同时交代：哪些功能已实现，哪些需要本地服务，哪些需要真实 provider，哪些只是 Demo 展示，哪些仍是计划。文档、版本号、Demo 数据、release 检查和学习包也都是工程边界的一部分。
+
+### 面试表达方式
+AI Knowledge OS Pro V3.8 中，我把已有多模态 RAG 项目进一步整理为可复现的 GitHub 作品集：统一版本号，补齐 quickstart、demo/real 边界、本地开发、部署、发布和面试问答文档；增加安全的 Demo reset 脚本；并用真实 diff 生成学习包。这个阶段强调工程可信度和讲解能力，而不是用假模型输出堆功能。
+
+### 本阶段验证结果
+- `E:\python3.12.9\python.exe -m compileall backend/app scripts`：通过。
+- `E:\python3.12.9\python.exe -m pytest`：46 passed，22 warnings。
+- frontend typecheck：使用 bundled Node + 项目本地 TypeScript CLI，通过。
+- frontend build：使用 bundled Node + 项目本地 Next.js CLI，通过，15 个 App Router 页面构建成功。
+- `python scripts/check_encoding.py`：通过，235 个 UTF-8 文本文件。
+- `python scripts/check_secrets.py`：通过，233 个 tracked text 文件 findings=0。
+- `python scripts/check_repo_clean.py`：通过，forbidden tracked files=0。
+- `python scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
+- `python scripts/release.py --version V3.8 --dry-run`：通过，included_files=244，未发现 secrets/database/uploads/cache。
+- `python scripts/reset_demo_data.py`：通过，重建 isolated synthetic demo 数据库并通过 readiness check。
+
+<!-- learning:v3-9-quality-gates-in-progress-20260702 -->
+## V3.9 进行中：RAG Demo 评估与前端 Smoke 质量门
+
+### 本次补充做了什么
+- 新增 `scripts/evaluate_rag.py --demo`，验证 synthetic demo 数据里的 QA、grounded 状态、citation ids、related chunks、音视频时间戳引用、MultimodalChunk 和 CitationLocator。
+- 新增 `scripts/check_frontend_smoke.py`，检查关键页面是否存在、AppShell 导航是否指向真实页面、前端页面是否出现明显 raw/debug 文案。
+- 将 demo seed、demo readiness、RAG demo evaluation 和 frontend smoke 接入 GitHub Actions。
+- 修复系统状态页和媒体详情页直接展示 `JSON.stringify` 元数据的问题，改为用户可读的摘要。
+- 在系统状态页新增 Provider/服务配置向导，按 Redis/Worker、Qdrant、LLM、Embedding、OCR/Vision、Speech-to-Text 说明影响面、修复方式和可复制的占位环境变量。
+- 在任务中心新增“恢复建议”，针对运行中、取消、中断、转写未配置、OCR/Vision 未配置、Embedding/Qdrant/索引问题给出下一步。
+- 新增 V3.9 质量门测试：`test_v3_9_rag_evaluation.py` 和 `test_v3_9_frontend_smoke.py`。
+
+### 我应该重点理解什么
+V3.9 开始从“能展示”转向“可验证、可收口”。RAG 评估不能只看有没有回答，还要检查引用是否能对应证据；前端质量也不能只看 build 是否过，还要检查导航、关键页面和普通用户界面是否泄露 raw/debug 信息。
+
+### 面试表达方式
+在 V3.9 中，我开始把质量门前移：新增 demo RAG evaluation 来验证 seeded evidence 和 citation plumbing；新增 frontend smoke check 来保护关键页面和导航；同时清理系统/媒体页面的 raw JSON 展示，并给系统能力和任务失败补充可执行的恢复建议。
+
+### 当前验证结果
+- `python -m compileall backend/app scripts`：通过。
+- `python -m pytest`：49 passed，22 warnings。
+- `python -m pytest backend/tests/test_v3_9_frontend_smoke.py backend/tests/test_v3_9_rag_evaluation.py`：3 passed。
+- `python scripts/evaluate_rag.py --demo --database-path backend/data/demo_showcase.db`：通过，1 条 QA、1 个时间戳引用、7 个 MultimodalChunk、7 个 CitationLocator。
+- `python scripts/check_frontend_smoke.py`：通过，当前有 4 个导航复用 warning，留给 V4.0 IA 拆分。
+- frontend typecheck/build：通过，15 个 App Router 页面。
+- `python scripts/check_encoding.py`：通过，241 个 UTF-8 文本文件。
+- `python scripts/check_secrets.py`：通过，239 个 tracked text 文件 findings=0。
+- `python scripts/release.py --version V3.8 --dry-run`：通过，included_files=250，未发现 secrets/database/uploads/cache。
+
+<!-- learning:v3-9-navigation-ia-split-20260702 -->
+## V3.9 进行中：导航信息架构拆分与 Smoke 门禁升级
+
+### 本次补充做了什么
+- 将 AppShell 中复用同一路由的菜单拆成独立页面：`/chat/history`、`/learning/knowledge-points`、`/learning/quizzes`、`/learning/notes` 和 `/system/settings`。
+- 新页面复用现有真实 API，分别展示会话记录、知识点、练习题、学习笔记和配置安全边界，不引入假模型输出。
+- 将 `scripts/check_frontend_smoke.py` 的必检路由扩展到 19 个，并把重复导航目标从 warning 升级为 failure。
+- 更新 `test_v3_9_frontend_smoke.py`，让后端测试固定检查新的路由数量和 `warnings=0`。
+
+### 我应该重点理解什么
+信息架构不是“菜单多一点”这么简单。对于作品集项目，导航每一项都应该指向真实、有边界说明、有空状态或错误恢复的页面；如果多个入口实际落到同一页，面试官会感觉功能还没收口。把这个规则写进 smoke gate，可以防止后续改 UI 时悄悄退化。
+
+### 面试表达方式
+在 V3.9 中，我把前端导航从展示型菜单进一步收口成可验证的信息架构：会话记录、知识点、练习、笔记和设置都有独立页面，并把“重复导航目标”升级为 CI 可检测的失败条件。这体现了我不只关注功能存在，也会用自动化质量门保护产品体验。
+
+### 当前验证结果
+- `E:\python3.12.9\python.exe -m compileall backend/app scripts`：通过。
+- `E:\python3.12.9\python.exe -m pytest`：49 passed，21 warnings。
+- `E:\python3.12.9\python.exe -m pytest backend/tests/test_v3_9_frontend_smoke.py`：1 passed。
+- `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：通过，required_routes=19，nav_targets=16，warnings=0。
+- frontend typecheck：通过。
+- frontend build：通过，20 个 build entries（含 `_not-found`）。
+- `E:\python3.12.9\python.exe scripts/check_encoding.py`：通过，246 个 UTF-8 文本文件。
+- `E:\python3.12.9\python.exe scripts/check_secrets.py`：通过，findings=0。
+- `E:\python3.12.9\python.exe scripts/check_repo_clean.py`：通过。
+
+<!-- learning:v4-0-learning-roadmap-relations-start-20260702 -->
+## V4.0 起步：学习路线与轻量知识关系
+
+### 本次补充做了什么
+- 新增 `GET /api/learning/roadmap`，根据已有 KnowledgePoint、学习卡片、练习、笔记和版本学习包派生学习顺序。
+- 新增 `GET /api/learning/knowledge-graph`，派生 `prerequisite`、`related`、`used_by_project`、`next_to_learn` 关系。
+- 新增 `/learning/roadmap` 和 `/learning/knowledge-graph` 页面，并更新 AppShell 导航，保留 `/learning` 作为版本档案入口。
+- 新增 `backend/tests/test_v4_0_learning_roadmap.py`，覆盖路线排序、关系类型和 API 响应契约。
+- 更新 `docs/learning_system.md`，明确当前是派生关系视图，不是持久化图数据库，也不使用假 LLM 生成关系。
+
+### 我应该重点理解什么
+学习路线不是简单把知识点列出来，而是根据掌握状态决定下一步：不会/模糊/待复习优先，未开始其次，已掌握则练习面试表达。知识关系也必须有证据来源：同一版本包顺序、共享关键词、项目文件位置，而不是模型随口生成。
+
+### 面试表达方式
+V4.0 中我把学习系统从“知识点列表”推进到“路线和关系”：后端从现有学习资产派生学习顺序和知识关系，前端提供学习路线与知识关系页面。这个阶段先保证可解释和可验证，后续再加入持久化 KnowledgeRelation 和真实 LLM provider 生成个性化路线。
+
+### 当前验证结果
+- `E:\python3.12.9\python.exe -m pytest backend/tests/test_v4_0_learning_roadmap.py backend/tests/test_v3_9_frontend_smoke.py -q`：3 passed。
+- `E:\python3.12.9\python.exe -m compileall backend/app scripts`：通过。
+- `E:\python3.12.9\python.exe -m pytest`：58 passed，20 warnings。
+- `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：通过，required_routes=27，nav_targets=24，warnings=0。
+- frontend typecheck：通过。
+- frontend build：通过，28 个 build entries（含 `_not-found`）。
+- `E:\python3.12.9\python.exe scripts/check_encoding.py`：通过，266 个 UTF-8 文本文件。
+- `E:\python3.12.9\python.exe scripts/check_secrets.py`：通过，findings=0。
+- `E:\python3.12.9\python.exe scripts/check_repo_clean.py`：通过。
+- `E:\python3.12.9\python.exe scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
+- `E:\python3.12.9\python.exe scripts/evaluate_rag.py --demo`：通过。
+- `E:\python3.12.9\python.exe scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
+- `E:\python3.12.9\python.exe scripts/evaluate_rag.py --demo`：通过。
+
+<!-- learning:v4-0-hybrid-retrieval-start-20260702 -->
+## V4.0 起步：轻量混合检索与 Rerank 降级边界
+
+### 本次补充做了什么
+- 新增 `backend/app/services/hybrid_retriever.py`，把 Qdrant dense 检索与 SQLite 中已索引文档/多模态片段的 keyword 检索做去重和分数融合。
+- 新增 `backend/app/services/rerank_provider.py`，先提供明确 disabled provider 边界；未配置 rerank 时不生成假分数，只在 reason 中标记 `rerank_not_configured`。
+- `RAGService` 改为通过 `HybridRetriever` 取候选片段，并在 `Citation`/`RelatedChunk` 中返回 `dense_score`、`keyword_score`、`rerank_score`、`final_score`、`retrieval_reason` 和 `citation_ready`。
+- 新增 `backend/tests/test_v4_0_hybrid_retrieval.py`，覆盖 dense 漏召回时的 keyword fallback，以及 RAG 响应不伪造 rerank_score。
+- 更新 `docs/hybrid_retrieval.md` 和 `docs/rag_evaluation.md`，把“planned”修正为当前真实实现状态和限制。
+
+### 我应该重点理解什么
+向量检索擅长语义相似，但容易漏掉精确术语、文件名、错误码和代码符号；关键词检索能补这些硬匹配，但不懂同义表达。混合检索的关键不是把两边结果简单拼起来，而是去重、融合分数、保留证据定位，并诚实标记 rerank 是否真的执行。没有真实 rerank provider 时，`rerank_score` 必须为空，不能编一个看起来专业的分数。
+
+### 面试表达方式
+V4.0 中我开始把 RAG 从单一路径向混合检索升级：dense retrieval 继续由 Qdrant 负责，keyword fallback 从 SQLite 中已索引的文档和多模态片段召回精确术语，HybridRetriever 对候选做去重、score fusion 和 trace 记录；rerank adapter 先保留真实 provider 边界，未配置时降级为 deterministic fusion，不伪造 rerank 分数。
+
+### 当前验证结果
+- `E:\python3.12.9\python.exe -m compileall backend/app scripts`：通过。
+- `E:\python3.12.9\python.exe -m pytest`：53 passed，22 warnings。
+- `E:\python3.12.9\python.exe -m pytest backend/tests/test_v3_audio_transcription.py::test_audio_upload_and_transcription_create_timestamped_rag_chunks backend/tests/test_v4_0_hybrid_retrieval.py -q`：3 passed。
+- `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：通过，required_routes=24，nav_targets=21，warnings=0。
+- frontend typecheck：通过。
+- frontend build：通过，25 个 build entries（含 `_not-found`）。
+- `E:\python3.12.9\python.exe scripts/check_encoding.py`：通过，258 个 UTF-8 文本文件。
+- `E:\python3.12.9\python.exe scripts/check_secrets.py`：通过，findings=0。
+- `E:\python3.12.9\python.exe scripts/check_repo_clean.py`：通过。
+- `E:\python3.12.9\python.exe scripts/evaluate_rag.py --demo`：通过。
+
+<!-- learning:v4-0-code-repository-ingestion-start-20260702 -->
+## V4.0 起步：代码仓库接入、文件行号 Locator 与代码问答证据
+
+### 本次补充做了什么
+- 新增 `backend/app/services/code_repository_service.py`，支持本地代码仓库路径扫描、安全跳过 `.env`、数据库、媒体、依赖目录、构建产物和缓存。
+- 新增 `POST /api/code-repositories/ingest-local`、`GET /api/code-repositories` 和详情接口，复用 `Source`、`SourceRevision`、`MultimodalChunk`、`CitationLocator` 与 `IndexRevision`。
+- 代码片段以 `source_type=code_repository`、`modality=code_file` 入库，并保存 `file_path`、`line_start`、`line_end`、`symbol_name` locator。
+- RAG 引用结构补充代码 locator 字段，代码问答可以返回文件路径与行号。
+- 新增 `/code` 前端页面和 AppShell 导航入口，上传中心也增加代码仓库流程卡。
+- 作品集概览新增代码仓库指标，展示这块能力的真实进展。
+- 新增 `backend/tests/test_v4_0_code_repository_ingestion.py`，覆盖敏感文件跳过、未配置 embedding 拒绝、API 响应契约和代码 RAG 引用。
+
+### 我应该重点理解什么
+代码仓库接入不是把整个项目目录塞进模型。安全扫描必须先排除 `.env`、数据库、媒体、依赖、构建和缓存；然后只读取白名单文本文件，按文件和行号切片，再把 locator 保存进 citation。这样后续问“这个接口在哪里”“这个模块怎么讲”时，答案可以指向真实文件行号，而不是泛泛解释。
+
+### 面试表达方式
+V4.0 中我开始实现代码仓库理解能力：系统可以读取本地仓库，按安全白名单扫描代码文件，生成带 `file_path`、`line_start`、`line_end` 和 `symbol_name` 的代码片段，并写入向量索引。缺少 Embedding provider 时返回 `EMBEDDING_NOT_CONFIGURED`，不会生成假向量或假代码解释。
+
+### 当前验证结果
+- `E:\python3.12.9\python.exe -m compileall backend/app scripts`：通过。
+- `E:\python3.12.9\python.exe -m pytest`：56 passed，25 warnings。
+- `E:\python3.12.9\python.exe -m pytest backend/tests/test_v4_0_code_repository_ingestion.py -q`：3 passed。
+- `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：通过，required_routes=25，nav_targets=22，warnings=0。
+- frontend typecheck：通过。
+- frontend build：通过，26 个 build entries（含 `_not-found`）。
+- `E:\python3.12.9\python.exe scripts/check_encoding.py`：通过，263 个 UTF-8 文本文件。
+- `E:\python3.12.9\python.exe scripts/check_secrets.py`：通过，findings=0。
+- `E:\python3.12.9\python.exe scripts/check_repo_clean.py`：通过。
+- `E:\python3.12.9\python.exe scripts/release.py --version V3.8 --dry-run`：通过，未发现 secrets/database/uploads/cache。
+
+<!-- learning:v4-0-portfolio-summary-start-20260702 -->
+## V4.0 起步：作品集概览 API 与求职页面
+
+### 本次补充做了什么
+- 新增 `GET /api/portfolio/summary`，从真实数据库聚合知识库、文档、多模态 Source、CitationLocator、任务、问答和学习资产计数。
+- 新增 portfolio schema/service/route，并补充 `test_v4_0_portfolio_summary.py`，覆盖 service 聚合和 API 响应契约。
+- 新增 `/portfolio`、`/portfolio/resume`、`/portfolio/interview`、`/portfolio/project-review` 页面，把真实项目事实组织成项目复盘、简历表达、面试讲解和演示路线。
+- 新增 `/system/observability` 页面，整理 request_id、task_id、retrieval_trace_id 等后续可观测性字段边界。
+- 更新 AppShell 作品集求职导航和 frontend smoke，必检路由扩展到 24 个，nav_targets=21，继续要求 warnings=0。
+
+### 我应该重点理解什么
+作品集系统不能一上来就“编简历”。更稳的第一步是把项目里真实存在的工程事实聚合出来：有多少资料、多少引用定位、多少任务、多少学习资产，哪些能力已实现，哪些仍需要 Provider。这样后续即使用 LLM 生成简历或面试回答，也能基于真实事实，而不是凭空包装。
+
+### 面试表达方式
+V4.0 起步阶段，我先实现了作品集概览 API：后端从数据库统计资料、任务、引用和学习资产，并返回能力证据、简历要点、面试讲解点和诚实边界；前端提供作品集、简历、面试和项目复盘页面。自动生成部分仍保留为后续真实 Provider 能力，未配置时不能生成假内容。
+
+### 当前验证结果
+- `E:\python3.12.9\python.exe -m compileall backend/app scripts`：通过。
+- `E:\python3.12.9\python.exe -m pytest`：51 passed，22 warnings。
+- `E:\python3.12.9\python.exe -m pytest backend/tests/test_v4_0_portfolio_summary.py backend/tests/test_v3_9_frontend_smoke.py`：3 passed。
+- `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：通过，required_routes=24，nav_targets=21，warnings=0。
+- frontend typecheck：通过。
+- frontend build：通过，25 个 build entries（含 `_not-found`）。
+- `E:\python3.12.9\python.exe scripts/check_encoding.py`：通过，255 个 UTF-8 文本文件。
+- `E:\python3.12.9\python.exe scripts/check_secrets.py`：通过，findings=0。
+- `E:\python3.12.9\python.exe scripts/check_repo_clean.py`：通过。
+- `E:\python3.12.9\python.exe scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
+- `E:\python3.12.9\python.exe scripts/evaluate_rag.py --demo`：通过。
+<!-- learning:v4-0-portfolio-ui-resilience-20260702 -->
+## V4.0 起步：作品集页面的服务边界和烟雾校验
+### 本次补充做了什么?
+- 将 `/portfolio`、`/portfolio/resume`、`/portfolio/interview`、`/portfolio/project-review` 的真实摘要加载与可选 markdown 生成拆开，避免 LLM provider 未配置时整页失败。
+- 根作品集页补入“真实项目概览”文案，满足 frontend smoke 对关键文本的校验。
+- 继续保留真实模式边界：生成接口缺 provider 仍然返回明确 `NOT_CONFIGURED`，不伪造内容。
+### 本阶段验证结果
+- `E:\python3.12.9\python.exe -m pytest`：61 passed, 25 warnings。
+- `E:\python3.12.9\python.exe scripts/check_frontend_smoke.py`：passed，required_routes=27，nav_targets=24，warnings=0。
+- `C:\Users\Lenovo\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe .\node_modules\typescript\bin\tsc --noEmit`：passed。
+- `C:\Users\Lenovo\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe .\node_modules\next\dist\bin\next build`：passed，28 个 App Router routes built successfully。
+
+<!-- learning:v4-1-codebase-cleanup-architecture-consolidation-20260702 -->
+## V4.1 进行中：全量代码体检、历史归档与架构收口
+
+### 本次补充做了什么
+- 新增 `scripts/audit_codebase.py`，生成 V4.1 predevelopment audit、代码资产清单、dead-code report 和 cleanup plan。
+- 将 V2、V3、V4.0 历史报告移动到 `docs/archive/v2`、`docs/archive/v3`、`docs/archive/v4`，保留历史但降低 docs 根目录噪音。
+- 修复 `docs/version_learning_package.md` 的可读性和历史草稿路径，保留 append-only 学习日志原文不覆盖。
+- 新增后端、前端、模块边界、脚本参考、依赖审计、测试审计、配置审计、CI/release 审计和文档清理报告。
+- 清理前端 `react-hooks/exhaustive-deps` suppression，使用 `useCallback` 收口页面加载函数。
+- 继续保留真实模式边界：未配置 provider 时必须明确拒绝，不生成假 OCR、假转写、假回答或假学习材料。
+
+### 我应该重点理解什么
+V4.1 的重点不是堆新功能，而是把大项目变得可维护：先用资产清单识别代码和文档，再按风险归档、清理、验证。历史学习档案是资产，不是垃圾；真正能删的东西必须先证明没有入口、没有引用、没有测试依赖、没有文档依赖。
+
+### 面试表达方式
+在 V4.1 中，我把 AI Knowledge OS Pro 从持续迭代状态推进到工程治理状态：建立全仓代码资产清单，归档历史报告，补齐模块边界和脚本参考，清理前端 hooks 技术债，并用 compileall、pytest、typecheck、build、encoding、Alembic 等门禁验证。这个阶段体现的是长期项目维护能力，而不是单纯功能开发。
+
+### 当前验证结果
+- `python -m compileall backend/app scripts`：通过。
+- `python -m pytest`：61 passed，8 warnings。
+- frontend typecheck：通过。
+- frontend production build：通过，28 个 App Router routes。
+- Alembic 临时 SQLite upgrade/current：通过，`0006_v3_6_unified_media_tasks (head)`。
+- `python scripts/check_encoding.py`：通过，282 个 UTF-8 文本文件；legacy append-only log 警告保留。
+- `python scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
+- `python scripts/check_frontend_smoke.py`：通过，required_routes=27，nav_targets=24，warnings=0。
+
+<!-- learning:v4-1-final-reverification-20260703 -->
+## V4.1 最终复验：代码体检、架构收口与发布门禁完成
+
+### 本次追加做了什么
+- 对 V4.1 已提交分支重新执行最终质量门禁，确认代码体检、历史报告归档、前端 hook 清理、架构文档、脚本审计和发布安全检查仍然成立。
+- 用隔离 `.pytest_tmp` SQLite 数据库重新运行 Alembic `upgrade head` 和 `current`，不接触用户真实数据库。
+- 记录本机环境边界：默认 Anaconda Python 缺少 FastAPI，项目兼容的 bundled Python 可完整通过后端测试；全局 npm 不在 PATH，前端使用 bundled Node 调用项目本地 TypeScript/Next.js CLI 通过。
+
+### 最终复验结果
+- `python -m compileall backend/app scripts`：通过。
+- bundled Python `-m pytest`：61 passed，9 warnings。
+- frontend typecheck：通过。
+- frontend production build：通过，28 个 App Router routes。
+- Alembic isolated SQLite upgrade/current：通过，`0006_v3_6_unified_media_tasks (head)`。
+- `python scripts/check_encoding.py`：通过，284 个 UTF-8 文本文件，96 条不可逆 legacy 日志行保留 append-only。
+- `python scripts/check_version.py`：通过，`V3.8 / 3.8.0`。
+- `python scripts/check_frontend_smoke.py`：通过，required_routes=27，nav_targets=24，warnings=0。
+- `python scripts/evaluate_rag.py --demo`：通过。
+- `python scripts/check_secrets.py`：通过，scanned=282，findings=0。
+- `python scripts/check_repo_clean.py`：通过，forbidden tracked files=0。
+- `python scripts/release.py --dry-run`：通过，release_dry_run_version=V3.8，included_files=293，未发现 secrets/database/uploads/cache。
+
+### 面试表达
+V4.1 体现的是长期项目治理能力：我不是继续堆新功能，而是先建立资产清单和僵尸代码判断标准，再做低风险清理、历史归档、模块边界文档和质量门禁复验。这个过程保留真实功能和历史学习档案，不伪造 provider 能力，也不把测试失败当作删除测试的理由。
+
+<!-- learning:v4-2-full-regression-demo-release-readiness-20260703 -->
+## V4.2：全链路回归、Demo 稳定与发布前准备
+
+### 本次做了什么
+- 将可见版本统一到 `V4.2 / 4.2.0`，同步后端配置、前端 package、README、CI release artifact 和版本检查脚本。
+- 强化 synthetic demo seed：加入 document、image、audio、video、code_repository、grounded QA、insufficient_context refusal、任务中心三种状态和学习资产。
+- 增强 `scripts/evaluate_rag.py`，验证 citation id、used citation、CitationLocator、音视频时间戳、代码文件行号 locator、多模态 locator JSON 和资料不足拒答。
+- 新增 `scripts/check_full_regression.py`，把后端路由、前端页面、Demo 数据、任务状态、学习资产、RAG/locator 和 release-support 文档脚本纳入一条回归检查。
+- 更新 README、Demo、RAG evaluation、release process、roadmap 和 scripts reference，让 V4.2 的能力和限制保持一致。
+
+### 我应该重点理解什么
+V4.2 的核心是“清理之后真的没坏”。V4.1 让项目结构更干净，V4.2 则用可运行脚本证明核心链路仍可演示、可测试、可发布。Demo 数据不是假功能，而是明确标注的合成证据；真实 provider 缺失时仍必须明确拒绝。
+
+### 面试表达
+在 V4.2 中，我把多模态 RAG 项目的发布准备做成了可执行质量门禁：一键 seed 合成 Demo 数据，检查文档/图片/音频/视频/代码仓库证据，验证 RAG 引用、拒答、任务中心状态、学习资产和前端关键页面，并将这些检查接入 CI 和 release dry-run。这个阶段体现的是工程回归、Demo 可信度和长期维护能力。
+
+### 当前验证结果
+- targeted regression tests：9 passed。
+- Demo readiness：通过，包含 4 类 source、9 个 multimodal chunks、9 个 citation locators、2 条 QA。
+- RAG demo evaluation：通过，包含 1 条 grounded answer、1 条 refusal、1 条 timestamp citation、2 个 code locators。
+- Full regression：通过，67 checks。
+- Full pytest：63 passed，13 warnings。
+- Frontend typecheck/build：通过，28 个 App Router routes。
+- Release dry-run：V4.2，302 files，无 secrets/database/uploads/cache。
+- Release archive check：通过，files=302，forbidden=0，missing=0。
+<!-- learning:v4-3-real-demo-ux-hardening-release-usability-20260704 -->
+## V4.3: Repository governance, real demo UX hardening and release usability
+
+### What changed
+- Confirmed repository source state in V4.2.1: latest complete code was on `feature/v4.2-full-regression-demo-release-readiness`, `main` lagged by 15 commits, no `v4.2.0` tag existed, and PR-to-main remained the safest merge path.
+- Added V4.2.1 governance docs for source audit, mainline diff, merge plan, release preparation and branch governance.
+- Promoted current product version to `V4.3 / 4.3.0` across backend config, health/status responses, frontend package metadata, README and CI release artifact naming.
+- Added `scripts/check_docs_links.py` for README/docs local links and Mermaid fence validation.
+- Added `scripts/check_readme_assets.py` for README images, screenshot inventory and missing demo GIF safety.
+- Added `scripts/check_all.py` with `--quick`, `--demo`, `--release` and `--full` modes.
+- Added provider-boundary tests covering missing LLM, embedding, OCR, vision description, transcription and disabled rerank behavior.
+- Added V4.3 API regression tests for health/status/list routes, Chat missing-provider refusal, source-based learning action and portfolio summary.
+- Updated README, architecture, quickstart, release process, scripts reference, roadmap, demo showcase and release checklist for V4.3.
+- Generated V4.3 reports and learning package draft from real Git diff, route scan, dependency changes and validation results.
+
+### What to understand
+V4.3 is not a new AI capability layer. It is the release usability layer: make the repository source of truth clear, make the README safe to trust, make demo data repeatable, make provider boundaries testable, and make the quality gates easy to rerun. A portfolio project is not credible just because features exist; it becomes credible when a stranger can open it, follow the docs, see what is real, run checks, and understand the release path.
+
+### Interview expression
+In V4.3, I turned AI Knowledge OS Pro from a feature-rich branch into a more release-ready GitHub portfolio artifact. I audited branch/source truth before changing code, added local docs and README asset gates, grouped verification into `check_all.py`, and locked real-mode provider boundaries with regression tests so missing keys refuse clearly instead of producing fake OCR, transcripts or answers.
+
+### Verification so far
+- `python -m compileall backend/app scripts`: passed.
+- `python -m pytest`: 70 passed, 9 warnings.
+- Frontend typecheck/build: passed, 28 App Router routes.
+- `check_docs_links`: passed, 88 files, 45 local links, 7 local images, 11 Mermaid blocks.
+- `check_readme_assets`: passed, 7 local images, 6 external badge images, 7 screenshots found.
+- Demo readiness/RAG/full regression on `.pytest_tmp/v4_3_demo_showcase.db`: passed.
+- Alembic isolated SQLite upgrade/current: `0006_v3_6_unified_media_tasks (head)`.
+- `check_secrets`: passed, scanned=296, findings=0.
+- `check_repo_clean`: passed, forbidden tracked files=0.
+- `release.py --version V4.3 --dry-run`: passed, 307 files, no secrets/databases/uploads/cache.
+
+### Next review focus
+Review Git PR/tag/release flow, README link hygiene, provider-boundary error codes, check orchestration, and the difference between static smoke tests and future live browser E2E.
+<!-- learning:v4-3-final-release-archive-20260704 -->
+### V4.3 final release archive addendum
+- `python scripts/check_all.py --full`: passed.
+- Final staged release dry-run: `included_files=321`, no secrets/databases/uploads/cache.
+- `python scripts/release.py --version V4.3`: generated `releases/AI-Knowledge-OS-Pro-V4.3-20260704.zip`.
+- `python scripts/check_release.py --version V4.3`: passed, `files=321`, `forbidden=0`, `missing=0`.
+- Final SHA256: recorded in the local `.sha256` sidecar file rather than embedded here, to avoid self-referential archive hashes.

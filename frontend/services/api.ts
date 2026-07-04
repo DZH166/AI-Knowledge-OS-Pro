@@ -3,6 +3,7 @@ import type {
   ApiEnvelope,
   ChatResponse,
   ChatSession,
+  CodeRepositoryIngestResponse,
   Chunk,
   DashboardSummary,
   DocumentItem,
@@ -14,6 +15,8 @@ import type {
   LearningArtifact,
   LearningArtifactType,
   LearningDashboard,
+  LearningRoadmap,
+  KnowledgeRelation,
   LearningKnowledgePoint,
   LearningLog,
   LearningNote,
@@ -21,6 +24,8 @@ import type {
   MediaOperation,
   MediaTaskResponse,
   OnboardingState,
+  PortfolioMarkdownResponse,
+  PortfolioSummary,
   QALog,
   QuizQuestion,
   SourceItem,
@@ -177,6 +182,23 @@ export const api = {
       body: formData
     });
   },
+  ingestCodeRepository: (payload: {
+    space_id: number;
+    local_path: string;
+    title?: string;
+    github_url?: string;
+    max_files?: number;
+  }) =>
+    request<CodeRepositoryIngestResponse>("/api/code-repositories/ingest-local", {
+      method: "POST",
+      body: JSON.stringify(payload)
+    }),
+  listCodeRepositories: (spaceId?: number) => {
+    const params = new URLSearchParams();
+    if (spaceId) params.set("space_id", String(spaceId));
+    const query = params.toString();
+    return request<SourceItem[]>(query ? `/api/code-repositories?${query}` : "/api/code-repositories");
+  },
   listSources: (spaceId?: number, sourceType?: string) => {
     const params = new URLSearchParams();
     if (spaceId) params.set("space_id", String(spaceId));
@@ -222,6 +244,8 @@ export const api = {
   favoriteMessage: (messageId: number) =>
     request<{ message_id: number; is_favorite: boolean }>(`/api/chat/messages/${messageId}/favorite`, { method: "POST" }),
   learningDashboard: () => request<LearningDashboard>("/api/learning/dashboard"),
+  learningRoadmap: () => request<LearningRoadmap>("/api/learning/roadmap"),
+  knowledgeGraph: () => request<KnowledgeRelation[]>("/api/learning/knowledge-graph"),
   learningLogs: () => request<LearningLog[]>("/api/learning/logs"),
   learningVersions: () => request<LearningLog[]>("/api/learning/versions"),
   learningLog: (slug: string) => request<LearningLog>(`/api/learning/logs/${slug}`),
@@ -269,7 +293,12 @@ export const api = {
     method: "POST",
     body: JSON.stringify(payload)
   }),
-  exportLearningMarkdown: () => request<{ markdown: string; message: string }>("/api/learning/export-markdown", { method: "POST" })
+  exportLearningMarkdown: () => request<{ markdown: string; message: string }>("/api/learning/export-markdown", { method: "POST" }),
+  portfolioSummary: () => request<PortfolioSummary>("/api/portfolio/summary"),
+  generatePortfolioResumeEntry: () => request<PortfolioMarkdownResponse>("/api/portfolio/generate-resume-entry", { method: "POST" }),
+  generatePortfolioInterviewQa: () => request<PortfolioMarkdownResponse>("/api/portfolio/generate-interview-qa", { method: "POST" }),
+  generatePortfolioProjectReview: () => request<PortfolioMarkdownResponse>("/api/portfolio/generate-project-review", { method: "POST" }),
+  exportPortfolioMarkdown: () => request<PortfolioMarkdownResponse>("/api/portfolio/export-markdown", { method: "POST" })
 };
 
 export function formatDate(value: string | null) {
@@ -352,7 +381,13 @@ export function statusLabel(status: string) {
     audio_transcript: "音频片段",
     video_metadata_only: "视频元数据模式",
     video_transcription: "视频转写",
-    video_transcript: "视频片段"
+    video_transcript: "视频片段",
+    code_repository: "代码仓库",
+    code_file: "代码片段",
+    prerequisite: "前置知识",
+    related: "相关知识",
+    used_by_project: "项目使用",
+    next_to_learn: "下一步"
   };
   return map[status] || status;
 }

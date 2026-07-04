@@ -1,8 +1,8 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { AudioLines, FileText, ImagePlus, UploadCloud, Video } from "lucide-react";
+import { AudioLines, Code2, FileText, ImagePlus, UploadCloud, Video } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
 import { DocumentUploader } from "@/components/DocumentUploader";
@@ -28,7 +28,8 @@ const workflows = {
   document: ["Upload file", "Parse text", "Split chunks", "Embed", "Index", "Ask with citations"],
   image: ["Upload image", "Read metadata", "Run OCR or vision task", "Index chunks", "Create learning artifacts"],
   audio: ["Upload audio", "Read duration", "Run transcription task", "Jump by timestamp", "Create cards or notes"],
-  video: ["Upload video", "Read metadata", "Extract keyframes", "Transcribe audio track", "Jump to evidence"]
+  video: ["Upload video", "Read metadata", "Extract keyframes", "Transcribe audio track", "Jump to evidence"],
+  code: ["Choose local repository", "Apply safety skip rules", "Create file/line chunks", "Embed", "Ask code questions"]
 };
 
 function UploadContent() {
@@ -49,7 +50,7 @@ function UploadContent() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  async function load() {
+  const load = useCallback(async () => {
     setError("");
     try {
       const [spaceData, documentData, sourceData] = await Promise.all([api.listSpaces(), api.listDocuments(), api.listSources()]);
@@ -62,12 +63,11 @@ function UploadContent() {
     } catch (exc) {
       setError(exc instanceof Error ? exc.message : "Failed to load upload center.");
     }
-  }
+  }, [defaultSpaceId]);
 
   useEffect(() => {
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [load]);
 
   async function uploadImage() {
     if (!imageSpaceId || !imageFile) return;
@@ -153,6 +153,7 @@ function UploadContent() {
             <WorkflowCard icon={<ImagePlus size={18} />} steps={workflows.image} title="Images" />
             <WorkflowCard icon={<AudioLines size={18} />} steps={workflows.audio} title="Audio" />
             <WorkflowCard icon={<Video size={18} />} steps={workflows.video} title="Video" />
+            <WorkflowCard icon={<Code2 size={18} />} steps={workflows.code} title="Code repositories" />
           </section>
 
           <section className="grid cols-4">

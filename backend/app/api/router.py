@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from app.api import (
     routes_chat,
+    routes_code_repositories,
     routes_dashboard,
     routes_documents,
     routes_errors,
@@ -10,11 +11,13 @@ from app.api import (
     routes_learning,
     routes_media,
     routes_onboarding,
+    routes_portfolio,
     routes_system,
 )
 
 api_router = APIRouter(prefix="/api")
 api_router.include_router(routes_dashboard.router)
+api_router.include_router(routes_code_repositories.router)
 api_router.include_router(routes_knowledge_spaces.router)
 api_router.include_router(routes_documents.router)
 api_router.include_router(routes_errors.router)
@@ -23,4 +26,5 @@ api_router.include_router(routes_chat.router)
 api_router.include_router(routes_learning.router)
 api_router.include_router(routes_media.router)
 api_router.include_router(routes_onboarding.router)
+api_router.include_router(routes_portfolio.router)
 api_router.include_router(routes_system.router)
