@@ -57,14 +57,52 @@ export function EmptyState({ title, description, action }: { title: string; desc
   );
 }
 
-export function ErrorState({ message, onRetry }: { message: string; onRetry?: () => void }) {
+export function ErrorState({
+  message,
+  reason,
+  impact,
+  nextStep,
+  technicalDetails,
+  providerRequired = false,
+  onRetry
+}: {
+  message: string;
+  reason?: string;
+  impact?: string;
+  nextStep?: string;
+  technicalDetails?: ReactNode;
+  providerRequired?: boolean;
+  onRetry?: () => void;
+}) {
   return (
     <div className="error-state">
       <AlertTriangle size={20} />
-      <span>{message}</span>
+      <div className="stack compact">
+        <strong>{message}</strong>
+        {reason && (
+          <span>
+            {"\u53ef\u80fd\u539f\u56e0\uff1a"}
+            {reason}
+          </span>
+        )}
+        {impact && (
+          <span>
+            {"\u5f71\u54cd\uff1a"}
+            {impact}
+          </span>
+        )}
+        {nextStep && (
+          <span>
+            {"\u4e0b\u4e00\u6b65\uff1a"}
+            {nextStep}
+          </span>
+        )}
+        {providerRequired && <StatusBadge status="not_configured" label={statusLabel("not_configured")} />}
+        {technicalDetails && <TechnicalDetails>{technicalDetails}</TechnicalDetails>}
+      </div>
       {onRetry && (
         <button className="button secondary small" onClick={onRetry} type="button">
-          重试
+          {"\u91cd\u8bd5"}
         </button>
       )}
     </div>
@@ -390,4 +428,160 @@ export function ButtonLoading({ label }: { label: string }) {
       {label}
     </>
   );
+}
+
+
+export function LoadingState({
+  title = "\u52a0\u8f7d\u4e2d",
+  description
+}: {
+  title?: string;
+  description?: string;
+}) {
+  return (
+    <div className="empty-state">
+      <Loader2 className="spin" size={22} />
+      <strong>{title}</strong>
+      {description && <p>{description}</p>}
+    </div>
+  );
+}
+
+export function DemoModeBanner({ mode = "demo" }: { mode?: "demo" | "real" | string }) {
+  if (mode !== "demo") return null;
+  return (
+    <div className="notice">
+      <StatusBadge status="demo" />
+      <span>{"\u5f53\u524d\u4f7f\u7528\u5408\u6210\u793a\u4f8b\u6570\u636e\uff0c\u4e0d\u4ee3\u8868\u771f\u5b9e Provider \u8f93\u51fa\u3002"}</span>
+    </div>
+  );
+}
+
+export function CapabilityWarning({
+  capability,
+  status,
+  message,
+  action
+}: {
+  capability: string;
+  status: string;
+  message: string;
+  action?: ReactNode;
+}) {
+  return (
+    <div className="notice warning">
+      <StatusBadge status={status} />
+      <div className="stack compact">
+        <strong>{capability}</strong>
+        <span>{message}</span>
+      </div>
+      {action}
+    </div>
+  );
+}
+
+export function ProviderMissingWarning({
+  provider,
+  code = "NOT_CONFIGURED",
+  setupHint,
+  onRetry
+}: {
+  provider: string;
+  code?: string;
+  setupHint?: string;
+  onRetry?: () => void;
+}) {
+  return (
+    <ErrorState
+      impact={"\u9700\u8981\u8be5 Provider \u7684 OCR\u3001\u8f6c\u5199\u3001\u5411\u91cf\u6216 LLM \u529f\u80fd\u4f1a\u660e\u786e\u62d2\u7edd\u3002"}
+      message={`${provider} ${statusLabel("not_configured")}`}
+      nextStep={setupHint || "\u914d\u7f6e\u5bf9\u5e94 API Key \u540e\u91cd\u8bd5\uff0cDemo \u6a21\u5f0f\u4e0d\u4f1a\u4f2a\u9020\u771f\u5b9e AI \u8f93\u51fa\u3002"}
+      onRetry={onRetry}
+      providerRequired
+      reason={"\u5f53\u524d\u73af\u5883\u6ca1\u6709\u68c0\u6d4b\u5230\u53ef\u7528\u7684\u771f\u5b9e Provider \u51ed\u636e\u3002"}
+      technicalDetails={<code>{code}</code>}
+    />
+  );
+}
+
+export function TaskStatusBadge({ status }: { status: string }) {
+  return <StatusBadge status={status} />;
+}
+
+export function LearningActionBar({ children }: { children: ReactNode }) {
+  return <div className="row wrap">{children}</div>;
+}
+
+export function SourceLocatorButton({
+  label = "\u67e5\u770b\u6765\u6e90",
+  href,
+  onClick
+}: {
+  label?: string;
+  href?: string;
+  onClick?: () => void;
+}) {
+  if (href) {
+    return (
+      <a className="button secondary small" href={href}>
+        {label}
+        <ChevronRight size={15} />
+      </a>
+    );
+  }
+  return (
+    <button className="button secondary small" onClick={onClick} type="button">
+      {label}
+      <ChevronRight size={15} />
+    </button>
+  );
+}
+
+export type TaskLogEvent = {
+  id?: number | string;
+  stage?: string | null;
+  status?: string | null;
+  message?: string | null;
+  progress?: number | null;
+  created_at?: string | null;
+};
+
+export function TaskLogDrawer({
+  title = "\u4efb\u52a1\u65e5\u5fd7",
+  open = true,
+  events,
+  onClose
+}: {
+  title?: string;
+  open?: boolean;
+  events: TaskLogEvent[];
+  onClose?: () => void;
+}) {
+  return (
+    <Drawer onClose={onClose} open={open} title={title}>
+      {events.length === 0 ? (
+        <EmptyState description={"\u4efb\u52a1\u5f00\u59cb\u540e\u4f1a\u5728\u8fd9\u91cc\u663e\u793a\u9636\u6bb5\u3001\u8fdb\u5ea6\u548c\u9519\u8bef\u4fe1\u606f\u3002"} title={"\u6682\u65e0\u4efb\u52a1\u4e8b\u4ef6"} />
+      ) : (
+        <ol className="timeline">
+          {events.map((event, index) => (
+            <li key={event.id ?? index}>
+              <div className="row wrap">
+                {event.status && <TaskStatusBadge status={event.status} />}
+                <strong>{event.stage || "\u4efb\u52a1\u4e8b\u4ef6"}</strong>
+                {typeof event.progress === "number" && <span className="muted">{Math.round(event.progress)}%</span>}
+              </div>
+              {event.message && <p className="muted">{event.message}</p>}
+              {event.created_at && <time className="muted">{formatDisplayTime(event.created_at)}</time>}
+            </li>
+          ))}
+        </ol>
+      )}
+    </Drawer>
+  );
+}
+
+function formatDisplayTime(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium", timeStyle: "short" }).format(date);
 }

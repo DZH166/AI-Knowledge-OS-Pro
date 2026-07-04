@@ -12,7 +12,8 @@ Run scripts from the repository root unless a script explicitly says otherwise.
 | `scripts/check_full_regression.py` | Run V4.2 full regression against seeded synthetic demo data. | `python scripts/check_full_regression.py --database-path backend/data/demo_showcase.db` | No, unless `--write-report` is used | Yes |
 | `scripts/check_docs_links.py` | Validate README/docs local Markdown links and Mermaid fences. | `python scripts/check_docs_links.py` | No | Yes |
 | `scripts/check_readme_assets.py` | Validate README local image references and required screenshot assets. | `python scripts/check_readme_assets.py` | No | Yes |
-| `scripts/check_all.py` | Orchestrate quick/demo/release/full quality gates. | `python scripts/check_all.py --full` | Seeds isolated demo DB in demo/full mode | Yes |
+| `scripts/check_all.py` | Orchestrate quick/demo/release/full quality gates, with per-gate status and duration output. | `python scripts/check_all.py --full` | Seeds isolated demo DB in demo/full mode | Yes |
+| `scripts/check_all.py --skip-frontend` | Run full backend/demo/release gates while skipping frontend typecheck/build for backend-only diagnosis. | `python scripts/check_all.py --skip-frontend` | Seeds isolated demo DB | Diagnostic only |
 | `scripts/check_release.py` | Inspect generated release zip for required/forbidden entries. | `python scripts/check_release.py --version V4.3` | No | Yes |
 | `scripts/check_repo_clean.py` | Ensure forbidden generated/user data is not tracked. | `python scripts/check_repo_clean.py` | No | Yes |
 | `scripts/check_secrets.py` | Scan tracked text for secret-like values. | `python scripts/check_secrets.py` | No | Yes |

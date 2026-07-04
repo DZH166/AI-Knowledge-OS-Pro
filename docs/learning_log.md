@@ -1295,3 +1295,12 @@ Review Git PR/tag/release flow, README link hygiene, provider-boundary error cod
 - `python scripts/release.py --version V4.3`: generated `releases/AI-Knowledge-OS-Pro-V4.3-20260704.zip`.
 - `python scripts/check_release.py --version V4.3`: passed, `files=321`, `forbidden=0`, `missing=0`.
 - Final SHA256: recorded in the local `.sha256` sidecar file rather than embedded here, to avoid self-referential archive hashes.
+
+<!-- learning:v4-3-post-release-hardening-20260704 -->
+### V4.3 post-release hardening addendum
+- Closed the remaining V4.3 evidence gaps by adding dedicated README asset, UX error-state and V4.4 planning reports.
+- Hardened `scripts/check_all.py` so each gate prints name, status, duration, next-step guidance and report path; added `--skip-frontend` as a backend/demo/release diagnostic mode.
+- Added shared frontend UX primitives for demo mode, capability warnings, provider-missing errors, loading state, task status, task logs, source locator actions and learning action bars.
+- Standardized required task/runtime labels: queued, running, completed, failed, cancelled, retrying, not_configured, demo and real now map to readable Chinese labels.
+- Revalidated full quality gates after the hardening pass: compileall passed, pytest `70 passed, 10 warnings`, frontend typecheck/build passed, docs/assets checks passed, demo/RAG/full regression passed, release dry-run included 324 files.
+- Regenerated the V4.3 release zip and verified `files=324`, `forbidden=0`, `missing=0`; SHA remains in the `.sha256` sidecar rather than inside tracked docs.

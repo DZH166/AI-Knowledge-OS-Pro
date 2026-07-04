@@ -44,6 +44,9 @@ VERSION_REQUIRED_ENTRIES = {
     "V4.3": {
         "docs/v4_3_release_readiness_report.md",
         "docs/v4_3_quality_gate_report.md",
+        "docs/v4_3_readme_asset_report.md",
+        "docs/v4_3_ux_error_state_report.md",
+        "docs/v4_4_planning.md",
         "scripts/check_all.py",
         "scripts/check_docs_links.py",
         "scripts/check_readme_assets.py",

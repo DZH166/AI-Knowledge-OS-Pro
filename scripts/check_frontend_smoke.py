@@ -50,6 +50,29 @@ REQUIRED_TEXT = {
     "frontend/app/learning/knowledge-graph/page.tsx": ("知识关系", "used_by_project"),
     "frontend/app/media/sources/[id]/page.tsx": ("元数据摘要", "处理详情"),
     "frontend/app/tasks/page.tsx": ("恢复建议", "事件时间线"),
+    "frontend/components/ui.tsx": (
+        "DemoModeBanner",
+        "CapabilityWarning",
+        "ProviderMissingWarning",
+        "LoadingState",
+        "TaskStatusBadge",
+        "LearningActionBar",
+        "SourceLocatorButton",
+        "TaskLogDrawer",
+        "\\u53ef\\u80fd\\u539f\\u56e0",
+        "\\u4e0b\\u4e00\\u6b65",
+    ),
+    "frontend/services/api.ts": (
+        "queued: \"\\u6392\\u961f\\u4e2d\"",
+        "running: \"\\u5904\\u7406\\u4e2d\"",
+        "completed: \"\\u5df2\\u5b8c\\u6210\"",
+        "failed: \"\\u5931\\u8d25\"",
+        "cancelled: \"\\u5df2\\u53d6\\u6d88\"",
+        "retrying: \"\\u91cd\\u8bd5\\u4e2d\"",
+        "not_configured: \"\\u672a\\u914d\\u7f6e\"",
+        "demo: \"\\u6f14\\u793a\\u6a21\\u5f0f\"",
+        "real: \"\\u771f\\u5b9e\\u6a21\\u5f0f\"",
+    ),
 }
 
 FORBIDDEN_UI_PATTERNS = (

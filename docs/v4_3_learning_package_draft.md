@@ -308,3 +308,12 @@ Next.js generated 28 App Router routes
 Alembic current: 0006_v3_6_unified_media_tasks (head)
 Database URL: sqlite:///./.pytest_tmp/v4_3_alembic.db
 ```
+
+### Post-Release Hardening Addendum
+
+- Added `docs/v4_3_readme_asset_report.md` to make README image and screenshot validation separately reviewable.
+- Added `docs/v4_3_ux_error_state_report.md` to connect provider-missing and task/error UX requirements to shared frontend components.
+- Added `docs/v4_4_planning.md` so the next version focuses on browser E2E, citation-jump validation and observability rather than blind feature expansion.
+- Extended `scripts/check_all.py` with per-gate status/duration output and `--skip-frontend` diagnostic mode.
+- Extended `scripts/check_frontend_smoke.py` to verify shared UX components and required Chinese status-label mappings.
+- Regenerated the V4.3 release package after the final docs/UX hardening pass; the SHA remains in the local `.sha256` sidecar to avoid self-referential archive hashes.

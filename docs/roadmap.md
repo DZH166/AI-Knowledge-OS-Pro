@@ -154,6 +154,7 @@
 - Split backend runtime and development requirements after CI is adjusted.
 - Continue consolidating overlapping RAG/media/citation documentation.
 - Project version diffs and technical storytelling.
+- Planning details: [V4.4 Planning](v4_4_planning.md).
 
 ## V4.0 Target: Interview And Portfolio System
 

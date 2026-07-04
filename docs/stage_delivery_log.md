@@ -905,3 +905,16 @@ Open a PR from `feature/v4.3-real-demo-ux-hardening` to `main`, wait for CI to p
 - Release safety inspection: `files=321`, `forbidden=0`, `missing=0`.
 - SHA256: recorded in the local `.sha256` sidecar file rather than embedded here, to avoid self-referential archive hashes.
 - Release artifacts remain local and untracked by design.
+
+<!-- stage:v4-3-post-release-hardening-20260704 -->
+### V4.3 post-release hardening addendum
+- Added missing final evidence reports:
+  - `docs/v4_3_readme_asset_report.md`
+  - `docs/v4_3_ux_error_state_report.md`
+  - `docs/v4_4_planning.md`
+- Updated release readiness and release notes from pre-merge language to actual published state: PR #1 merged, `main` synchronized, `v4.3.0` tag and GitHub Release created.
+- Extended `scripts/check_all.py` with gate-level status/duration output and `--skip-frontend`.
+- Extended frontend smoke checks to cover shared UX components and required Chinese status labels.
+- Added shared UI primitives in `frontend/components/ui.tsx` for structured error state, provider-missing warning, demo banner, task log drawer, source locator button and learning action bar.
+- Full validation after this addendum: `check_all --full` passed; pytest `70 passed, 10 warnings`; frontend build generated 28 routes; release dry-run included 324 files.
+- Regenerated local V4.3 release zip and verified package safety: `files=324`, `forbidden=0`, `missing=0`.

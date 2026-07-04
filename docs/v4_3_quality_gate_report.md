@@ -6,37 +6,54 @@ Generated at: 2026-07-04 Asia/Shanghai
 
 V4.3 adds `scripts/check_all.py` as a unified quality-gate entrypoint while keeping individual commands available for CI and diagnosis.
 
-## New Gates
+## Gates
 
 - `scripts/check_docs_links.py`
 - `scripts/check_readme_assets.py`
+- `scripts/check_frontend_smoke.py`
 - `scripts/check_all.py --quick`
 - `scripts/check_all.py --demo`
 - `scripts/check_all.py --release`
 - `scripts/check_all.py --full`
+- `scripts/check_all.py --skip-frontend` for backend/demo/release diagnosis when frontend checks are intentionally skipped.
 
-## Current Verification
+## Latest Full Verification
 
-- `python -m compileall backend/app scripts`: passed.
-- `python -m pytest`: `70 passed, 9 warnings`.
-- Frontend typecheck with bundled Node: passed.
-- Frontend production build with bundled Node: passed, 28 routes.
-- `python scripts/check_encoding.py`: passed for 312 UTF-8 text files; 96 immutable legacy log lines preserved append-only.
-- `python scripts/check_version.py`: passed, `V4.3 / 4.3.0`.
-- `python scripts/check_docs_links.py`: passed.
-- `python scripts/check_readme_assets.py`: passed.
-- `python scripts/check_frontend_smoke.py`: passed, `required_routes=27`, `nav_targets=24`, `warnings=0`.
-- Demo readiness/RAG/full regression on `.pytest_tmp/v4_3_demo_showcase.db`: passed.
-- Alembic isolated SQLite upgrade/current: passed, `0006_v3_6_unified_media_tasks (head)`.
-- `python scripts/check_secrets.py`: passed, `scanned=310`, `findings=0`.
-- `python scripts/check_repo_clean.py`: passed, `forbidden tracked files=0`.
-- `python scripts/release.py --version V4.3 --dry-run`: passed, `included_files=321`, no secrets/databases/uploads/cache.
-- `python scripts/check_all.py --quick`: passed.
-- `python scripts/check_all.py --release`: passed.
+Command:
 
-## Final Gate
+```powershell
+python scripts/check_all.py --full
+```
 
-- `python scripts/check_all.py --full`: passed.
+Result: passed.
+
+| Gate | Result |
+| --- | --- |
+| Backend compileall | Passed |
+| Backend pytest | Passed, `70 passed, 10 warnings` |
+| Frontend typecheck | Passed |
+| Frontend production build | Passed, 28 App Router routes |
+| Encoding check | Passed for 315 UTF-8 text files; 96 immutable legacy log lines preserved append-only |
+| Version check | Passed, `V4.3 / 4.3.0` |
+| Docs link check | Passed, 91 files, 49 local links, 7 local images, 11 Mermaid blocks |
+| README asset check | Passed, 7 local images, 6 external badge images, 7 screenshots found |
+| Frontend smoke | Passed, 27 required routes, 24 navigation targets, 0 warnings |
+| Demo seed | Passed on `.pytest_tmp/v4_3_demo_showcase.db` |
+| Demo readiness | Passed |
+| Demo RAG evaluation | Passed |
+| Full regression | Passed, 67 checks |
+| Secret scan | Passed, `scanned=313`, `findings=0` |
+| Repo clean | Passed, `forbidden tracked files=0` |
+| Release dry-run | Passed, `included_files=324`, no secrets/databases/uploads/cache |
+
+## Release Package Verification
+
 - `python scripts/release.py --version V4.3`: generated `releases/AI-Knowledge-OS-Pro-V4.3-20260704.zip`.
-- `python scripts/check_release.py --version V4.3`: passed, `files=321`, `forbidden=0`, `missing=0`.
+- `python scripts/check_release.py --version V4.3`: passed, `files=324`, `forbidden=0`, `missing=0`.
 - Final SHA256 is recorded in the local `.sha256` sidecar file rather than embedded here, to avoid self-referential archive hashes.
+
+## Additional Checks
+
+- Alembic isolated SQLite `upgrade head` and `current`: passed at `0006_v3_6_unified_media_tasks (head)`.
+- `python scripts/check_all.py --help`: documents `--quick`, `--demo`, `--release`, `--full` and `--skip-frontend`.
+

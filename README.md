@@ -289,7 +289,7 @@ scripts/                 Demo, verification, learning package and release utilit
 | Demo and setup | [Quickstart](docs/quickstart.md), [Demo Mode](docs/demo_mode.md), [Local Development](docs/local_development.md), [Environment Variables](docs/environment_variables.md), [Provider Diagnostics](docs/provider_diagnostics.md) |
 | Architecture and flows | [Architecture](docs/architecture.md), [Architecture Diagrams](docs/architecture_diagram.md), [RAG Flow](docs/rag_flow.md), [Multimodal Pipeline](docs/multimodal_pipeline.md), [Task Queue Flow](docs/task_queue_flow.md), [Citation Flow](docs/citation_flow.md), [Learning Loop](docs/learning_loop.md) |
 | Release and governance | [Release Process](docs/release_process.md), [Versioning](docs/versioning.md), [Commit Convention](docs/commit_convention.md), [Document Quality Checklist](docs/document_quality_checklist.md), [Release Checklist](docs/github_release_checklist.md) |
-| V4.x modules and reports | [RAG Evaluation](docs/rag_evaluation.md), [Hybrid Retrieval](docs/hybrid_retrieval.md), [Code Repository Ingestion](docs/code_repository_ingestion.md), [Portfolio System](docs/portfolio_system.md), [Interview System](docs/interview_system.md), [Observability](docs/observability.md), [V4.2 Full Regression](docs/v4_2_full_regression_report.md), [V4.2 Acceptance](docs/v4_2_acceptance_report.md), [V4.3 Release Readiness](docs/v4_3_release_readiness_report.md), [V4.3 Quality Gates](docs/v4_3_quality_gate_report.md) |
+| V4.x modules and reports | [RAG Evaluation](docs/rag_evaluation.md), [Hybrid Retrieval](docs/hybrid_retrieval.md), [Code Repository Ingestion](docs/code_repository_ingestion.md), [Portfolio System](docs/portfolio_system.md), [Interview System](docs/interview_system.md), [Observability](docs/observability.md), [V4.2 Full Regression](docs/v4_2_full_regression_report.md), [V4.2 Acceptance](docs/v4_2_acceptance_report.md), [V4.3 Release Readiness](docs/v4_3_release_readiness_report.md), [V4.3 Quality Gates](docs/v4_3_quality_gate_report.md), [V4.3 README Assets](docs/v4_3_readme_asset_report.md), [V4.3 UX Error States](docs/v4_3_ux_error_state_report.md), [V4.4 Planning](docs/v4_4_planning.md) |
 
 ## Current Limitations
 
@@ -313,6 +313,7 @@ scripts/                 Demo, verification, learning package and release utilit
 - V4.1: Codebase inventory, dead-code review, historical report archive and architecture boundary cleanup.
 - V4.2: Full regression checklist, hardened synthetic demo, stronger RAG quality evaluation, release-readiness gates and updated portfolio documentation.
 - V4.3: README/docs link integrity, README asset checks, demo walkthrough validation, provider-boundary tests, API regression coverage and unified quality gate orchestration.
+- V4.4 planned: browser E2E demo smoke, citation-jump validation, runtime observability snapshots and optional provider-backed evaluation.
 
 See [Roadmap](docs/roadmap.md).
 
