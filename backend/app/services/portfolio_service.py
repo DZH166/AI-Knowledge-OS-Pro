@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 
 from sqlalchemy import func, select
@@ -310,6 +311,10 @@ class PortfolioService:
 
     @staticmethod
     def _git_branch() -> str | None:
+        for env_name in ("GITHUB_HEAD_REF", "GITHUB_REF_NAME"):
+            value = os.getenv(env_name, "").strip()
+            if value:
+                return value
         try:
             output = subprocess.check_output(
                 ["git", "branch", "--show-current"],
@@ -321,7 +326,22 @@ class PortfolioService:
         except Exception:
             return None
         value = output.strip()
-        return value or None
+        if value:
+            return value
+        try:
+            output = subprocess.check_output(
+                ["git", "rev-parse", "--abbrev-ref", "HEAD"],
+                cwd=settings.project_root,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+            )
+        except Exception:
+            return None
+        value = output.strip()
+        if value and value != "HEAD":
+            return value
+        return "detached-head"
 
     @staticmethod
     def _git_commit() -> str | None:

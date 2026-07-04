@@ -1015,3 +1015,12 @@ Run final `check_all --full`, generate and inspect the V4.4 release zip, commit 
 - Release safety inspection: `files=347`, `forbidden=0`, `missing=0`.
 - SHA256: recorded in the local `.sha256` sidecar file rather than embedded here, to avoid self-referential archive hashes.
 - Release artifacts remain local and untracked by design.
+
+<!-- stage:v4-4-pr-ci-source-branch-hardening-20260705 -->
+### V4.4 PR CI source branch hardening addendum
+- Pull request CI for `530183a` had one backend failure: portfolio markdown generation could not populate `source_branch` in a detached PR checkout.
+- Updated portfolio git metadata detection to use GitHub Actions branch environment variables before local git branch commands.
+- Added regression coverage for PR head-ref metadata.
+- Targeted portfolio tests passed: `6 passed`.
+- Full local gate passed after the fix: backend pytest `75 passed, 22 warnings`, frontend typecheck/build, encoding, version, docs/assets checks, provider dry-run, demo checks, full regression, secret scan, repo-clean and release dry-run.
+- Next release action: regenerate the V4.4 local release archive, commit this CI hardening change, push, and confirm the PR checks turn green.

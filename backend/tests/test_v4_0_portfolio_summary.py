@@ -61,6 +61,13 @@ def test_portfolio_summary_route_returns_display_contract(db_session, knowledge_
         app.dependency_overrides.pop(get_db, None)
 
 
+def test_portfolio_source_branch_uses_github_actions_head_ref(monkeypatch) -> None:
+    monkeypatch.setenv("GITHUB_HEAD_REF", "codex/v4-portfolio")
+    monkeypatch.setenv("GITHUB_REF_NAME", "2/merge")
+
+    assert portfolio_service._git_branch() == "codex/v4-portfolio"
+
+
 def test_portfolio_generation_routes_refuse_without_llm_provider(db_session, knowledge_space, monkeypatch) -> None:
     _seed_portfolio_records(db_session, knowledge_space.id)
     original_llm = portfolio_service.llm_service

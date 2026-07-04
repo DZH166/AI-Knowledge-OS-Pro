@@ -1371,3 +1371,12 @@ Review how request ids flow through response envelopes, how retrieval traces are
 - Verified default `python scripts/evaluate_providers.py --dry-run` passes without backend dependency installation.
 - Reverified `.venv` modes: `--dry-run`, `--demo` and `--real-if-configured` all pass; missing keys still produce explicit NOT_CONFIGURED-style states without fake outputs.
 - Re-ran `python scripts/check_all.py --full` after the CI hardening fix: passed, including backend pytest `74 passed, 22 warnings`, frontend build, demo/RAG/full regression and release dry-run.
+
+<!-- learning:v4-4-pr-ci-source-branch-hardening-20260705 -->
+### V4.4 PR CI source branch hardening addendum
+- GitHub pull request CI for commit `530183a` failed only in the backend job because `PortfolioMarkdownResponse.source_branch` was empty under the PR detached checkout.
+- Fixed `PortfolioService._git_branch()` to prefer `GITHUB_HEAD_REF` and `GITHUB_REF_NAME`, then fall back to local git branch detection and an explicit `detached-head` marker.
+- Added a regression test for the GitHub Actions head-ref path so portfolio generation keeps source metadata in PR validation.
+- Re-ran targeted portfolio tests: `6 passed`.
+- Re-ran `python scripts/check_all.py --full`: passed, including backend pytest `75 passed, 22 warnings`, frontend typecheck/build, encoding, version, docs links, README assets, provider dry-run, demo readiness, RAG evaluation, full regression, secret scan, repo-clean and release dry-run.
+- Optional browser E2E remains honestly skipped as `PLAYWRIGHT_NOT_INSTALLED`; no browser pass is claimed without the Playwright runtime.
