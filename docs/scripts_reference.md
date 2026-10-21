@@ -1,0 +1,54 @@
+# Scripts Reference
+
+Run scripts from the repository root unless a script explicitly says otherwise.
+
+| Script | Purpose | Example | Modifies Data | CI |
+| --- | --- | --- | --- | --- |
+| `scripts/audit_codebase.py` | Generate V4.1 inventory, predevelopment audit and dead-code reports. | `python scripts/audit_codebase.py` | Writes docs reports | No |
+| `scripts/capture_showcase.py` | Capture README/demo screenshots after local app pages load. | `python scripts/capture_showcase.py` | Writes screenshots | No |
+| `scripts/check_demo_ready.py` | Validate isolated synthetic demo DB readiness. | `python scripts/check_demo_ready.py --database-path backend/data/demo_showcase.db` | No | Yes |
+| `scripts/check_encoding.py` | Validate UTF-8 text and mojibake markers. | `python scripts/check_encoding.py` | No | Yes |
+| `scripts/check_frontend_smoke.py` | Static route/navigation smoke check for frontend files. | `python scripts/check_frontend_smoke.py` | No | Yes |
+| `scripts/check_e2e.py` | Validate Playwright E2E scaffolding; strict live browser execution is opt-in. | `python scripts/check_e2e.py --run-browser --strict` | No | Yes |
+| `scripts/check_full_regression.py` | Run V4.2 full regression against seeded synthetic demo data. | `python scripts/check_full_regression.py --database-path backend/data/demo_showcase.db` | No, unless `--write-report` is used | Yes |
+| `scripts/check_github_actions.py` | Diagnose the latest GitHub Actions run for a branch/commit, with optional JSON/Markdown reports and `--require-success` strict mode. | `python scripts/check_github_actions.py --json-output .pytest_tmp/github_actions.json --markdown-output .pytest_tmp/github_actions.md` | No | CI artifact diagnostic |
+| `scripts/check_github_actions_report.py` | Validate GitHub Actions status JSON/Markdown reports before trusting or uploading CI status evidence. | `python scripts/check_github_actions_report.py --report-json .pytest_tmp/github_actions_status.json --markdown .pytest_tmp/github_actions_status.md` | No | Yes |
+| `scripts/check_quality_artifacts.py` | Validate `check_all.py --json-report` and Markdown summary artifacts before CI uploads them. | `python scripts/check_quality_artifacts.py --json .pytest_tmp/check_all_quick.json --summary .pytest_tmp/check_all_quick_summary.md --expected-mode quick --require-passed` | No | Yes |
+| `scripts/check_improvement_plan_commands.py` | Validate executable command suggestions in self-check improvement plans against a safe allowlist. | `python scripts/check_improvement_plan_commands.py --plan-json .pytest_tmp/self_check/self_check_improvement_plan.json` | No | Yes |
+| `scripts/check_next_self_check_report.py` | Validate next-command readiness reports, including safe paths, result/status consistency and allowlisted commands. | `python scripts/check_next_self_check_report.py --report-json .pytest_tmp/next_self_check.json` | No | Yes |
+| `scripts/check_self_check_manifest.py` | Validate quick, release and full self-check manifest artifact paths, existence flags and next-command safety before evidence upload. | `python scripts/check_self_check_manifest.py --manifest-json .pytest_tmp/self_check/self_check_manifest.json` | No | Yes |
+| `scripts/check_self_check_loop_report.py` | Validate bounded self-check loop reports, including safe paths, step counts, per-step readiness artifacts and allowlisted commands. | `python scripts/check_self_check_loop_report.py --loop-json .pytest_tmp/self_check_loop.json` | No | Yes |
+| `scripts/check_docs_links.py` | Validate README/docs local Markdown links and Mermaid fences. | `python scripts/check_docs_links.py` | No | Yes |
+| `scripts/check_readme_assets.py` | Validate README local image references and required screenshot assets. | `python scripts/check_readme_assets.py` | No | Yes |
+| `scripts/check_all.py` | Orchestrate quick/demo/release/full quality gates, with per-gate status, duration, Git provenance and optional JSON report output. | `python scripts/check_all.py --full --json-report .pytest_tmp/check_all_full.json` | Seeds isolated demo DB in demo/full mode; writes report only when `--json-report` is used | Yes |
+| `scripts/check_ci_artifacts.py` | Validate GitHub Actions self-check artifact upload coverage and required command ordering, including JSON, Markdown, loop step readiness files, release-to-full handoff evidence and validated CI status diagnostic artifacts. | `python scripts/check_ci_artifacts.py --json-output .pytest_tmp/ci_artifacts_contract.json --markdown-output .pytest_tmp/ci_artifacts_contract.md` | No | Yes |
+| `scripts/check_ci_artifacts_report.py` | Validate CI artifact contract JSON/Markdown reports before trusting or uploading workflow contract evidence. | `python scripts/check_ci_artifacts_report.py --report-json .pytest_tmp/ci_artifacts_contract.json --markdown .pytest_tmp/ci_artifacts_contract.md` | No | Yes |
+| `scripts/check_all.py --skip-frontend` | Run full backend/demo/release gates while skipping frontend typecheck/build for backend-only diagnosis. | `python scripts/check_all.py --skip-frontend` | Seeds isolated demo DB | Diagnostic only |
+| `scripts/check_release.py` | Inspect generated release zip for required/forbidden entries. | `python scripts/check_release.py --version V4.5` | No | Yes |
+| `scripts/check_repo_clean.py` | Ensure forbidden generated/user data is not tracked. | `python scripts/check_repo_clean.py` | No | Yes |
+| `scripts/check_secrets.py` | Scan tracked text for secret-like values. | `python scripts/check_secrets.py` | No | Yes |
+| `scripts/check_version.py` | Check visible project version consistency. | `python scripts/check_version.py` | No | Yes |
+| `scripts/compare_quality_reports.py` | Compare two `check_all.py --json-report` files for status regressions, missing/new gates and slower gates. | `python scripts/compare_quality_reports.py --base old.json --current new.json --output comparison.md` | Writes comparison only when output paths are used | No |
+| `scripts/run_self_check.py` | Run the self-check evidence loop for quick, release or full gates: `check_all` JSON, Markdown summary, artifact validation, optional latest-baseline comparison, next-command artifacts and a manifest. | `python scripts/run_self_check.py --mode full --output-dir .pytest_tmp/self_check_full --write-index --write-plan` | Writes JSON and Markdown artifacts under the selected output directory | Yes |
+| `scripts/summarize_quality_report.py` | Convert `check_all.py --json-report` output into a Markdown self-check summary with Git provenance and optimization focus. | `python scripts/summarize_quality_report.py --input .pytest_tmp/check_all_quick.json --output .pytest_tmp/check_all_quick_summary.md` | Writes summary only when `--output` is used | Yes |
+| `scripts/evaluate_rag.py` | Run demo RAG evaluation checks and optionally write a JSON evidence report. | `python scripts/evaluate_rag.py --demo --output .pytest_tmp/rag_eval_report.json` | Reads demo DB; writes report only when `--output` is used | Yes |
+| `scripts/evaluate_providers.py` | Report provider readiness in dry-run/demo/real-if-configured modes without printing keys. | `python scripts/evaluate_providers.py --dry-run` | No in dry-run | Yes |
+| `scripts/generate_learning_package.py` | Build a learning package draft from Git changes and evidence. | `python scripts/generate_learning_package.py --version V4.1` | Writes only when output is requested by caller | No |
+| `scripts/index_self_checks.py` | Build JSON and Markdown history indexes from self-check artifacts, including Git branch/commit metadata when present. | `python scripts/index_self_checks.py --input-dir .pytest_tmp/self_check --output .pytest_tmp/self_check_index.json --markdown-output .pytest_tmp/self_check_index.md` | Writes index files only when output paths are used | No |
+| `scripts/plan_self_check_improvements.py` | Generate a data-driven Markdown/JSON improvement plan with executable command suggestions from self-check history and optional comparison reports. | `python scripts/plan_self_check_improvements.py --index .pytest_tmp/self_check/self_check_index.json --output .pytest_tmp/self_check/self_check_improvement_plan.md` | Writes plan files only when output paths are used | No |
+| `scripts/release.py` | Build or dry-run release package with exclusions and secret scan. | `python scripts/release.py --version V4.5 --dry-run` | Writes release zip unless `--dry-run` | Yes |
+| `scripts/run_next_self_check.py` | Validate `self_check_next_command.json`, optionally write JSON/Markdown readiness reports, and optionally execute the allowlisted next self-check command with `--execute`. | `python scripts/run_next_self_check.py --next-command-json .pytest_tmp/self_check_next_command.json --json-output .pytest_tmp/next_self_check.json --markdown-output .pytest_tmp/next_self_check.md` | Writes reports only when output flags are used; executes only with `--execute` | Yes |
+| `scripts/run_self_check_loop.py` | Run a bounded self-check loop from generated next-command artifacts, with JSON/Markdown reports, per-step readiness Markdown, dry-run planning for CI and explicit `--execute-next` for local automation. | `python scripts/run_self_check_loop.py --mode quick --output-dir .pytest_tmp/self_check_loop --max-steps 1 --dry-run --json-output .pytest_tmp/self_check_loop.json --markdown-output .pytest_tmp/self_check_loop.md` | Writes loop reports and per-step readiness reports; executes next commands only with `--execute-next` | Yes |
+| `scripts/reset_demo_data.py` | Reset isolated demo database only. | `python scripts/reset_demo_data.py` | Writes demo DB | No |
+| `scripts/run_demo_e2e.py` | Seed isolated demo data, start backend/frontend locally and run optional or strict browser E2E. | `python scripts/run_demo_e2e.py --strict` | Writes `.pytest_tmp` demo DB and starts local processes | No |
+| `scripts/seed_demo_data.py` | Seed synthetic demo database. | `python scripts/seed_demo_data.py --database-path backend/data/demo_showcase.db --reset` | Writes demo DB | Yes |
+| `scripts/seed_showcase.py` | Seed richer synthetic showcase data and media metadata. | `python scripts/seed_showcase.py --reset` | Writes showcase DB and synthetic assets | No |
+| `scripts/setup_demo.py` | Start Redis/Qdrant optionally and prepare demo data. | `python scripts/setup_demo.py --skip-docker --reset` | Writes demo DB | No |
+| `scripts/smoke_test_real_services.py` | Manual smoke helper for configured real providers. | `python scripts/smoke_test_real_services.py` | Calls external services if configured | No |
+
+## Safety Notes
+
+- Release and check scripts must not read or print real secret values.
+- Demo and showcase scripts must only write explicitly synthetic data.
+- `reset_demo_data.py` refuses paths outside the intended demo database.
+- `release.py --dry-run` is the default safe verification command for CI and local release review.
