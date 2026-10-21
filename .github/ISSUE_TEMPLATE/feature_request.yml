@@ -1,0 +1,37 @@
+name: Feature request
+description: Propose a scoped improvement with a real user workflow.
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: User problem
+      description: Describe the workflow problem before proposing implementation details.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and acceptance criteria
+      description: Explain how the result remains traceable and avoids fake OCR, transcription, citations, or learning content.
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Primary scope
+      options:
+        - Backend
+        - Frontend
+        - Data model or migration
+        - Provider integration
+        - Documentation or CI
+    validations:
+      required: true
