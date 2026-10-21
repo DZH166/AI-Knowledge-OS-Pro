@@ -1,0 +1,205 @@
+"use client";
+
+import type { ComponentType, ReactNode } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  BookOpen,
+  Briefcase,
+  Brain,
+  ChevronDown,
+  ChevronRight,
+  FileQuestion,
+  FileText,
+  Gauge,
+  GraduationCap,
+  Home,
+  Images,
+  Layers,
+  Menu,
+  MessageSquare,
+  Route,
+  ServerCog,
+  Settings,
+  TimerReset,
+  UploadCloud,
+  Workflow,
+  X
+} from "lucide-react";
+import { useEffect, useState } from "react";
+
+import { markRouteTransitionStart, recordRouteReady } from "@/services/page-metrics";
+
+type NavItem = { href: string; label: string; icon: ComponentType<{ size?: number }> };
+type NavGroup = { title: string; items: NavItem[] };
+
+const groups: NavGroup[] = [
+  { title: "开始", items: [{ href: "/dashboard", label: "学习工作台", icon: Home }] },
+  {
+    title: "知识管理",
+    items: [
+      { href: "/knowledge", label: "知识库", icon: BookOpen },
+      { href: "/upload", label: "上传中心", icon: UploadCloud },
+      { href: "/media", label: "媒体资料库", icon: Images },
+      { href: "/tasks", label: "任务中心", icon: TimerReset }
+    ]
+  },
+  {
+    title: "AI 助手",
+    items: [
+      { href: "/chat", label: "知识问答", icon: MessageSquare },
+      { href: "/chat/history", label: "会话记录", icon: FileQuestion }
+    ]
+  },
+  {
+    title: "学习成长",
+    items: [
+      { href: "/learning/roadmap", label: "学习路线", icon: Route },
+      { href: "/learning/project-structure", label: "项目构造", icon: Workflow },
+      { href: "/learning/cards", label: "学习资产", icon: Layers },
+      { href: "/learning", label: "版本档案", icon: GraduationCap }
+    ]
+  },
+  {
+    title: "作品集求职",
+    items: [
+      { href: "/portfolio", label: "项目复盘", icon: Briefcase },
+      { href: "/portfolio/resume", label: "简历表达", icon: FileText },
+      { href: "/portfolio/interview", label: "模拟面试", icon: FileQuestion }
+    ]
+  },
+  {
+    title: "系统",
+    items: [
+      { href: "/system", label: "模型与服务", icon: ServerCog },
+      { href: "/system/observability", label: "可观测性", icon: TimerReset },
+      { href: "/system/performance", label: "性能与体验", icon: Gauge },
+      { href: "/system/settings", label: "设置", icon: Settings }
+    ]
+  }
+];
+
+export function AppShell({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+  const crumbs = pathname
+    .split("/")
+    .filter(Boolean)
+    .map((part) => decodeURIComponent(part));
+
+  useEffect(() => {
+    recordRouteReady(pathname);
+  }, [pathname]);
+
+  return (
+    <div className="app-shell">
+      {!mobileOpen && (
+        <button aria-label="打开导航" className="mobile-menu-button" onClick={() => setMobileOpen(true)} title="打开导航" type="button">
+          <Menu size={18} />
+        </button>
+      )}
+      <aside className={`sidebar ${mobileOpen ? "open" : ""}`}>
+        <button aria-label="关闭导航" className="sidebar-close" onClick={() => setMobileOpen(false)} title="关闭导航" type="button">
+          <X size={18} />
+        </button>
+        <Link
+          className="brand"
+          href="/dashboard"
+          onClick={() => {
+            markRouteTransitionStart("/dashboard");
+            setMobileOpen(false);
+          }}
+        >
+          <span className="brand-mark">
+            <Brain size={22} />
+          </span>
+          <span>
+            <strong>AI Knowledge OS Pro</strong>
+            <small>V4.8 运行性能与 release 体验</small>
+          </span>
+        </Link>
+        <nav className="nav-list" aria-label="主导航">
+          {groups.map((group) => (
+            <section className="nav-group" key={group.title}>
+              <button
+                aria-expanded={!collapsed[group.title]}
+                className="nav-group-title"
+                onClick={() => setCollapsed((old) => ({ ...old, [group.title]: !old[group.title] }))}
+                type="button"
+              >
+                <span>{group.title}</span>
+                <ChevronDown className={collapsed[group.title] ? "collapsed" : ""} size={14} />
+              </button>
+              {!collapsed[group.title] &&
+                group.items.map((item) => {
+                  const Icon = item.icon;
+                  const active = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href + "/"));
+                  return (
+                    <Link
+                      className={`nav-item ${active ? "active" : ""}`}
+                      href={item.href}
+                      key={`${group.title}-${item.label}`}
+                      onClick={() => {
+                        markRouteTransitionStart(item.href);
+                        setMobileOpen(false);
+                      }}
+                    >
+                      <Icon size={18} />
+                      <span>{item.label}</span>
+                    </Link>
+                  );
+                })}
+            </section>
+          ))}
+        </nav>
+      </aside>
+      {mobileOpen && <button aria-label="关闭菜单" className="mobile-backdrop" onClick={() => setMobileOpen(false)} type="button" />}
+      <main className="main-content">
+        <nav aria-label="面包屑" className="breadcrumb">
+          <Link href="/dashboard" onClick={() => markRouteTransitionStart("/dashboard")}>工作台</Link>
+          {crumbs.map((crumb, index) => (
+            <span key={`${crumb}-${index}`}>
+              <ChevronRight aria-hidden="true" size={13} />
+              <span aria-current={index === crumbs.length - 1 ? "page" : undefined}>{crumbLabel(crumb)}</span>
+            </span>
+          ))}
+        </nav>
+        {children}
+      </main>
+    </div>
+  );
+}
+
+function crumbLabel(value: string) {
+  const map: Record<string, string> = {
+    dashboard: "学习工作台",
+    knowledge: "知识库",
+    upload: "上传中心",
+    documents: "文档管理",
+    media: "媒体资料库",
+    code: "代码仓库",
+    errors: "报错档案",
+    sources: "资料来源",
+    tasks: "任务中心",
+    chat: "知识问答",
+    learning: "学习成长",
+    roadmap: "学习路线",
+    "project-structure": "项目构造",
+    "knowledge-graph": "知识关系",
+    history: "会话记录",
+    quizzes: "练习中心",
+    notes: "学习笔记",
+    "knowledge-points": "知识点",
+    cards: "学习资产",
+    portfolio: "作品集求职",
+    resume: "简历表达",
+    interview: "模拟面试",
+    "project-review": "讲解路线",
+    system: "系统状态",
+    observability: "可观测性",
+    performance: "性能与体验",
+    settings: "设置"
+  };
+  return map[value] || value;
+}
