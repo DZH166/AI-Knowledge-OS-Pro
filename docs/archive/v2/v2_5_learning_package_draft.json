@@ -1,0 +1,163 @@
+{
+  "version_name": "V2.5：产品化交互、任务可视化与真实学习闭环",
+  "slug": "v2-5-product-learning-experience",
+  "summary": "V2.5 基于真实项目变更生成学习包草稿。目标：产品化交互、任务可视化、可信引用与连续学习闭环",
+  "implemented_features": [
+    "统一前端信息架构和 AppShell",
+    "多文件上传队列和任务进度轮询",
+    "文档管理搜索、筛选、批量操作和详情页结构化展示",
+    "多轮 Chat 会话和引用抽屉",
+    "RAG 引用真实性校验",
+    "学习 dashboard、卡片复习、练习反馈和笔记",
+    "基于 Git 状态生成版本学习包草稿"
+  ],
+  "major_files": [
+    {
+      "path": "frontend/components/AppShell.tsx",
+      "responsibility": "产品化前端界面和交互。"
+    },
+    {
+      "path": "frontend/components/ui.tsx",
+      "responsibility": "产品化前端界面和交互。"
+    },
+    {
+      "path": "frontend/components/KnowledgeChat.tsx",
+      "responsibility": "产品化前端界面和交互。"
+    },
+    {
+      "path": "frontend/components/DocumentUploader.tsx",
+      "responsibility": "产品化前端界面和交互。"
+    },
+    {
+      "path": "frontend/components/CitationPanel.tsx",
+      "responsibility": "RAG 检索、引用校验和引用展示。"
+    },
+    {
+      "path": "frontend/app/dashboard/page.tsx",
+      "responsibility": "产品化前端界面和交互。"
+    },
+    {
+      "path": "frontend/app/upload/page.tsx",
+      "responsibility": "产品化前端界面和交互。"
+    },
+    {
+      "path": "frontend/app/documents/page.tsx",
+      "responsibility": "产品化前端界面和交互。"
+    },
+    {
+      "path": "frontend/app/learning/page.tsx",
+      "responsibility": "学习档案、知识点、卡片和练习。"
+    },
+    {
+      "path": "backend/app/services/ingestion_service.py",
+      "responsibility": "文档处理任务流水线。"
+    },
+    {
+      "path": "backend/app/services/rag_service.py",
+      "responsibility": "RAG 检索、引用校验和引用展示。"
+    },
+    {
+      "path": "backend/app/services/chat_session_service.py",
+      "responsibility": "V2.5 项目变更。"
+    },
+    {
+      "path": "backend/app/services/learning_package_service.py",
+      "responsibility": "学习档案、知识点、卡片和练习。"
+    },
+    {
+      "path": "backend/app/services/document_parser.py",
+      "responsibility": "V2.5 项目变更。"
+    },
+    {
+      "path": "backend/app/services/chunker.py",
+      "responsibility": "V2.5 项目变更。"
+    },
+    {
+      "path": "backend/app/api/routes_chat.py",
+      "responsibility": "V2.5 项目变更。"
+    },
+    {
+      "path": "backend/app/api/routes_documents.py",
+      "responsibility": "V2.5 项目变更。"
+    },
+    {
+      "path": "backend/app/api/routes_learning.py",
+      "responsibility": "学习档案、知识点、卡片和练习。"
+    },
+    {
+      "path": "scripts/generate_learning_package.py",
+      "responsibility": "学习档案、知识点、卡片和练习。"
+    },
+    {
+      "path": "scripts/release.py",
+      "responsibility": "V2.5 项目变更。"
+    },
+    {
+      "path": "backend/app/__init__.py",
+      "responsibility": "V2.5 项目变更。"
+    },
+    {
+      "path": "backend/app/api/__init__.py",
+      "responsibility": "V2.5 项目变更。"
+    },
+    {
+      "path": "backend/app/api/router.py",
+      "responsibility": "V2.5 项目变更。"
+    },
+    {
+      "path": "backend/app/api/routes_dashboard.py",
+      "responsibility": "V2.5 项目变更。"
+    }
+  ],
+  "knowledge_points": [
+    {
+      "name": "前端信息架构",
+      "beginner_explanation": "把页面按用户任务分组，让新用户知道从哪里开始，而不是面对一堆技术入口。",
+      "project_usage": "V2.5 用 AppShell 把工作台、知识管理、AI 助手、学习成长和系统统一起来。",
+      "code_locations": [
+        "frontend/components/AppShell.tsx",
+        "frontend/app/layout.tsx"
+      ],
+      "review_suggestion": "先复习导航分组、面包屑、移动端抽屉和当前页面高亮。",
+      "interview_expression": "我把原本分散的页面组织成任务导向的信息架构，降低首次使用成本。"
+    },
+    {
+      "name": "任务化文档处理",
+      "beginner_explanation": "耗时处理不应该卡住用户，而应该变成可观察、可重试、可取消的任务。",
+      "project_usage": "上传接口返回 job_id，后台执行解析、切片、Embedding 和 Qdrant 入库。",
+      "code_locations": [
+        "backend/app/services/ingestion_service.py",
+        "backend/app/api/routes_ingestion_jobs.py"
+      ],
+      "review_suggestion": "补 FastAPI 后台任务、状态机、幂等删除和失败恢复。",
+      "interview_expression": "我把文档 ingestion 改成任务流水线，让进度和失败原因可视化。"
+    },
+    {
+      "name": "RAG 引用校验",
+      "beginner_explanation": "可信问答不能把没有真正使用的片段强行标成引用。",
+      "project_usage": "V2.5 移除了强补第一条引用，回答没有有效引用时标记 citation_validation_failed。",
+      "code_locations": [
+        "backend/app/services/rag_service.py",
+        "frontend/components/CitationPanel.tsx"
+      ],
+      "review_suggestion": "复习 citation id 校验、资料不足拒答和 prompt 约束。",
+      "interview_expression": "我在 RAG 链路中增加引用真实性校验，避免制造虚假的可追溯性。"
+    },
+    {
+      "name": "学习闭环建模",
+      "beginner_explanation": "项目学习不只是看答案，还要沉淀知识点、卡片、练习、笔记和掌握状态。",
+      "project_usage": "V2.5 增加学习 dashboard、笔记、卡片 review 和错题回流。",
+      "code_locations": [
+        "backend/app/services/learning_package_service.py",
+        "frontend/app/learning/page.tsx"
+      ],
+      "review_suggestion": "复习学习状态设计、复习队列和项目式学习档案。",
+      "interview_expression": "我把版本交付转成结构化学习资产，让功能实现和学习复盘形成闭环。"
+    }
+  ],
+  "focus": "重点理解：产品化 RAG 系统要同时处理数据接入、任务状态、可信引用和学习沉淀。",
+  "review_suggestions": "建议按 UI 信息架构、任务状态机、RAG 引用校验、学习进度模型、发布归档五条线复习。",
+  "interview_expression": "我把 AI Knowledge OS Pro 从功能型 V2 升级为 V2.5 学习工作台：前端用任务导向信息架构组织工作流，后端把文档处理任务化，并通过引用校验保证 RAG 回答可追溯，最后把版本变更沉淀成学习包。",
+  "next_version_suggestion": "V3 可优先接入图片 OCR、语音转写、视频时间戳引用和网页收藏。",
+  "markdown_content": "## V2.5 学习包草稿\n\n- 生成时间：2026-06-11 14:57:00\n- 生成依据：Git 状态、后端路由扫描、测试结果摘要。\n\n### 变更文件\n- `.env.example`\n- `.gitignore`\n- `README.md`\n- `alembic.ini`\n- `backend/alembic/env.py`\n- `backend/alembic/script.py.mako`\n- `backend/alembic/versions/0001_v1_baseline.py`\n- `backend/alembic/versions/0002_v2_schema.py`\n- `backend/alembic/versions/0003_v2_5_product_learning.py`\n- `backend/app/__init__.py`\n- `backend/app/api/__init__.py`\n- `backend/app/api/router.py`\n- `backend/app/api/routes_chat.py`\n- `backend/app/api/routes_dashboard.py`\n- `backend/app/api/routes_documents.py`\n- `backend/app/api/routes_ingestion_jobs.py`\n- `backend/app/api/routes_knowledge_spaces.py`\n- `backend/app/api/routes_learning.py`\n- `backend/app/api/routes_onboarding.py`\n- `backend/app/api/routes_system.py`\n- `backend/app/core/config.py`\n- `backend/app/core/errors.py`\n- `backend/app/core/logging.py`\n- `backend/app/core/responses.py`\n- `backend/app/db/session.py`\n- `backend/app/main.py`\n- `backend/app/models/__init__.py`\n- `backend/app/models/chat_session.py`\n- `backend/app/models/chunk.py`\n- `backend/app/models/document.py`\n- `backend/app/models/ingestion_job.py`\n- `backend/app/models/knowledge_space.py`\n- `backend/app/models/learning_log.py`\n- `backend/app/models/learning_note.py`\n- `backend/app/models/learning_system.py`\n- `backend/app/models/onboarding.py`\n- `backend/app/models/qa_log.py`\n- `backend/app/schemas/__init__.py`\n- `backend/app/schemas/chat_schema.py`\n- `backend/app/schemas/dashboard_schema.py`\n- `backend/app/schemas/document_schema.py`\n- `backend/app/schemas/knowledge_schema.py`\n- `backend/app/schemas/learning_schema.py`\n- `backend/app/schemas/onboarding_schema.py`\n- `backend/app/schemas/system_schema.py`\n- `backend/app/services/__init__.py`\n- `backend/app/services/chat_session_service.py`\n- `backend/app/services/chunker.py`\n- `backend/app/services/document_parser.py`\n- `backend/app/services/embedding_service.py`\n- `backend/app/services/ingestion_service.py`\n- `backend/app/services/learning_log_service.py`\n- `backend/app/services/learning_package_service.py`\n- `backend/app/services/llm_service.py`\n- `backend/app/services/onboarding_service.py`\n- `backend/app/services/prompt_builder.py`\n- `backend/app/services/providers.py`\n- `backend/app/services/rag_service.py`\n- `backend/app/services/system_service.py`\n- `backend/app/services/vector_store.py`\n\n### 新增或检查到的路由\n- `backend/app/api/routes_chat.py::@router.post(\"/ask\", response_model=ChatResponse)`\n- `backend/app/api/routes_chat.py::@router.get(\"/history\", response_model=list[QALogRead])`\n- `backend/app/api/routes_chat.py::@router.post(\"/sessions\", response_model=ChatSessionRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_chat.py::@router.get(\"/sessions\", response_model=list[ChatSessionRead])`\n- `backend/app/api/routes_chat.py::@router.get(\"/sessions/{session_id}\", response_model=ChatSessionRead)`\n- `backend/app/api/routes_chat.py::@router.patch(\"/sessions/{session_id}\", response_model=ChatSessionRead)`\n- `backend/app/api/routes_chat.py::@router.delete(\"/sessions/{session_id}\", status_code=status.HTTP_204_NO_CONTENT)`\n- `backend/app/api/routes_chat.py::@router.post(\"/sessions/{session_id}/messages\", response_model=ChatResponse)`\n- `backend/app/api/routes_chat.py::@router.post(\"/messages/{message_id}/regenerate\", response_model=ChatResponse)`\n- `backend/app/api/routes_chat.py::@router.post(\"/messages/{message_id}/favorite\", response_model=ChatFavoriteResponse)`\n- `backend/app/api/routes_dashboard.py::@router.get(\"/summary\", response_model=DashboardSummary)`\n- `backend/app/api/routes_documents.py::@router.post(\"/upload\", response_model=DocumentUploadResponse, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_documents.py::@router.get(\"\", response_model=list[DocumentRead])`\n- `backend/app/api/routes_documents.py::@router.post(\"/bulk-delete\", response_model=BulkDocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/bulk-reindex\", response_model=BulkDocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/bulk-tags\", response_model=BulkDocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.get(\"/{document_id}\", response_model=DocumentRead)`\n- `backend/app/api/routes_documents.py::@router.patch(\"/{document_id}\", response_model=DocumentRead)`\n- `backend/app/api/routes_documents.py::@router.delete(\"/{document_id}\", response_model=DocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/{document_id}/retry\", response_model=DocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/{document_id}/reparse\", response_model=DocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/{document_id}/reindex\", response_model=DocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.get(\"/{document_id}/chunks\", response_model=list[ChunkRead])`\n- `backend/app/api/routes_ingestion_jobs.py::@router.get(\"\", response_model=list[IngestionJobRead])`\n- `backend/app/api/routes_ingestion_jobs.py::@router.get(\"/{job_id}\", response_model=IngestionJobRead)`\n- `backend/app/api/routes_ingestion_jobs.py::@router.post(\"/{job_id}/retry\", response_model=IngestionJobRead)`\n- `backend/app/api/routes_ingestion_jobs.py::@router.post(\"/{job_id}/cancel\", response_model=IngestionJobRead)`\n- `backend/app/api/routes_knowledge_spaces.py::@router.post(\"\", response_model=KnowledgeSpaceRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_knowledge_spaces.py::@router.get(\"\", response_model=list[KnowledgeSpaceDetail])`\n- `backend/app/api/routes_knowledge_spaces.py::@router.get(\"/{space_id}\", response_model=KnowledgeSpaceDetail)`\n- `backend/app/api/routes_learning.py::@router.get(\"/logs\", response_model=list[LearningLogRead])`\n- `backend/app/api/routes_learning.py::@router.get(\"/dashboard\", response_model=LearningDashboard)`\n- `backend/app/api/routes_learning.py::@router.get(\"/versions\", response_model=list[LearningLogRead])`\n- `backend/app/api/routes_learning.py::@router.get(\"/logs/{slug}\", response_model=LearningLogRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/logs\", response_model=LearningLogRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_learning.py::@router.post(\"/packages/generate-draft\", response_model=LearningPackageRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/packages\", response_model=LearningPackageRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_learning.py::@router.get(\"/packages\", response_model=list[LearningPackageRead])`\n- `backend/app/api/routes_learning.py::@router.get(\"/packages/{slug}\", response_model=LearningPackageRead)`\n- `backend/app/api/routes_learning.py::@router.patch(\"/packages/{slug}\", response_model=LearningPackageRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/packages/{slug}/confirm\", response_model=LearningPackageRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/packages/{slug}/export\", response_model=MarkdownExportResponse)`\n- `backend/app/api/routes_learning.py::@router.get(\"/knowledge-points\", response_model=list[KnowledgePointRead])`\n- `backend/app/api/routes_learning.py::@router.get(\"/knowledge-points/{point_id}\", response_model=KnowledgePointRead)`\n- `backend/app/api/routes_learning.py::@router.patch(\"/knowledge-points/{point_id}/progress\", response_model=KnowledgePointRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/knowledge-points/{point_id}/notes\", response_model=KnowledgePointRead)`\n- `backend/app/api/routes_learning.py::@router.get(\"/cards\", response_model=list[LearningCardRead])`\n- `backend/app/api/routes_learning.py::@router.patch(\"/cards/{card_id}/progress\", response_model=LearningCardRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/cards/{card_id}/review\", response_model=LearningCardRead)`\n- `backend/app/api/routes_learning.py::@router.get(\"/quizzes\", response_model=list[QuizQuestionRead])`\n- `backend/app/api/routes_learning.py::@router.post(\"/quizzes/{quiz_id}/answer\", response_model=QuizAnswerResponse)`\n- `backend/app/api/routes_learning.py::@router.post(\"/export-markdown\", response_model=MarkdownExportResponse)`\n- `backend/app/api/routes_learning.py::@router.get(\"/notes\", response_model=list[LearningNoteRead])`\n- `backend/app/api/routes_learning.py::@router.post(\"/notes\", response_model=LearningNoteRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_learning.py::@router.patch(\"/notes/{note_id}\", response_model=LearningNoteRead)`\n- `backend/app/api/routes_learning.py::@router.delete(\"/notes/{note_id}\", status_code=status.HTTP_204_NO_CONTENT)`\n- `backend/app/api/routes_onboarding.py::@router.get(\"\", response_model=OnboardingRead)`\n- `backend/app/api/routes_onboarding.py::@router.patch(\"\", response_model=OnboardingRead)`\n- `backend/app/api/routes_onboarding.py::@router.post(\"/reset\", response_model=OnboardingRead)`\n- `backend/app/api/routes_system.py::@router.get(\"/status\", response_model=SystemStatusResponse)`\n- `backend/app/api/routes_system.py::@router.post(\"/test-llm\", response_model=SystemTestResponse)`\n- `backend/app/api/routes_system.py::@router.post(\"/test-embedding\", response_model=SystemTestResponse)`\n- `backend/app/api/routes_system.py::@router.post(\"/test-qdrant\", response_model=SystemTestResponse)`\n\n### 测试摘要\n待补充最终测试结果。\n"
+}
