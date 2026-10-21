@@ -1,0 +1,59 @@
+name: Bug report
+description: Report a reproducible problem in 溯知 Evidence OS.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for providing a reproducible report. Do not include API keys, private documents, transcripts, or database files.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Display version and semantic version.
+      placeholder: V5.3 / 5.3.0
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Document ingestion
+        - RAG and citations
+        - Image OCR or screenshot analysis
+        - Audio or video transcription
+        - Video keyframes
+        - Task Center or Worker
+        - Learning artifacts
+        - Frontend UI
+        - CI or release packaging
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      placeholder: Describe the smallest sequence that reproduces the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and sanitized logs
+      description: Remove secrets and personal knowledge-base content.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed API keys, private files, database contents and personal data.
+          required: true
