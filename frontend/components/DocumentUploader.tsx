@@ -1,0 +1,231 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { FileText, RotateCcw, TimerReset, UploadCloud, X } from "lucide-react";
+
+import { ButtonLoading, EmptyState, ProgressSteps, StatusBadge } from "@/components/ui";
+import { api, formatFileSize } from "@/services/api";
+import type { DocumentItem, IngestionJob, KnowledgeSpace } from "@/types/api";
+
+type QueueItem = {
+  id: string;
+  file: File;
+  document?: DocumentItem;
+  job?: IngestionJob;
+  status: "ready" | "uploading" | "processing" | "done" | "failed";
+  error?: string;
+};
+
+const steps = ["上传文件", "解析内容", "识别结构", "切分片段", "生成 Embedding", "写入 Qdrant", "完成"];
+
+export function DocumentUploader({
+  spaces,
+  defaultSpaceId,
+  onUploaded
+}: {
+  spaces: KnowledgeSpace[];
+  defaultSpaceId?: number;
+  onUploaded: (document: DocumentItem) => void;
+}) {
+  const [spaceId, setSpaceId] = useState<number>(defaultSpaceId || spaces[0]?.id || 0);
+  const [queue, setQueue] = useState<QueueItem[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const supported = useMemo(() => [".txt", ".md", ".pdf"], []);
+
+  useEffect(() => {
+    const timer = window.setInterval(async () => {
+      const running = queue.filter((item) => item.job && item.status === "processing");
+      if (running.length === 0) return;
+      const updates = await Promise.all(
+        running.map(async (item) => ({ id: item.id, job: await api.getIngestionJob(item.job!.id).catch(() => item.job!) }))
+      );
+      setQueue((old) =>
+        old.map((item) => {
+          const update = updates.find((entry) => entry.id === item.id);
+          if (!update) return item;
+          const done = update.job.status === "completed";
+          const failed = ["failed", "cancelled", "interrupted"].includes(update.job.status);
+          return {
+            ...item,
+            job: update.job,
+            status: done ? "done" : failed ? "failed" : "processing",
+            error: failed ? update.job.error_message || update.job.message || "处理失败" : item.error
+          };
+        })
+      );
+    }, 1500);
+    return () => window.clearInterval(timer);
+  }, [queue]);
+
+  function addFiles(files: FileList | File[]) {
+    const next = Array.from(files).map((file) => {
+      const supportedFile = supported.some((suffix) => file.name.toLowerCase().endsWith(suffix));
+      return {
+        id: `${file.name}-${file.size}-${crypto.randomUUID()}`,
+        file,
+        status: supportedFile ? "ready" : "failed",
+        error: supportedFile ? undefined : "暂不支持该格式"
+      } satisfies QueueItem;
+    });
+    setQueue((old) => [...old, ...next]);
+  }
+
+  async function uploadAll() {
+    if (!spaceId) return;
+    setIsUploading(true);
+    for (const item of queue) {
+      if (item.status !== "ready") continue;
+      setQueue((old) => old.map((entry) => (entry.id === item.id ? { ...entry, status: "uploading", error: undefined } : entry)));
+      try {
+        const result = await api.uploadDocument(spaceId, item.file);
+        onUploaded(result.document);
+        const job = result.job_id ? createQueuedJob(result.job_id, result.document, result.message) : undefined;
+        setQueue((old) =>
+          old.map((entry) =>
+            entry.id === item.id
+              ? {
+                  ...entry,
+                  document: result.document,
+                  job,
+                  status: job ? "processing" : "done"
+                }
+              : entry
+          )
+        );
+      } catch (exc) {
+        setQueue((old) => old.map((entry) => (entry.id === item.id ? { ...entry, status: "failed", error: exc instanceof Error ? exc.message : "上传失败" } : entry)));
+      }
+    }
+    setIsUploading(false);
+  }
+
+  async function retry(item: QueueItem) {
+    if (item.job) {
+      const job = await api.retryIngestionJob(item.job.id);
+      setQueue((old) => old.map((entry) => (entry.id === item.id ? { ...entry, job, status: "processing", error: undefined } : entry)));
+    } else {
+      setQueue((old) => old.map((entry) => (entry.id === item.id ? { ...entry, status: "ready", error: undefined } : entry)));
+    }
+  }
+
+  return (
+    <section className="panel stack">
+      <div className="row between">
+        <h2>资料接入中心</h2>
+        <button className="button secondary small" onClick={() => setQueue([])} type="button">
+          <X size={14} />
+          清空队列
+        </button>
+      </div>
+      <div className="field">
+        <label htmlFor="space">目标知识库</label>
+        <select className="select" id="space" onChange={(event) => setSpaceId(Number(event.target.value))} value={spaceId}>
+          {spaces.map((space) => (
+            <option key={space.id} value={space.id}>
+              {space.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      <label className="dropzone">
+        <UploadCloud size={26} />
+        <strong>拖拽或点击选择 txt / md / pdf</strong>
+        <span className="muted">单文件上限由后端配置控制；扫描版 PDF 暂不做 OCR，V3 会继续扩展多模态解析。</span>
+        <input accept=".txt,.md,.pdf" multiple onChange={(event) => event.target.files && addFiles(event.target.files)} style={{ display: "none" }} type="file" />
+      </label>
+      {queue.length === 0 ? (
+        <EmptyState title="队列为空" description="选择一个或多个文件后，系统会逐个创建处理任务并显示进度。" />
+      ) : (
+        <div className="list">
+          {queue.map((item) => (
+            <article className="list-item" key={item.id}>
+              <div className="row between">
+                <div className="row">
+                  <FileText size={16} />
+                  <strong>{item.file.name}</strong>
+                  <span className="muted">{formatFileSize(item.file.size)}</span>
+                </div>
+                <StatusBadge status={item.job?.status || item.status} />
+              </div>
+              {item.job && <ProgressSteps steps={steps} active={Math.min(steps.length - 1, Math.floor((item.job.progress || 0) / 17))} />}
+              <div className="progress">
+                <span style={{ width: `${item.job?.progress || (item.status === "done" ? 100 : item.status === "uploading" ? 12 : 0)}%` }} />
+              </div>
+              {item.error && <span className="pill rose">{item.error}</span>}
+              <div className="row wrap">
+                {item.document && (
+                  <Link className="button secondary small" href={`/documents/${item.document.id}`}>
+                    查看文档
+                  </Link>
+                )}
+                {item.document && (
+                  <Link className="button secondary small" href={`/chat?space_id=${item.document.space_id}`}>
+                    开始提问
+                  </Link>
+                )}
+                {item.job && (
+                  <Link className="button secondary small" href="/tasks">
+                    <TimerReset size={14} />
+                    查看任务
+                  </Link>
+                )}
+                {item.status === "failed" && (
+                  <button className="button secondary small" onClick={() => retry(item)} type="button">
+                    <RotateCcw size={14} />
+                    重试
+                  </button>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+      <button className="button" disabled={!spaceId || queue.every((item) => item.status !== "ready") || isUploading} onClick={uploadAll} type="button">
+        {isUploading ? (
+          <ButtonLoading label="上传中" />
+        ) : (
+          <>
+            <UploadCloud size={17} />
+            开始上传
+          </>
+        )}
+      </button>
+    </section>
+  );
+}
+
+function createQueuedJob(jobId: number, document: DocumentItem, message: string): IngestionJob {
+  return {
+    id: jobId,
+    document_id: document.id,
+    source_id: null,
+    space_id: document.space_id,
+    target_type: "document",
+    job_type: "reparse",
+    status: "queued",
+    current_step: "queued",
+    step_index: 0,
+    step_total: 5,
+    progress: 0,
+    worker_id: null,
+    queue_name: "default",
+    priority: 100,
+    attempt: 0,
+    max_attempts: 3,
+    message,
+    error_code: null,
+    error_message: null,
+    error_details_json: "{}",
+    result_json: "{}",
+    parent_job_id: null,
+    retry_count: 0,
+    started_at: null,
+    heartbeat_at: null,
+    finished_at: null,
+    cancel_requested_at: null,
+    duration_ms: null,
+    created_at: document.created_at,
+    updated_at: document.updated_at
+  };
+}
