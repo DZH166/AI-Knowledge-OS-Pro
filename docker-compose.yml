@@ -19,6 +19,89 @@ services:
       - qdrant_storage:/qdrant/storage
     restart: unless-stopped
 
+  backend:
+    profiles: ["demo"]
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: ai-knowledge-os-backend
+    environment:
+      APP_ENV: production
+      DEMO_MODE: "true"
+      DATABASE_URL: sqlite:////data/demo_showcase.db
+      UPLOAD_DIR: /app/backend/storage/uploads
+      REDIS_URL: redis://redis:6379/0
+      QDRANT_URL: http://qdrant:6333
+      BACKEND_CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
+    command:
+      - /bin/sh
+      - -c
+      - |
+        if [ ! -f /data/demo_showcase.db ]; then
+          python scripts/seed_showcase.py --database-path /data/demo_showcase.db --reset
+        fi
+        exec python -m uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - demo_data:/data
+      - demo_media:/app/backend/storage/showcase
+    depends_on:
+      redis:
+        condition: service_started
+      qdrant:
+        condition: service_started
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 120s
+    restart: unless-stopped
+
+  worker:
+    profiles: ["demo"]
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: ai-knowledge-os-worker
+    environment:
+      APP_ENV: production
+      DEMO_MODE: "true"
+      DATABASE_URL: sqlite:////data/demo_showcase.db
+      UPLOAD_DIR: /app/backend/storage/uploads
+      REDIS_URL: redis://redis:6379/0
+      QDRANT_URL: http://qdrant:6333
+    command: ["python", "-m", "app.worker"]
+    volumes:
+      - demo_data:/data
+      - demo_media:/app/backend/storage/showcase
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    profiles: ["demo"]
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+    container_name: ai-knowledge-os-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
   redis_data:
   qdrant_storage:
+  demo_data:
+  demo_media:
