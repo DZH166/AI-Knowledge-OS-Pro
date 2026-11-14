@@ -74,6 +74,9 @@ class ChatResponse(BaseModel):
     retrieval_score: float | None = None
     retrieval_status: str = "unknown"
     runtime_mode: str = "real"
+    # Present only when a short follow-up inherited the previous question for
+    # retrieval. The user-visible question and stored history stay unchanged.
+    retrieval_query: str | None = None
     qa_log_id: int
 
 

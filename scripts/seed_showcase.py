@@ -62,6 +62,15 @@ DEMO_QDRANT_COLLECTION = "ai_knowledge_os_v2_openai_compatible_1536_chunks"
 def showcase_digest(value: str) -> str:
     return sha256(value.encode("utf-8")).hexdigest()
 
+def file_digest(path: Path) -> str:
+    """Hash the bytes actually written to disk, not a synthetic fixture label."""
+    digest = sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
 
 def activate_showcase_index(
     db: Session,
@@ -185,6 +194,12 @@ def seed(database_path: Path, reset: bool) -> None:
     make_video(video_path, frame_paths[0])
     document_path = storage / "rag-evidence-guide.md"
     document_path.write_text("# RAG evidence guide\n\nEvery answer should link back to persisted source evidence.\n", encoding="utf-8")
+    media_task_document_path = storage / "media-task-design.txt"
+    media_task_document_path.write_text(
+        "Durable media tasks keep queued, running, completed and failed states.\n"
+        "Provider failures stay explicit instead of becoming fabricated output.\n",
+        encoding="utf-8",
+    )
 
     engine = create_engine(f"sqlite:///{resolved.as_posix()}", connect_args={"check_same_thread": False})
     Base.metadata.create_all(engine)
@@ -225,6 +240,7 @@ def seed(database_path: Path, reset: bool) -> None:
                 content_type="text/markdown",
                 file_size=document_path.stat().st_size,
                 storage_path=str(document_path),
+                content_hash=file_digest(document_path),
                 status="ready",
                 parse_status="parsed",
                 chunk_status="chunked",
@@ -247,8 +263,9 @@ def seed(database_path: Path, reset: bool) -> None:
                 original_filename="media-task-design.txt",
                 file_type="txt",
                 content_type="text/plain",
-                file_size=2048,
-                storage_path=str(document_path),
+                file_size=media_task_document_path.stat().st_size,
+                storage_path=str(media_task_document_path),
+                content_hash=file_digest(media_task_document_path),
                 status="ready",
                 parse_status="parsed",
                 chunk_status="chunked",
@@ -311,7 +328,7 @@ def seed(database_path: Path, reset: bool) -> None:
             mime_type="image/png",
             file_size=image_path.stat().st_size,
             storage_path=str(image_path),
-            content_hash=showcase_digest("showcase-image"),
+            content_hash=file_digest(image_path),
             status="ready",
             width=1280,
             height=720,
@@ -331,7 +348,7 @@ def seed(database_path: Path, reset: bool) -> None:
             mime_type="audio/wav",
             file_size=audio_path.stat().st_size,
             storage_path=str(audio_path),
-            content_hash=showcase_digest("showcase-audio"),
+            content_hash=file_digest(audio_path),
             status="ready",
             language="en",
             duration_ms=18_000,
@@ -350,7 +367,7 @@ def seed(database_path: Path, reset: bool) -> None:
             mime_type="video/mp4",
             file_size=video_path.stat().st_size if video_path.exists() else 0,
             storage_path=str(video_path),
-            content_hash=showcase_digest("showcase-video"),
+            content_hash=file_digest(video_path),
             status="ready",
             language="en",
             duration_ms=18_000,

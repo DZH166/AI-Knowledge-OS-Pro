@@ -164,7 +164,7 @@ export function DocumentUploader({
   return (
     <section className="panel stack">
       <div className="row between">
-        <h2>资料接入中心</h2>
+        <h2>上传文档</h2>
         <button className="button secondary small" onClick={() => setQueue([])} type="button">
           <X size={14} />
           清空队列

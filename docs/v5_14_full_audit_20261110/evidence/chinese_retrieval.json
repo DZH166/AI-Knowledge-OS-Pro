@@ -1,0 +1,2745 @@
+{
+  "schema_version": 1,
+  "dataset_id": "suzhi-chinese-lexical-v1",
+  "dataset_sha256": "95767897ff7f37e1a4106c976fa054ef8290b6cca5c0c988c71a5e55b2d18c59",
+  "dataset_path": "evaluation\\chinese_retrieval\\v1.json",
+  "implementation_sha256": {
+    "backend/app/modules/evidence_index/sql.py": "68aba60347bcf4640aba2b2b2a02f7024f3fa6005242103f5856b7b46b5c0fd0",
+    "backend/app/services/hybrid_retriever.py": "3fe77b120108f8d29f8a531a2e3885e60bc0382dde905aeca858f7f1fdf7307e",
+    "backend/app/services/lexical_retrieval.py": "c029098ae1ba53cceb7880cd98b9f07db58bb27f06186d87f3532051c472def9"
+  },
+  "evaluator_sha256": "5a4bcfc723f423959742274e8e1a9dce0cf8d61a421103627c1aa0d78305706f",
+  "boundary": "Retrieval-only synthetic fixtures; no model, embedding, external vector or rerank calls. Does not measure real-model answer quality.",
+  "providers": {
+    "model": "not_used",
+    "embedding": "not_used",
+    "vector": "explicit_empty_adapter",
+    "rerank": "disabled",
+    "external_calls": 0,
+    "local_empty_vector_searches": 24
+  },
+  "top_k": 5,
+  "retrieval_limit": 100,
+  "strict_passed": true,
+  "category_counts": {
+    "active_revision": 1,
+    "empty_space_negative": 1,
+    "literal_control": 2,
+    "mixed_identifier": 2,
+    "mixed_language": 3,
+    "natural": 4,
+    "pinned_negative": 1,
+    "pinned_revision": 1,
+    "punctuation": 1,
+    "reordered": 2,
+    "repetition_adversary": 1,
+    "source_isolation_negative": 1,
+    "space_isolation": 1,
+    "spaced_control": 1,
+    "unicode_width": 1,
+    "unrelated_negative": 1
+  },
+  "fixtures": [
+    {
+      "case_key": "retrieval/v1/overview",
+      "source_key": "retrieval",
+      "revision_key": "retrieval/v1",
+      "space_id": 1,
+      "source_id": 1,
+      "revision_id": 1,
+      "index_revision_id": 1,
+      "chunk_id": 1,
+      "content_hash": "e4349ab3493b5a4ee80acf726b67d6fc08c91a6ee43aa24215e8a38b74aca490",
+      "content": "系统采用混合检索结合向量与关键词，减少术语漏召回。",
+      "locator": {
+        "kind": "pdf_page",
+        "page": 1,
+        "case_key": "retrieval/v1/overview"
+      },
+      "active": true
+    },
+    {
+      "case_key": "retry/v1/policy",
+      "source_key": "retry",
+      "revision_key": "retry/v1",
+      "space_id": 1,
+      "source_id": 2,
+      "revision_id": 2,
+      "index_revision_id": 2,
+      "chunk_id": 2,
+      "content_hash": "a7c5d8bdc555762291352cabbfc790810a970aaded2e6d5797b67fbd4436c714",
+      "content": "检索请求发生超时后执行重试。",
+      "locator": {
+        "kind": "pdf_page",
+        "page": 1,
+        "case_key": "retry/v1/policy"
+      },
+      "active": true
+    },
+    {
+      "case_key": "noise/v1/repeated",
+      "source_key": "noise",
+      "revision_key": "noise/v1",
+      "space_id": 1,
+      "source_id": 3,
+      "revision_id": 3,
+      "index_revision_id": 3,
+      "chunk_id": 3,
+      "content_hash": "9c5ba7a8a6fc9dcfb8dfc35cc501e8dbb078f598464536cef34388f53fbed269",
+      "content": "检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 ",
+      "locator": {
+        "kind": "pdf_page",
+        "page": 1,
+        "case_key": "noise/v1/repeated"
+      },
+      "active": true
+    },
+    {
+      "case_key": "approval/v1/release",
+      "source_key": "approval",
+      "revision_key": "approval/v1",
+      "space_id": 1,
+      "source_id": 4,
+      "revision_id": 4,
+      "index_revision_id": 4,
+      "chunk_id": 4,
+      "content_hash": "25f409587f2d88a723bc488ebfd770e8ae3e95674d05a439543ea79bae48d19a",
+      "content": "研究报告发布前必须经过人工审批，未获批准不得生成正式成果。",
+      "locator": {
+        "kind": "pdf_page",
+        "page": 1,
+        "case_key": "approval/v1/release"
+      },
+      "active": true
+    },
+    {
+      "case_key": "budget/v1/limits",
+      "source_key": "budget",
+      "revision_key": "budget/v1",
+      "space_id": 1,
+      "source_id": 5,
+      "revision_id": 5,
+      "index_revision_id": 5,
+      "chunk_id": 5,
+      "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+      "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+      "locator": {
+        "kind": "pdf_page",
+        "page": 1,
+        "case_key": "budget/v1/limits"
+      },
+      "active": true
+    },
+    {
+      "case_key": "resume/v1/cursor",
+      "source_key": "resume",
+      "revision_key": "resume/v1",
+      "space_id": 1,
+      "source_id": 6,
+      "revision_id": 6,
+      "index_revision_id": 6,
+      "chunk_id": 6,
+      "content_hash": "2e76087534e1b2d4ccea22858e0d8214a85b639dcc361c36045e7eca2ef85f28",
+      "content": "SSE 断开后使用 cursor 接着读取同一个任务的进度事件，重连不会重新提交研究。",
+      "locator": {
+        "kind": "pdf_page",
+        "page": 1,
+        "case_key": "resume/v1/cursor"
+      },
+      "active": true
+    },
+    {
+      "case_key": "evidence/v1/version",
+      "source_key": "evidence",
+      "revision_key": "evidence/v1",
+      "space_id": 1,
+      "source_id": 7,
+      "revision_id": 7,
+      "index_revision_id": 7,
+      "chunk_id": 7,
+      "content_hash": "8898aeeacbda9e463cb7535dd33362fcad3aba4f3f56c08dc15d59965d1053df",
+      "content": "每条引用固定 source_id、revision_id、chunk_id 与 SHA-256 内容指纹，定位原文页码。",
+      "locator": {
+        "kind": "pdf_page",
+        "page": 1,
+        "case_key": "evidence/v1/version"
+      },
+      "active": true
+    },
+    {
+      "case_key": "manual/v1/render",
+      "source_key": "manual",
+      "revision_key": "manual/v1",
+      "space_id": 1,
+      "source_id": 8,
+      "revision_id": 8,
+      "index_revision_id": 8,
+      "chunk_id": 8,
+      "content_hash": "4bf9287d0f84ae89fd11ead3d15f969eb8db0e79a064ab4d81ed9b8335f7561a",
+      "content": "Markdown 报告支持标题、表格和代码块，手机点击引用可以查看原文证据。",
+      "locator": {
+        "kind": "pdf_page",
+        "page": 1,
+        "case_key": "manual/v1/render"
+      },
+      "active": true
+    },
+    {
+      "case_key": "policy/v1/history",
+      "source_key": "policy",
+      "revision_key": "policy/v1",
+      "space_id": 1,
+      "source_id": 9,
+      "revision_id": 9,
+      "index_revision_id": 9,
+      "chunk_id": 9,
+      "content_hash": "522a5237c7df616cf582b55734a880e6ebf478581c083a49f5fca6146ab7bae0",
+      "content": "旧版发布规则要求两位审核人确认，并保留审批记录。",
+      "locator": {
+        "kind": "pdf_page",
+        "page": 1,
+        "case_key": "policy/v1/history"
+      },
+      "active": false
+    },
+    {
+      "case_key": "policy/v2/current",
+      "source_key": "policy",
+      "revision_key": "policy/v2",
+      "space_id": 1,
+      "source_id": 9,
+      "revision_id": 10,
+      "index_revision_id": 10,
+      "chunk_id": 10,
+      "content_hash": "a98b41c70f2b002d26ecd15677f468fe622028957798a974c1fa95917303423b",
+      "content": "新版发布规则只需一位审核人确认，发布前仍须保留审批记录。",
+      "locator": {
+        "kind": "pdf_page",
+        "page": 1,
+        "case_key": "policy/v2/current"
+      },
+      "active": true
+    },
+    {
+      "case_key": "tenant2/v1/private",
+      "source_key": "tenant2",
+      "revision_key": "tenant2/v1",
+      "space_id": 2,
+      "source_id": 10,
+      "revision_id": 11,
+      "index_revision_id": 11,
+      "chunk_id": 11,
+      "content_hash": "1473d2660e1c2b212da7165cbb3182af57dcb4e6ad28c1bb8e8603a7b2c56b0c",
+      "content": "检索请求发生超时后执行重试，重试次数最多为 9，第二空间专用说明。",
+      "locator": {
+        "kind": "pdf_page",
+        "page": 1,
+        "case_key": "tenant2/v1/private"
+      },
+      "active": true
+    },
+    {
+      "case_key": "errors/v1/missing",
+      "source_key": "errors",
+      "revision_key": "errors/v1",
+      "space_id": 1,
+      "source_id": 11,
+      "revision_id": 12,
+      "index_revision_id": 12,
+      "chunk_id": 12,
+      "content_hash": "98ee63eb9480ff94434abfe566b559ed3e831b8203e235e04cc99e8795f9d6fc",
+      "content": "系统错误码 404 表示任务不存在，开始发送进度前应检查 run_id。",
+      "locator": {
+        "kind": "pdf_page",
+        "page": 1,
+        "case_key": "errors/v1/missing"
+      },
+      "active": true
+    }
+  ],
+  "metrics": {
+    "evidence_index": {
+      "positive_queries": 20,
+      "negative_queries": 4,
+      "hit_at_1": 1.0,
+      "hit_at_5": 1.0,
+      "mrr": 1.0,
+      "negative_empty_successes": 4,
+      "scope_violations": 0,
+      "identity_violations": 0
+    },
+    "hybrid_sparse_only": {
+      "positive_queries": 20,
+      "negative_queries": 4,
+      "hit_at_1": 1.0,
+      "hit_at_5": 1.0,
+      "mrr": 1.0,
+      "negative_empty_successes": 4,
+      "scope_violations": 0,
+      "identity_violations": 0
+    }
+  },
+  "queries": [
+    {
+      "id": "zh01",
+      "category": "natural",
+      "space_id": 1,
+      "text": "为什么混合检索能减少漏召回？",
+      "expected": [
+        "retrieval/v1/overview"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "retrieval/v1/overview"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "retrieval/v1/overview",
+              "source_id": 1,
+              "revision_id": 1,
+              "index_revision_id": 1,
+              "chunk_id": 1,
+              "content_hash": "e4349ab3493b5a4ee80acf726b67d6fc08c91a6ee43aa24215e8a38b74aca490",
+              "content": "系统采用混合检索结合向量与关键词，减少术语漏召回。",
+              "locator": {
+                "case_key": "retrieval/v1/overview",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.362526,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "retry/v1/policy",
+              "source_id": 2,
+              "revision_id": 2,
+              "index_revision_id": 2,
+              "chunk_id": 2,
+              "content_hash": "a7c5d8bdc555762291352cabbfc790810a970aaded2e6d5797b67fbd4436c714",
+              "content": "检索请求发生超时后执行重试。",
+              "locator": {
+                "case_key": "retry/v1/policy",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.03208,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 3,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.03175,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 4,
+              "case_key": "noise/v1/repeated",
+              "source_id": 3,
+              "revision_id": 3,
+              "index_revision_id": 3,
+              "chunk_id": 3,
+              "content_hash": "9c5ba7a8a6fc9dcfb8dfc35cc501e8dbb078f598464536cef34388f53fbed269",
+              "content": "检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 ",
+              "locator": {
+                "case_key": "noise/v1/repeated",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.031602,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "retrieval/v1/overview"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "retrieval/v1/overview",
+              "source_id": 1,
+              "revision_id": 1,
+              "index_revision_id": 1,
+              "chunk_id": 1,
+              "content_hash": "e4349ab3493b5a4ee80acf726b67d6fc08c91a6ee43aa24215e8a38b74aca490",
+              "content": "系统采用混合检索结合向量与关键词，减少术语漏召回。",
+              "locator": {
+                "case_key": "retrieval/v1/overview",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.362526,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "retry/v1/policy",
+              "source_id": 2,
+              "revision_id": 2,
+              "index_revision_id": 2,
+              "chunk_id": 2,
+              "content_hash": "a7c5d8bdc555762291352cabbfc790810a970aaded2e6d5797b67fbd4436c714",
+              "content": "检索请求发生超时后执行重试。",
+              "locator": {
+                "case_key": "retry/v1/policy",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4919,
+              "keyword_score": 0.03208,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 3,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4841,
+              "keyword_score": 0.03175,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 4,
+              "case_key": "noise/v1/repeated",
+              "source_id": 3,
+              "revision_id": 3,
+              "index_revision_id": 3,
+              "chunk_id": 3,
+              "content_hash": "9c5ba7a8a6fc9dcfb8dfc35cc501e8dbb078f598464536cef34388f53fbed269",
+              "content": "检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 ",
+              "locator": {
+                "case_key": "noise/v1/repeated",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4766,
+              "keyword_score": 0.031602,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh02",
+      "category": "reordered",
+      "space_id": 1,
+      "text": "减少漏召回时，向量与关键词怎样配合？",
+      "expected": [
+        "retrieval/v1/overview"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "retrieval/v1/overview"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "retrieval/v1/overview",
+              "source_id": 1,
+              "revision_id": 1,
+              "index_revision_id": 1,
+              "chunk_id": 1,
+              "content_hash": "e4349ab3493b5a4ee80acf726b67d6fc08c91a6ee43aa24215e8a38b74aca490",
+              "content": "系统采用混合检索结合向量与关键词，减少术语漏召回。",
+              "locator": {
+                "case_key": "retrieval/v1/overview",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.484375,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "retrieval/v1/overview"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "retrieval/v1/overview",
+              "source_id": 1,
+              "revision_id": 1,
+              "index_revision_id": 1,
+              "chunk_id": 1,
+              "content_hash": "e4349ab3493b5a4ee80acf726b67d6fc08c91a6ee43aa24215e8a38b74aca490",
+              "content": "系统采用混合检索结合向量与关键词，减少术语漏召回。",
+              "locator": {
+                "case_key": "retrieval/v1/overview",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.484375,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh03",
+      "category": "literal_control",
+      "space_id": 1,
+      "text": "混合检索",
+      "expected": [
+        "retrieval/v1/overview"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "retrieval/v1/overview"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "retrieval/v1/overview",
+              "source_id": 1,
+              "revision_id": 1,
+              "index_revision_id": 1,
+              "chunk_id": 1,
+              "content_hash": "e4349ab3493b5a4ee80acf726b67d6fc08c91a6ee43aa24215e8a38b74aca490",
+              "content": "系统采用混合检索结合向量与关键词，减少术语漏召回。",
+              "locator": {
+                "case_key": "retrieval/v1/overview",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.948,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "retry/v1/policy",
+              "source_id": 2,
+              "revision_id": 2,
+              "index_revision_id": 2,
+              "chunk_id": 2,
+              "content_hash": "a7c5d8bdc555762291352cabbfc790810a970aaded2e6d5797b67fbd4436c714",
+              "content": "检索请求发生超时后执行重试。",
+              "locator": {
+                "case_key": "retry/v1/policy",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.152381,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 3,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.150813,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 4,
+              "case_key": "noise/v1/repeated",
+              "source_id": 3,
+              "revision_id": 3,
+              "index_revision_id": 3,
+              "chunk_id": 3,
+              "content_hash": "9c5ba7a8a6fc9dcfb8dfc35cc501e8dbb078f598464536cef34388f53fbed269",
+              "content": "检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 ",
+              "locator": {
+                "case_key": "noise/v1/repeated",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.150111,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "retrieval/v1/overview"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "retrieval/v1/overview",
+              "source_id": 1,
+              "revision_id": 1,
+              "index_revision_id": 1,
+              "chunk_id": 1,
+              "content_hash": "e4349ab3493b5a4ee80acf726b67d6fc08c91a6ee43aa24215e8a38b74aca490",
+              "content": "系统采用混合检索结合向量与关键词，减少术语漏召回。",
+              "locator": {
+                "case_key": "retrieval/v1/overview",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.948,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "retry/v1/policy",
+              "source_id": 2,
+              "revision_id": 2,
+              "index_revision_id": 2,
+              "chunk_id": 2,
+              "content_hash": "a7c5d8bdc555762291352cabbfc790810a970aaded2e6d5797b67fbd4436c714",
+              "content": "检索请求发生超时后执行重试。",
+              "locator": {
+                "case_key": "retry/v1/policy",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4919,
+              "keyword_score": 0.152381,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 3,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4841,
+              "keyword_score": 0.150813,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 4,
+              "case_key": "noise/v1/repeated",
+              "source_id": 3,
+              "revision_id": 3,
+              "index_revision_id": 3,
+              "chunk_id": 3,
+              "content_hash": "9c5ba7a8a6fc9dcfb8dfc35cc501e8dbb078f598464536cef34388f53fbed269",
+              "content": "检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 ",
+              "locator": {
+                "case_key": "noise/v1/repeated",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4766,
+              "keyword_score": 0.150111,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh04",
+      "category": "natural",
+      "space_id": 1,
+      "text": "检索超时以后怎么重试？",
+      "expected": [
+        "retry/v1/policy"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "retry/v1/policy"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "retry/v1/policy",
+              "source_id": 2,
+              "revision_id": 2,
+              "index_revision_id": 2,
+              "chunk_id": 2,
+              "content_hash": "a7c5d8bdc555762291352cabbfc790810a970aaded2e6d5797b67fbd4436c714",
+              "content": "检索请求发生超时后执行重试。",
+              "locator": {
+                "case_key": "retry/v1/policy",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.134694,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "noise/v1/repeated",
+              "source_id": 3,
+              "revision_id": 3,
+              "index_revision_id": 3,
+              "chunk_id": 3,
+              "content_hash": "9c5ba7a8a6fc9dcfb8dfc35cc501e8dbb078f598464536cef34388f53fbed269",
+              "content": "检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 ",
+              "locator": {
+                "case_key": "noise/v1/repeated",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.085841,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 3,
+              "case_key": "retrieval/v1/overview",
+              "source_id": 1,
+              "revision_id": 1,
+              "index_revision_id": 1,
+              "chunk_id": 1,
+              "content_hash": "e4349ab3493b5a4ee80acf726b67d6fc08c91a6ee43aa24215e8a38b74aca490",
+              "content": "系统采用混合检索结合向量与关键词，减少术语漏召回。",
+              "locator": {
+                "case_key": "retrieval/v1/overview",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.043238,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 4,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.043089,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "retry/v1/policy"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "retry/v1/policy",
+              "source_id": 2,
+              "revision_id": 2,
+              "index_revision_id": 2,
+              "chunk_id": 2,
+              "content_hash": "a7c5d8bdc555762291352cabbfc790810a970aaded2e6d5797b67fbd4436c714",
+              "content": "检索请求发生超时后执行重试。",
+              "locator": {
+                "case_key": "retry/v1/policy",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.134694,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "noise/v1/repeated",
+              "source_id": 3,
+              "revision_id": 3,
+              "index_revision_id": 3,
+              "chunk_id": 3,
+              "content_hash": "9c5ba7a8a6fc9dcfb8dfc35cc501e8dbb078f598464536cef34388f53fbed269",
+              "content": "检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 ",
+              "locator": {
+                "case_key": "noise/v1/repeated",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4919,
+              "keyword_score": 0.085841,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 3,
+              "case_key": "retrieval/v1/overview",
+              "source_id": 1,
+              "revision_id": 1,
+              "index_revision_id": 1,
+              "chunk_id": 1,
+              "content_hash": "e4349ab3493b5a4ee80acf726b67d6fc08c91a6ee43aa24215e8a38b74aca490",
+              "content": "系统采用混合检索结合向量与关键词，减少术语漏召回。",
+              "locator": {
+                "case_key": "retrieval/v1/overview",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4841,
+              "keyword_score": 0.043238,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 4,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4766,
+              "keyword_score": 0.043089,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh05",
+      "category": "repetition_adversary",
+      "space_id": 1,
+      "text": "检索 超时 重试",
+      "expected": [
+        "retry/v1/policy"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "retry/v1/policy"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "retry/v1/policy",
+              "source_id": 2,
+              "revision_id": 2,
+              "index_revision_id": 2,
+              "chunk_id": 2,
+              "content_hash": "a7c5d8bdc555762291352cabbfc790810a970aaded2e6d5797b67fbd4436c714",
+              "content": "检索请求发生超时后执行重试。",
+              "locator": {
+                "case_key": "retry/v1/policy",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.942857,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "noise/v1/repeated",
+              "source_id": 3,
+              "revision_id": 3,
+              "index_revision_id": 3,
+              "chunk_id": 3,
+              "content_hash": "9c5ba7a8a6fc9dcfb8dfc35cc501e8dbb078f598464536cef34388f53fbed269",
+              "content": "检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 ",
+              "locator": {
+                "case_key": "noise/v1/repeated",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.600889,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 3,
+              "case_key": "retrieval/v1/overview",
+              "source_id": 1,
+              "revision_id": 1,
+              "index_revision_id": 1,
+              "chunk_id": 1,
+              "content_hash": "e4349ab3493b5a4ee80acf726b67d6fc08c91a6ee43aa24215e8a38b74aca490",
+              "content": "系统采用混合检索结合向量与关键词，减少术语漏召回。",
+              "locator": {
+                "case_key": "retrieval/v1/overview",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.302667,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 4,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.301626,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "retry/v1/policy"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "retry/v1/policy",
+              "source_id": 2,
+              "revision_id": 2,
+              "index_revision_id": 2,
+              "chunk_id": 2,
+              "content_hash": "a7c5d8bdc555762291352cabbfc790810a970aaded2e6d5797b67fbd4436c714",
+              "content": "检索请求发生超时后执行重试。",
+              "locator": {
+                "case_key": "retry/v1/policy",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.942857,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "noise/v1/repeated",
+              "source_id": 3,
+              "revision_id": 3,
+              "index_revision_id": 3,
+              "chunk_id": 3,
+              "content_hash": "9c5ba7a8a6fc9dcfb8dfc35cc501e8dbb078f598464536cef34388f53fbed269",
+              "content": "检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 ",
+              "locator": {
+                "case_key": "noise/v1/repeated",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4919,
+              "keyword_score": 0.600889,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 3,
+              "case_key": "retrieval/v1/overview",
+              "source_id": 1,
+              "revision_id": 1,
+              "index_revision_id": 1,
+              "chunk_id": 1,
+              "content_hash": "e4349ab3493b5a4ee80acf726b67d6fc08c91a6ee43aa24215e8a38b74aca490",
+              "content": "系统采用混合检索结合向量与关键词，减少术语漏召回。",
+              "locator": {
+                "case_key": "retrieval/v1/overview",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4841,
+              "keyword_score": 0.302667,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 4,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4766,
+              "keyword_score": 0.301626,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh06",
+      "category": "punctuation",
+      "space_id": 1,
+      "text": "重试：检索请求超时以后",
+      "expected": [
+        "retry/v1/policy"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "retry/v1/policy"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "retry/v1/policy",
+              "source_id": 2,
+              "revision_id": 2,
+              "index_revision_id": 2,
+              "chunk_id": 2,
+              "content_hash": "a7c5d8bdc555762291352cabbfc790810a970aaded2e6d5797b67fbd4436c714",
+              "content": "检索请求发生超时后执行重试。",
+              "locator": {
+                "case_key": "retry/v1/policy",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.470588,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "noise/v1/repeated",
+              "source_id": 3,
+              "revision_id": 3,
+              "index_revision_id": 3,
+              "chunk_id": 3,
+              "content_hash": "9c5ba7a8a6fc9dcfb8dfc35cc501e8dbb078f598464536cef34388f53fbed269",
+              "content": "检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 ",
+              "locator": {
+                "case_key": "noise/v1/repeated",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.106039,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 3,
+              "case_key": "retrieval/v1/overview",
+              "source_id": 1,
+              "revision_id": 1,
+              "index_revision_id": 1,
+              "chunk_id": 1,
+              "content_hash": "e4349ab3493b5a4ee80acf726b67d6fc08c91a6ee43aa24215e8a38b74aca490",
+              "content": "系统采用混合检索结合向量与关键词，减少术语漏召回。",
+              "locator": {
+                "case_key": "retrieval/v1/overview",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.053412,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 4,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.053228,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "retry/v1/policy"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "retry/v1/policy",
+              "source_id": 2,
+              "revision_id": 2,
+              "index_revision_id": 2,
+              "chunk_id": 2,
+              "content_hash": "a7c5d8bdc555762291352cabbfc790810a970aaded2e6d5797b67fbd4436c714",
+              "content": "检索请求发生超时后执行重试。",
+              "locator": {
+                "case_key": "retry/v1/policy",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.470588,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "noise/v1/repeated",
+              "source_id": 3,
+              "revision_id": 3,
+              "index_revision_id": 3,
+              "chunk_id": 3,
+              "content_hash": "9c5ba7a8a6fc9dcfb8dfc35cc501e8dbb078f598464536cef34388f53fbed269",
+              "content": "检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 检索 超时 ",
+              "locator": {
+                "case_key": "noise/v1/repeated",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4919,
+              "keyword_score": 0.106039,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 3,
+              "case_key": "retrieval/v1/overview",
+              "source_id": 1,
+              "revision_id": 1,
+              "index_revision_id": 1,
+              "chunk_id": 1,
+              "content_hash": "e4349ab3493b5a4ee80acf726b67d6fc08c91a6ee43aa24215e8a38b74aca490",
+              "content": "系统采用混合检索结合向量与关键词，减少术语漏召回。",
+              "locator": {
+                "case_key": "retrieval/v1/overview",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4841,
+              "keyword_score": 0.053412,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 4,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4766,
+              "keyword_score": 0.053228,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh07",
+      "category": "natural",
+      "space_id": 1,
+      "text": "研究报告发布前为什么要人工审批？",
+      "expected": [
+        "approval/v1/release"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "approval/v1/release"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "approval/v1/release",
+              "source_id": 4,
+              "revision_id": 4,
+              "index_revision_id": 4,
+              "chunk_id": 4,
+              "content_hash": "25f409587f2d88a723bc488ebfd770e8ae3e95674d05a439543ea79bae48d19a",
+              "content": "研究报告发布前必须经过人工审批，未获批准不得生成正式成果。",
+              "locator": {
+                "case_key": "approval/v1/release",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.58209,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "policy/v2/current",
+              "source_id": 9,
+              "revision_id": 10,
+              "index_revision_id": 10,
+              "chunk_id": 10,
+              "content_hash": "a98b41c70f2b002d26ecd15677f468fe622028957798a974c1fa95917303423b",
+              "content": "新版发布规则只需一位审核人确认，发布前仍须保留审批记录。",
+              "locator": {
+                "case_key": "policy/v2/current",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.125213,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 3,
+              "case_key": "manual/v1/render",
+              "source_id": 8,
+              "revision_id": 8,
+              "index_revision_id": 8,
+              "chunk_id": 8,
+              "content_hash": "4bf9287d0f84ae89fd11ead3d15f969eb8db0e79a064ab4d81ed9b8335f7561a",
+              "content": "Markdown 报告支持标题、表格和代码块，手机点击引用可以查看原文证据。",
+              "locator": {
+                "case_key": "manual/v1/render",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.027023,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 4,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.027011,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 5,
+              "case_key": "resume/v1/cursor",
+              "source_id": 6,
+              "revision_id": 6,
+              "index_revision_id": 6,
+              "chunk_id": 6,
+              "content_hash": "2e76087534e1b2d4ccea22858e0d8214a85b639dcc361c36045e7eca2ef85f28",
+              "content": "SSE 断开后使用 cursor 接着读取同一个任务的进度事件，重连不会重新提交研究。",
+              "locator": {
+                "case_key": "resume/v1/cursor",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.027005,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "approval/v1/release"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "approval/v1/release",
+              "source_id": 4,
+              "revision_id": 4,
+              "index_revision_id": 4,
+              "chunk_id": 4,
+              "content_hash": "25f409587f2d88a723bc488ebfd770e8ae3e95674d05a439543ea79bae48d19a",
+              "content": "研究报告发布前必须经过人工审批，未获批准不得生成正式成果。",
+              "locator": {
+                "case_key": "approval/v1/release",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.58209,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "policy/v2/current",
+              "source_id": 9,
+              "revision_id": 10,
+              "index_revision_id": 10,
+              "chunk_id": 10,
+              "content_hash": "a98b41c70f2b002d26ecd15677f468fe622028957798a974c1fa95917303423b",
+              "content": "新版发布规则只需一位审核人确认，发布前仍须保留审批记录。",
+              "locator": {
+                "case_key": "policy/v2/current",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4919,
+              "keyword_score": 0.125213,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 3,
+              "case_key": "manual/v1/render",
+              "source_id": 8,
+              "revision_id": 8,
+              "index_revision_id": 8,
+              "chunk_id": 8,
+              "content_hash": "4bf9287d0f84ae89fd11ead3d15f969eb8db0e79a064ab4d81ed9b8335f7561a",
+              "content": "Markdown 报告支持标题、表格和代码块，手机点击引用可以查看原文证据。",
+              "locator": {
+                "case_key": "manual/v1/render",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4841,
+              "keyword_score": 0.027023,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 4,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4766,
+              "keyword_score": 0.027011,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 5,
+              "case_key": "resume/v1/cursor",
+              "source_id": 6,
+              "revision_id": 6,
+              "index_revision_id": 6,
+              "chunk_id": 6,
+              "content_hash": "2e76087534e1b2d4ccea22858e0d8214a85b639dcc361c36045e7eca2ef85f28",
+              "content": "SSE 断开后使用 cursor 接着读取同一个任务的进度事件，重连不会重新提交研究。",
+              "locator": {
+                "case_key": "resume/v1/cursor",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4692,
+              "keyword_score": 0.027005,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh08",
+      "category": "reordered",
+      "space_id": 1,
+      "text": "没有批准时能生成正式成果吗？",
+      "expected": [
+        "approval/v1/release"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "approval/v1/release"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "approval/v1/release",
+              "source_id": 4,
+              "revision_id": 4,
+              "index_revision_id": 4,
+              "chunk_id": 4,
+              "content_hash": "25f409587f2d88a723bc488ebfd770e8ae3e95674d05a439543ea79bae48d19a",
+              "content": "研究报告发布前必须经过人工审批，未获批准不得生成正式成果。",
+              "locator": {
+                "case_key": "approval/v1/release",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.413793,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "approval/v1/release"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "approval/v1/release",
+              "source_id": 4,
+              "revision_id": 4,
+              "index_revision_id": 4,
+              "chunk_id": 4,
+              "content_hash": "25f409587f2d88a723bc488ebfd770e8ae3e95674d05a439543ea79bae48d19a",
+              "content": "研究报告发布前必须经过人工审批，未获批准不得生成正式成果。",
+              "locator": {
+                "case_key": "approval/v1/release",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.413793,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh09",
+      "category": "mixed_language",
+      "space_id": 1,
+      "text": "RAG 检索调用预算超过后怎样停止？",
+      "expected": [
+        "budget/v1/limits"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "budget/v1/limits"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.469187,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "budget/v1/limits"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.469187,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh10",
+      "category": "unicode_width",
+      "space_id": 1,
+      "text": "ＲＡＧ 最多允许几次检索调用？",
+      "expected": [
+        "budget/v1/limits"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "budget/v1/limits"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.695501,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "budget/v1/limits"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.695501,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh11",
+      "category": "literal_control",
+      "space_id": 1,
+      "text": "超过调用预算后必须停止",
+      "expected": [
+        "budget/v1/limits"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "budget/v1/limits"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 1.0,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "approval/v1/release",
+              "source_id": 4,
+              "revision_id": 4,
+              "index_revision_id": 4,
+              "chunk_id": 4,
+              "content_hash": "25f409587f2d88a723bc488ebfd770e8ae3e95674d05a439543ea79bae48d19a",
+              "content": "研究报告发布前必须经过人工审批，未获批准不得生成正式成果。",
+              "locator": {
+                "case_key": "approval/v1/release",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.038591,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "budget/v1/limits"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "budget/v1/limits",
+              "source_id": 5,
+              "revision_id": 5,
+              "index_revision_id": 5,
+              "chunk_id": 5,
+              "content_hash": "03a46c0ede15a3d1f1426db6278db625de8abc894ef53dd880429087e4804c68",
+              "content": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。",
+              "locator": {
+                "case_key": "budget/v1/limits",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 1.0,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "approval/v1/release",
+              "source_id": 4,
+              "revision_id": 4,
+              "index_revision_id": 4,
+              "chunk_id": 4,
+              "content_hash": "25f409587f2d88a723bc488ebfd770e8ae3e95674d05a439543ea79bae48d19a",
+              "content": "研究报告发布前必须经过人工审批，未获批准不得生成正式成果。",
+              "locator": {
+                "case_key": "approval/v1/release",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4919,
+              "keyword_score": 0.038591,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh12",
+      "category": "mixed_language",
+      "space_id": 1,
+      "text": "SSE断开以后怎样用cursor恢复进度？",
+      "expected": [
+        "resume/v1/cursor"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "resume/v1/cursor"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "resume/v1/cursor",
+              "source_id": 6,
+              "revision_id": 6,
+              "index_revision_id": 6,
+              "chunk_id": 6,
+              "content_hash": "2e76087534e1b2d4ccea22858e0d8214a85b639dcc361c36045e7eca2ef85f28",
+              "content": "SSE 断开后使用 cursor 接着读取同一个任务的进度事件，重连不会重新提交研究。",
+              "locator": {
+                "case_key": "resume/v1/cursor",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.251938,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "resume/v1/cursor"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "resume/v1/cursor",
+              "source_id": 6,
+              "revision_id": 6,
+              "index_revision_id": 6,
+              "chunk_id": 6,
+              "content_hash": "2e76087534e1b2d4ccea22858e0d8214a85b639dcc361c36045e7eca2ef85f28",
+              "content": "SSE 断开后使用 cursor 接着读取同一个任务的进度事件，重连不会重新提交研究。",
+              "locator": {
+                "case_key": "resume/v1/cursor",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.251938,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh13",
+      "category": "spaced_control",
+      "space_id": 1,
+      "text": "cursor 重连 同一个任务",
+      "expected": [
+        "resume/v1/cursor"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "resume/v1/cursor"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "resume/v1/cursor",
+              "source_id": 6,
+              "revision_id": 6,
+              "index_revision_id": 6,
+              "chunk_id": 6,
+              "content_hash": "2e76087534e1b2d4ccea22858e0d8214a85b639dcc361c36045e7eca2ef85f28",
+              "content": "SSE 断开后使用 cursor 接着读取同一个任务的进度事件，重连不会重新提交研究。",
+              "locator": {
+                "case_key": "resume/v1/cursor",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.95814,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "resume/v1/cursor"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "resume/v1/cursor",
+              "source_id": 6,
+              "revision_id": 6,
+              "index_revision_id": 6,
+              "chunk_id": 6,
+              "content_hash": "2e76087534e1b2d4ccea22858e0d8214a85b639dcc361c36045e7eca2ef85f28",
+              "content": "SSE 断开后使用 cursor 接着读取同一个任务的进度事件，重连不会重新提交研究。",
+              "locator": {
+                "case_key": "resume/v1/cursor",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.95814,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh14",
+      "category": "mixed_identifier",
+      "space_id": 1,
+      "text": "引用如何固定revision_id和chunk_id？",
+      "expected": [
+        "evidence/v1/version"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "evidence/v1/version"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "evidence/v1/version",
+              "source_id": 7,
+              "revision_id": 7,
+              "index_revision_id": 7,
+              "chunk_id": 7,
+              "content_hash": "8898aeeacbda9e463cb7535dd33362fcad3aba4f3f56c08dc15d59965d1053df",
+              "content": "每条引用固定 source_id、revision_id、chunk_id 与 SHA-256 内容指纹，定位原文页码。",
+              "locator": {
+                "case_key": "evidence/v1/version",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.481197,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "evidence/v1/version"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "evidence/v1/version",
+              "source_id": 7,
+              "revision_id": 7,
+              "index_revision_id": 7,
+              "chunk_id": 7,
+              "content_hash": "8898aeeacbda9e463cb7535dd33362fcad3aba4f3f56c08dc15d59965d1053df",
+              "content": "每条引用固定 source_id、revision_id、chunk_id 与 SHA-256 内容指纹，定位原文页码。",
+              "locator": {
+                "case_key": "evidence/v1/version",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.481197,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh15",
+      "category": "mixed_identifier",
+      "space_id": 1,
+      "text": "SHA-256 原文页码",
+      "expected": [
+        "evidence/v1/version"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "evidence/v1/version"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "evidence/v1/version",
+              "source_id": 7,
+              "revision_id": 7,
+              "index_revision_id": 7,
+              "chunk_id": 7,
+              "content_hash": "8898aeeacbda9e463cb7535dd33362fcad3aba4f3f56c08dc15d59965d1053df",
+              "content": "每条引用固定 source_id、revision_id、chunk_id 与 SHA-256 内容指纹，定位原文页码。",
+              "locator": {
+                "case_key": "evidence/v1/version",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.931667,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "evidence/v1/version"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "evidence/v1/version",
+              "source_id": 7,
+              "revision_id": 7,
+              "index_revision_id": 7,
+              "chunk_id": 7,
+              "content_hash": "8898aeeacbda9e463cb7535dd33362fcad3aba4f3f56c08dc15d59965d1053df",
+              "content": "每条引用固定 source_id、revision_id、chunk_id 与 SHA-256 内容指纹，定位原文页码。",
+              "locator": {
+                "case_key": "evidence/v1/version",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.931667,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh16",
+      "category": "mixed_language",
+      "space_id": 1,
+      "text": "Markdown表格和代码块怎么展示？",
+      "expected": [
+        "manual/v1/render"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "manual/v1/render"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "manual/v1/render",
+              "source_id": 8,
+              "revision_id": 8,
+              "index_revision_id": 8,
+              "chunk_id": 8,
+              "content_hash": "4bf9287d0f84ae89fd11ead3d15f969eb8db0e79a064ab4d81ed9b8335f7561a",
+              "content": "Markdown 报告支持标题、表格和代码块，手机点击引用可以查看原文证据。",
+              "locator": {
+                "case_key": "manual/v1/render",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.587368,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "manual/v1/render"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "manual/v1/render",
+              "source_id": 8,
+              "revision_id": 8,
+              "index_revision_id": 8,
+              "chunk_id": 8,
+              "content_hash": "4bf9287d0f84ae89fd11ead3d15f969eb8db0e79a064ab4d81ed9b8335f7561a",
+              "content": "Markdown 报告支持标题、表格和代码块，手机点击引用可以查看原文证据。",
+              "locator": {
+                "case_key": "manual/v1/render",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.587368,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh17",
+      "category": "natural",
+      "space_id": 1,
+      "text": "手机点击引用在哪里查看证据？",
+      "expected": [
+        "manual/v1/render"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "manual/v1/render"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "manual/v1/render",
+              "source_id": 8,
+              "revision_id": 8,
+              "index_revision_id": 8,
+              "chunk_id": 8,
+              "content_hash": "4bf9287d0f84ae89fd11ead3d15f969eb8db0e79a064ab4d81ed9b8335f7561a",
+              "content": "Markdown 报告支持标题、表格和代码块，手机点击引用可以查看原文证据。",
+              "locator": {
+                "case_key": "manual/v1/render",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.441736,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "evidence/v1/version",
+              "source_id": 7,
+              "revision_id": 7,
+              "index_revision_id": 7,
+              "chunk_id": 7,
+              "content_hash": "8898aeeacbda9e463cb7535dd33362fcad3aba4f3f56c08dc15d59965d1053df",
+              "content": "每条引用固定 source_id、revision_id、chunk_id 与 SHA-256 内容指纹，定位原文页码。",
+              "locator": {
+                "case_key": "evidence/v1/version",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.031696,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "manual/v1/render"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "manual/v1/render",
+              "source_id": 8,
+              "revision_id": 8,
+              "index_revision_id": 8,
+              "chunk_id": 8,
+              "content_hash": "4bf9287d0f84ae89fd11ead3d15f969eb8db0e79a064ab4d81ed9b8335f7561a",
+              "content": "Markdown 报告支持标题、表格和代码块，手机点击引用可以查看原文证据。",
+              "locator": {
+                "case_key": "manual/v1/render",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.441736,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "evidence/v1/version",
+              "source_id": 7,
+              "revision_id": 7,
+              "index_revision_id": 7,
+              "chunk_id": 7,
+              "content_hash": "8898aeeacbda9e463cb7535dd33362fcad3aba4f3f56c08dc15d59965d1053df",
+              "content": "每条引用固定 source_id、revision_id、chunk_id 与 SHA-256 内容指纹，定位原文页码。",
+              "locator": {
+                "case_key": "evidence/v1/version",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4919,
+              "keyword_score": 0.031696,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh18",
+      "category": "active_revision",
+      "space_id": 1,
+      "text": "发布规则 审核人 确认",
+      "expected": [
+        "policy/v2/current"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "policy/v2/current"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "policy/v2/current",
+              "source_id": 9,
+              "revision_id": 10,
+              "index_revision_id": 10,
+              "chunk_id": 10,
+              "content_hash": "a98b41c70f2b002d26ecd15677f468fe622028957798a974c1fa95917303423b",
+              "content": "新版发布规则只需一位审核人确认，发布前仍须保留审批记录。",
+              "locator": {
+                "case_key": "policy/v2/current",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.975,
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "approval/v1/release",
+              "source_id": 4,
+              "revision_id": 4,
+              "index_revision_id": 4,
+              "chunk_id": 4,
+              "content_hash": "25f409587f2d88a723bc488ebfd770e8ae3e95674d05a439543ea79bae48d19a",
+              "content": "研究报告发布前必须经过人工审批，未获批准不得生成正式成果。",
+              "locator": {
+                "case_key": "approval/v1/release",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.086371,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "policy/v2/current"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "policy/v2/current",
+              "source_id": 9,
+              "revision_id": 10,
+              "index_revision_id": 10,
+              "chunk_id": 10,
+              "content_hash": "a98b41c70f2b002d26ecd15677f468fe622028957798a974c1fa95917303423b",
+              "content": "新版发布规则只需一位审核人确认，发布前仍须保留审批记录。",
+              "locator": {
+                "case_key": "policy/v2/current",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.975,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            },
+            {
+              "rank": 2,
+              "case_key": "approval/v1/release",
+              "source_id": 4,
+              "revision_id": 4,
+              "index_revision_id": 4,
+              "chunk_id": 4,
+              "content_hash": "25f409587f2d88a723bc488ebfd770e8ae3e95674d05a439543ea79bae48d19a",
+              "content": "研究报告发布前必须经过人工审批，未获批准不得生成正式成果。",
+              "locator": {
+                "case_key": "approval/v1/release",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.4919,
+              "keyword_score": 0.086371,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh19",
+      "category": "pinned_revision",
+      "space_id": 1,
+      "text": "发布规则 审核人 确认",
+      "revision_keys": [
+        "policy/v1"
+      ],
+      "expected": [
+        "policy/v1/history"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "policy/v1/history"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "policy/v1/history",
+              "source_id": 9,
+              "revision_id": 9,
+              "index_revision_id": 9,
+              "chunk_id": 9,
+              "content_hash": "522a5237c7df616cf582b55734a880e6ebf478581c083a49f5fca6146ab7bae0",
+              "content": "旧版发布规则要求两位审核人确认，并保留审批记录。",
+              "locator": {
+                "case_key": "policy/v1/history",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.9875,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "policy/v1/history"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "policy/v1/history",
+              "source_id": 9,
+              "revision_id": 9,
+              "index_revision_id": 9,
+              "chunk_id": 9,
+              "content_hash": "522a5237c7df616cf582b55734a880e6ebf478581c083a49f5fca6146ab7bae0",
+              "content": "旧版发布规则要求两位审核人确认，并保留审批记录。",
+              "locator": {
+                "case_key": "policy/v1/history",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.9875,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh20",
+      "category": "space_isolation",
+      "space_id": 2,
+      "text": "检索 超时 重试",
+      "expected": [
+        "tenant2/v1/private"
+      ],
+      "paths": {
+        "evidence_index": {
+          "expected": [
+            "tenant2/v1/private"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "tenant2/v1/private",
+              "source_id": 10,
+              "revision_id": 11,
+              "index_revision_id": 11,
+              "chunk_id": 11,
+              "content_hash": "1473d2660e1c2b212da7165cbb3182af57dcb4e6ad28c1bb8e8603a7b2c56b0c",
+              "content": "检索请求发生超时后执行重试，重试次数最多为 9，第二空间专用说明。",
+              "locator": {
+                "case_key": "tenant2/v1/private",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.918182,
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [
+            "tenant2/v1/private"
+          ],
+          "ranking": [
+            {
+              "rank": 1,
+              "case_key": "tenant2/v1/private",
+              "source_id": 10,
+              "revision_id": 11,
+              "index_revision_id": 11,
+              "chunk_id": 11,
+              "content_hash": "1473d2660e1c2b212da7165cbb3182af57dcb4e6ad28c1bb8e8603a7b2c56b0c",
+              "content": "检索请求发生超时后执行重试，重试次数最多为 9，第二空间专用说明。",
+              "locator": {
+                "case_key": "tenant2/v1/private",
+                "kind": "pdf_page",
+                "page": 1
+              },
+              "score": 0.5,
+              "keyword_score": 0.918182,
+              "reason": "keyword_only_fallback; rrf; rerank_not_configured",
+              "scope_valid": true,
+              "identity_valid": true
+            }
+          ],
+          "hit1": true,
+          "hit5": true,
+          "rr": 1.0,
+          "empty_success": null,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh21",
+      "category": "unrelated_negative",
+      "space_id": 1,
+      "text": "量子纠缠的光子自旋测量协议",
+      "expected": [],
+      "paths": {
+        "evidence_index": {
+          "expected": [],
+          "ranking": [],
+          "hit1": false,
+          "hit5": false,
+          "rr": 0.0,
+          "empty_success": true,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [],
+          "ranking": [],
+          "hit1": false,
+          "hit5": false,
+          "rr": 0.0,
+          "empty_success": true,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh22",
+      "category": "empty_space_negative",
+      "space_id": 999,
+      "text": "检索 超时 重试",
+      "expected": [],
+      "paths": {
+        "evidence_index": {
+          "expected": [],
+          "ranking": [],
+          "hit1": false,
+          "hit5": false,
+          "rr": 0.0,
+          "empty_success": true,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [],
+          "ranking": [],
+          "hit1": false,
+          "hit5": false,
+          "rr": 0.0,
+          "empty_success": true,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh23",
+      "category": "source_isolation_negative",
+      "space_id": 1,
+      "text": "cursor 断开 进度",
+      "source_keys": [
+        "approval"
+      ],
+      "expected": [],
+      "paths": {
+        "evidence_index": {
+          "expected": [],
+          "ranking": [],
+          "hit1": false,
+          "hit5": false,
+          "rr": 0.0,
+          "empty_success": true,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [],
+          "ranking": [],
+          "hit1": false,
+          "hit5": false,
+          "rr": 0.0,
+          "empty_success": true,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    },
+    {
+      "id": "zh24",
+      "category": "pinned_negative",
+      "space_id": 1,
+      "text": "RAG 检索 8 次",
+      "revision_keys": [
+        "policy/v1"
+      ],
+      "expected": [],
+      "paths": {
+        "evidence_index": {
+          "expected": [],
+          "ranking": [],
+          "hit1": false,
+          "hit5": false,
+          "rr": 0.0,
+          "empty_success": true,
+          "scope_violations": 0,
+          "identity_violations": 0
+        },
+        "hybrid_sparse_only": {
+          "expected": [],
+          "ranking": [],
+          "hit1": false,
+          "hit5": false,
+          "rr": 0.0,
+          "empty_success": true,
+          "scope_violations": 0,
+          "identity_violations": 0
+        }
+      }
+    }
+  ]
+}

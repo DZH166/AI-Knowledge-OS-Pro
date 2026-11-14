@@ -17,7 +17,7 @@ describe("AppShell accessibility", () => {
     expect(markup).toContain('href="#main-content"');
     expect(markup).toContain('<main class="main-content" id="main-content"');
     expect(markup.match(/<a[^>]+aria-current="page"/g)).toHaveLength(1);
-    expect(markup).toContain("Developer Mode");
+    expect(markup).toContain("开发者模式");
     expect(markup).toContain("<details");
   });
 

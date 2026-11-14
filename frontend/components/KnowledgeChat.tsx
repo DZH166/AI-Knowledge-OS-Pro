@@ -266,7 +266,13 @@ export function KnowledgeChat({ spaces, defaultSpaceId, onAsked }: { spaces: Kno
                 <StatusBadge status={displayResult.runtime_mode} />
                 <StatusBadge status={displayResult.retrieval_status} />
                 <span className="pill gray">置信度 {statusLabel(displayResult.answer_confidence)}</span>
+                {displayResult.used_citation_ids.length > 0 && (
+                  <span className="pill gray">引用 {displayResult.used_citation_ids.length} 条证据</span>
+                )}
                 {displayResult.retrieval_score !== null && <span className="pill gray">最高相似度 {displayResult.retrieval_score}</span>}
+                {displayResult.retrieval_query && (
+                  <span className="pill gray" title={displayResult.retrieval_query}>追问检索已结合上一轮问题</span>
+                )}
                 {lastAssistantMessage?.is_favorite && <span className="pill gold">已收藏</span>}
               </div>
               <div className="markdown" data-testid="chat-answer"><ReactMarkdown remarkPlugins={[remarkGfm]}>{displayResult.answer}</ReactMarkdown></div>

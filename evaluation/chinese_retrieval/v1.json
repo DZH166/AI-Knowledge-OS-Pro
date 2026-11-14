@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "dataset_id": "suzhi-chinese-lexical-v1",
+  "sources": [
+    {"key": "retrieval", "space_id": 1, "versions": [{"key": "v1", "chunks": [{"key": "overview", "text": "系统采用混合检索结合向量与关键词，减少术语漏召回。"}]}]},
+    {"key": "retry", "space_id": 1, "versions": [{"key": "v1", "chunks": [{"key": "policy", "text": "检索请求发生超时后执行重试。"}]}]},
+    {"key": "noise", "space_id": 1, "versions": [{"key": "v1", "chunks": [{"key": "repeated", "text": "检索 超时 ", "repeat": 50}]}]},
+    {"key": "approval", "space_id": 1, "versions": [{"key": "v1", "chunks": [{"key": "release", "text": "研究报告发布前必须经过人工审批，未获批准不得生成正式成果。"}]}]},
+    {"key": "budget", "space_id": 1, "versions": [{"key": "v1", "chunks": [{"key": "limits", "text": "RAG 研究任务最多允许 8 次检索调用。超过调用预算后必须停止，并说明停止原因。"}]}]},
+    {"key": "resume", "space_id": 1, "versions": [{"key": "v1", "chunks": [{"key": "cursor", "text": "SSE 断开后使用 cursor 接着读取同一个任务的进度事件，重连不会重新提交研究。"}]}]},
+    {"key": "evidence", "space_id": 1, "versions": [{"key": "v1", "chunks": [{"key": "version", "text": "每条引用固定 source_id、revision_id、chunk_id 与 SHA-256 内容指纹，定位原文页码。"}]}]},
+    {"key": "manual", "space_id": 1, "versions": [{"key": "v1", "chunks": [{"key": "render", "text": "Markdown 报告支持标题、表格和代码块，手机点击引用可以查看原文证据。"}]}]},
+    {"key": "policy", "space_id": 1, "versions": [
+      {"key": "v1", "chunks": [{"key": "history", "text": "旧版发布规则要求两位审核人确认，并保留审批记录。"}]},
+      {"key": "v2", "chunks": [{"key": "current", "text": "新版发布规则只需一位审核人确认，发布前仍须保留审批记录。"}]}
+    ]},
+    {"key": "tenant2", "space_id": 2, "versions": [{"key": "v1", "chunks": [{"key": "private", "text": "检索请求发生超时后执行重试，重试次数最多为 9，第二空间专用说明。"}]}]},
+    {"key": "errors", "space_id": 1, "versions": [{"key": "v1", "chunks": [{"key": "missing", "text": "系统错误码 404 表示任务不存在，开始发送进度前应检查 run_id。"}]}]}
+  ],
+  "queries": [
+    {"id": "zh01", "category": "natural", "space_id": 1, "text": "为什么混合检索能减少漏召回？", "expected": ["retrieval/v1/overview"]},
+    {"id": "zh02", "category": "reordered", "space_id": 1, "text": "减少漏召回时，向量与关键词怎样配合？", "expected": ["retrieval/v1/overview"]},
+    {"id": "zh03", "category": "literal_control", "space_id": 1, "text": "混合检索", "expected": ["retrieval/v1/overview"]},
+    {"id": "zh04", "category": "natural", "space_id": 1, "text": "检索超时以后怎么重试？", "expected": ["retry/v1/policy"]},
+    {"id": "zh05", "category": "repetition_adversary", "space_id": 1, "text": "检索 超时 重试", "expected": ["retry/v1/policy"]},
+    {"id": "zh06", "category": "punctuation", "space_id": 1, "text": "重试：检索请求超时以后", "expected": ["retry/v1/policy"]},
+    {"id": "zh07", "category": "natural", "space_id": 1, "text": "研究报告发布前为什么要人工审批？", "expected": ["approval/v1/release"]},
+    {"id": "zh08", "category": "reordered", "space_id": 1, "text": "没有批准时能生成正式成果吗？", "expected": ["approval/v1/release"]},
+    {"id": "zh09", "category": "mixed_language", "space_id": 1, "text": "RAG 检索调用预算超过后怎样停止？", "expected": ["budget/v1/limits"]},
+    {"id": "zh10", "category": "unicode_width", "space_id": 1, "text": "ＲＡＧ 最多允许几次检索调用？", "expected": ["budget/v1/limits"]},
+    {"id": "zh11", "category": "literal_control", "space_id": 1, "text": "超过调用预算后必须停止", "expected": ["budget/v1/limits"]},
+    {"id": "zh12", "category": "mixed_language", "space_id": 1, "text": "SSE断开以后怎样用cursor恢复进度？", "expected": ["resume/v1/cursor"]},
+    {"id": "zh13", "category": "spaced_control", "space_id": 1, "text": "cursor 重连 同一个任务", "expected": ["resume/v1/cursor"]},
+    {"id": "zh14", "category": "mixed_identifier", "space_id": 1, "text": "引用如何固定revision_id和chunk_id？", "expected": ["evidence/v1/version"]},
+    {"id": "zh15", "category": "mixed_identifier", "space_id": 1, "text": "SHA-256 原文页码", "expected": ["evidence/v1/version"]},
+    {"id": "zh16", "category": "mixed_language", "space_id": 1, "text": "Markdown表格和代码块怎么展示？", "expected": ["manual/v1/render"]},
+    {"id": "zh17", "category": "natural", "space_id": 1, "text": "手机点击引用在哪里查看证据？", "expected": ["manual/v1/render"]},
+    {"id": "zh18", "category": "active_revision", "space_id": 1, "text": "发布规则 审核人 确认", "expected": ["policy/v2/current"]},
+    {"id": "zh19", "category": "pinned_revision", "space_id": 1, "text": "发布规则 审核人 确认", "revision_keys": ["policy/v1"], "expected": ["policy/v1/history"]},
+    {"id": "zh20", "category": "space_isolation", "space_id": 2, "text": "检索 超时 重试", "expected": ["tenant2/v1/private"]},
+    {"id": "zh21", "category": "unrelated_negative", "space_id": 1, "text": "量子纠缠的光子自旋测量协议", "expected": []},
+    {"id": "zh22", "category": "empty_space_negative", "space_id": 999, "text": "检索 超时 重试", "expected": []},
+    {"id": "zh23", "category": "source_isolation_negative", "space_id": 1, "text": "cursor 断开 进度", "source_keys": ["approval"], "expected": []},
+    {"id": "zh24", "category": "pinned_negative", "space_id": 1, "text": "RAG 检索 8 次", "revision_keys": ["policy/v1"], "expected": []}
+  ]
+}

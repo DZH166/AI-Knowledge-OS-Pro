@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.db.session import get_db
 from app.schemas.system_schema import (
+    StorageHealthResponse,
     ObservabilityProviderStatus,
     ObservabilityRequest,
     ObservabilityRetrieval,
@@ -11,6 +12,7 @@ from app.schemas.system_schema import (
     SystemStatusResponse,
     SystemTestResponse,
 )
+from app.services.storage_integrity import storage_integrity_service
 from app.services.system_service import system_service
 
 router = APIRouter(prefix="/system", tags=["system"])
@@ -59,3 +61,19 @@ def get_recent_retrievals(db: Session = Depends(get_db)) -> list[ObservabilityRe
 @router.get("/observability/provider-status", response_model=list[ObservabilityProviderStatus])
 def get_provider_status(db: Session = Depends(get_db)) -> list[ObservabilityProviderStatus]:
     return system_service.provider_status(db)
+
+
+@router.get("/storage-health", response_model=StorageHealthResponse)
+def get_storage_health(
+    deep_hash: bool = False,
+    scan_orphans: bool = True,
+    db: Session = Depends(get_db),
+) -> StorageHealthResponse:
+    """Read-only audit of the database, uploads and evidence bookkeeping."""
+
+    report = storage_integrity_service.check(
+        db,
+        deep_hash=deep_hash,
+        scan_orphans=scan_orphans,
+    )
+    return StorageHealthResponse(**report.to_dict())

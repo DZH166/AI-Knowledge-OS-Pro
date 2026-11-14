@@ -114,3 +114,21 @@ class ObservabilitySummary(BaseModel):
     provider_status: list[ObservabilityProviderStatus] = Field(default_factory=list)
     error_categories: dict[str, int] = Field(default_factory=dict)
     notes: list[str] = Field(default_factory=list)
+
+
+class StorageHealthFinding(BaseModel):
+    code: str
+    severity: str
+    entity: str
+    message: str
+
+
+class StorageHealthResponse(BaseModel):
+    ok: bool
+    checked_at: str
+    database: dict = Field(default_factory=dict)
+    files: dict = Field(default_factory=dict)
+    evidence: dict = Field(default_factory=dict)
+    findings: list[StorageHealthFinding] = Field(default_factory=list)
+    metrics: dict[str, int] = Field(default_factory=dict)
+    notes: list[str] = Field(default_factory=list)

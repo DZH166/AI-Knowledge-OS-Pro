@@ -211,14 +211,24 @@ function crumbLabel(value: string) {
     artifacts: "研究成果",
     evaluations: "智能体评测",
     policies: "策略实验室",
+    optimize: "优化实验",
+    optimizer: "优化实验",
+    error: "错误诊断",
+    feedback: "反馈审阅",
     dashboard: "旧版总览",
     knowledge: "旧版知识库",
     upload: "摄取与上传",
     media: "多模态来源",
+    sources: "来源详情",
+    documents: "文档",
     chat: "传统 RAG 问答",
     learning: "学习资产",
     portfolio: "作品集工具",
-    system: "系统与观测"
+    system: "系统与观测",
+    tasks: "任务中心",
+    trace: "运行轨迹"
   };
+  if (/^\d+$/.test(value)) return `#${value}`;
+  if (value.length > 24 || /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(value)) return "详情";
   return labels[value] ?? value;
 }

@@ -38,6 +38,9 @@ def create_database_engine(database_url: str) -> Engine:
                 cursor.execute("PRAGMA foreign_keys=ON")
                 cursor.execute("PRAGMA busy_timeout=5000")
                 cursor.execute("PRAGMA journal_mode=WAL")
+                # WAL defaults to NORMAL; FULL makes each commit durable
+                # across power loss for this single-user local workspace.
+                cursor.execute("PRAGMA synchronous=FULL")
             finally:
                 cursor.close()
 

@@ -2,7 +2,7 @@
 
 状态：本轮界面阶段验收通过。不是全项目发布验收。
 
-统一工作树：`<LOCAL_PATH>
+统一工作树：`<PROJECT_ROOT>`。分支 `codex/v5.10-research-reliability`，固定基线 `99b47827ecf0df0df433d5bf69246b04305b2441`。本轮只验收 [spec.md](spec.md) 的 UI 增量；已有 V5.10 后端及恢复脚本改动保持原状，不将它们误算为本轮新功能。
 
 通俗机制解释见 [upgrade_explained.md](upgrade_explained.md)。产品显示版本仍为 V5.8 / 5.8.0；没有改数据库、模型配置、包依赖、远程分支或发布包。
 

@@ -35,11 +35,11 @@ V3.6 unifies document and media processing under the durable task engine, improv
 python -m compileall backend/app backend/alembic scripts
 Result: passed
 
-E:\python3.12.9\python.exe -m pytest
+python\python.exe -m pytest
 Result: 41 passed, 18 warnings
 
-E:\python3.12.9\python.exe -m alembic upgrade head
-E:\python3.12.9\python.exe -m alembic current
+python\python.exe -m alembic upgrade head
+python\python.exe -m alembic current
 Result: 0006_v3_6_unified_media_tasks (head)
 
 frontend typecheck

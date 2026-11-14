@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 
 import { ButtonLoading, EmptyState, ErrorState, PageHeader, StatusBadge, TechnicalDetails } from "@/components/ui";
+import { modalityLabel, sourceTypeLabel } from "@/components/evidence-agent/source-presenter";
 import { TranscriptTimeline } from "@/components/media/TranscriptTimeline";
 import {
   matchesImmutableMediaTime,
@@ -101,10 +102,10 @@ function latestAsset(assets: MediaAsset[], assetType: string) {
 
 function operationLabel(operation: MediaOperation) {
   const labels: Record<MediaOperation, string> = {
-    image_ocr: "Image OCR",
-    image_visual_description: "Visual description",
-    image_screenshot_analysis: "Screenshot error analysis",
-    image_full_analysis: "Full image analysis",
+    image_ocr: "图片 OCR",
+    image_visual_description: "视觉描述",
+    image_screenshot_analysis: "截图报错分析",
+    image_full_analysis: "完整图片分析",
     audio_transcription: "Audio transcription",
     video_transcription: "Video transcription",
     video_keyframes: "Extract keyframes",
@@ -342,24 +343,24 @@ export default function MediaSourceDetailPage() {
         action={
           <Link className="button secondary" href="/media">
             <ArrowLeft size={16} />
-            Back to media
+            返回媒体资料库
           </Link>
         }
-        description="Inspect real media metadata, run provider-backed processing tasks, and jump from RAG citations into the exact media timestamp or chunk."
-        eyebrow="Media library"
+        description="检查真实媒体元数据，运行由 Provider 支撑的处理任务，并从 RAG 引用跳转到精确的时间戳或片段。"
+        eyebrow="媒体资料库"
         title={source?.title || source?.original_filename || `Source #${sourceId}`}
       />
       {error && <ErrorState message={error} onRetry={load} />}
       {message && <span className="pill">{message}</span>}
       {activeJobId && (
         <Link className="pill gold" href="/tasks">
-          Active task #{activeJobId}
+          进行中的任务 #{activeJobId}
         </Link>
       )}
       {!Number.isFinite(sourceId) ? (
-        <EmptyState description="Open a concrete media source from the library." title="Invalid source address" />
+        <EmptyState description="请从媒体资料库打开一个具体的来源。" title="来源地址无效" />
       ) : !source && !error ? (
-        <EmptyState description="Loading media details." title="Loading" />
+        <EmptyState description="正在读取媒体详情。" title="加载中" />
       ) : source ? immutableError ? (
         <ErrorState
           impact="未展示任何 active/latest 媒体 revision 内容，避免把其他版本冒充为引用依据。"
@@ -376,21 +377,21 @@ export default function MediaSourceDetailPage() {
           )}
           <section className="grid cols-4">
             <article className="card">
-              <span className="muted">Type</span>
-              <p className="stat-value">{source.source_type}</p>
+              <span className="muted">类型</span>
+              <p className="stat-value">{sourceTypeLabel(source.source_type)}</p>
             </article>
             <article className="card">
-              <span className="muted">File size</span>
+              <span className="muted">文件大小</span>
               <p className="stat-value">{formatFileSize(source.file_size)}</p>
             </article>
             <article className="card">
-              <span className="muted">{isTranscribable(source) ? "Duration" : "Dimensions"}</span>
+              <span className="muted">{isTranscribable(source) ? "时长" : "尺寸"}</span>
               <p className="stat-value">
-                {isTranscribable(source) ? formatDuration(source.duration_ms) : source.width && source.height ? `${source.width} x ${source.height}` : "not recorded"}
+                {isTranscribable(source) ? formatDuration(source.duration_ms) : source.width && source.height ? `${source.width} x ${source.height}` : "未记录"}
               </p>
             </article>
             <article className="card">
-              <span className="muted">Status</span>
+              <span className="muted">状态</span>
               <p className="stat-value">
                 <StatusBadge status={source.status} />
               </p>
@@ -399,22 +400,22 @@ export default function MediaSourceDetailPage() {
 
           <section className="split">
             <article className="panel stack">
-              <h2>Preview</h2>
+              <h2>预览</h2>
               <div className="list">
                 <div className="list-item">
-                  <span className="muted">Original file</span>
-                  <strong>{source.original_filename || "not recorded"}</strong>
+                  <span className="muted">原始文件</span>
+                  <strong>{source.original_filename || "未记录"}</strong>
                 </div>
                 <div className="list-item">
-                  <span className="muted">MIME type</span>
-                  <strong>{source.mime_type || "not recorded"}</strong>
+                  <span className="muted">MIME 类型</span>
+                  <strong>{source.mime_type || "未记录"}</strong>
                 </div>
                 <div className="list-item">
-                  <span className="muted">Knowledge space</span>
+                  <span className="muted">知识空间</span>
                   <strong>{source.space_id}</strong>
                 </div>
                 <div className="list-item">
-                  <span className="muted">Created</span>
+                  <span className="muted">创建时间</span>
                   <strong>{formatDate(source.created_at)}</strong>
                 </div>
               </div>
@@ -446,7 +447,7 @@ export default function MediaSourceDetailPage() {
               )}
               {source.source_type === "image" && (
                 <Image
-                  alt={source.original_filename || "Uploaded image"}
+                  alt={source.original_filename || "上传的图片"}
                   className="source-image-preview"
                   height={source.height || 800}
                   src={sourceFileUrl(source.id)}
@@ -479,11 +480,11 @@ export default function MediaSourceDetailPage() {
                   </div>
 
                   <div className="status-line">
-                    <span className="pill gray">OCR: {displayValue(metadata.ocr_status)}</span>
-                    <span className="pill gray">Vision: {displayValue(metadata.vision_description_status)}</span>
+                    <span className="pill gray">OCR：{statusLabel(displayValue(metadata.ocr_status))}</span>
+                    <span className="pill gray">视觉：{statusLabel(displayValue(metadata.vision_description_status))}</span>
                     {isTranscribable(source) && <span className="pill gray">Transcription: {displayValue(metadata.transcription_status)}</span>}
-                    {source.source_type === "video" && <span className="pill gray">Keyframes: {displayValue(metadata.keyframe_status)}</span>}
-                    {source.source_type === "video" && <span className="pill gray">Has audio: {displayValue(metadata.has_audio)}</span>}
+                    {source.source_type === "video" && <span className="pill gray">关键帧：{statusLabel(displayValue(metadata.keyframe_status))}</span>}
+                    {source.source_type === "video" && <span className="pill gray">含音轨：{displayValue(metadata.has_audio)}</span>}
                   </div>
                 </>
               )}
@@ -506,13 +507,13 @@ export default function MediaSourceDetailPage() {
                 {immutablePinState.mode === "pinned" ? (
                   <EmptyState description="固定证据视图不会混入当前 revision 的派生媒体资产。" title="历史证据隔离" />
                 ) : assets.length === 0 ? (
-                  <EmptyState description="No derived media assets have been saved yet." title="No assets" />
+                  <EmptyState description="还没有保存派生出的媒体资产。" title="暂无资产" />
                 ) : (
                   assets.map((asset) => (
                     <div className="list-item" key={asset.id}>
                       <div className="row between">
                         <strong>{asset.asset_type}</strong>
-                        <StatusBadge status="ready" label="Saved" />
+                        <StatusBadge status="ready" label="已保存" />
                       </div>
                       <span className="muted">{asset.storage_path}</span>
                       <span className="muted">
@@ -545,7 +546,7 @@ export default function MediaSourceDetailPage() {
                 <span className="pill gray">{keyframeAssets.length} frames</span>
               </div>
               {keyframeAssets.length === 0 ? (
-                <EmptyState description="Run keyframe extraction or the full video pipeline to save real video frames." title="No keyframes" />
+                <EmptyState description="运行关键帧抽取或完整视频流水线后，会保存真实视频帧。" title="暂无关键帧" />
               ) : (
                 <div className="keyframe-strip" data-testid="keyframe-timeline">
                   {keyframeAssets.map((asset) => {
@@ -587,13 +588,13 @@ export default function MediaSourceDetailPage() {
           {(ocrChunks.length > 0 || visualChunks.length > 0 || source.source_type === "image") && (
             <section className="panel stack">
               <div className="row between wrap">
-                <h2>Visual text and descriptions</h2>
-                <span className="pill gray">{ocrChunks.length + visualChunks.length} chunks</span>
+                <h2>视觉文字与描述</h2>
+                <span className="pill gray">{ocrChunks.length + visualChunks.length} 个片段</span>
               </div>
               {ocrChunks.length + visualChunks.length === 0 ? (
                 <EmptyState
                   description="Run OCR or visual description with a configured real provider. Missing configuration is reported explicitly."
-                  title="No visual chunks"
+                  title="暂无视觉片段"
                 />
               ) : (
                 <div className="list">
@@ -611,7 +612,7 @@ export default function MediaSourceDetailPage() {
                       >
                         <div className="row between">
                           <strong>
-                            {chunk.modality} #{chunk.chunk_index + 1}
+                            {modalityLabel(chunk.modality)} #{chunk.chunk_index + 1}
                           </strong>
                           <StatusBadge status={chunk.status} />
                         </div>
@@ -627,13 +628,13 @@ export default function MediaSourceDetailPage() {
           {source.source_type === "image" && immutablePinState.mode === "current" && (
             <section className="panel stack">
               <div className="row between wrap">
-                <h2>Error archive</h2>
+                <h2>报错归档</h2>
                 <Link className="button secondary small" href="/errors">
-                  View all
+                  查看全部
                 </Link>
               </div>
               {errorArchives.length === 0 ? (
-                <EmptyState description="Run screenshot error analysis after OCR to archive explicit, real error evidence." title="No archived errors" />
+                <EmptyState description="在 OCR 之后运行截图报错分析，归档明确、真实的错误证据。" title="暂无归档错误" />
               ) : (
                 <div className="list">
                   {errorArchives.map((archive) => (
@@ -655,25 +656,25 @@ export default function MediaSourceDetailPage() {
 
           <section className="panel stack">
             <div className="row between wrap">
-              <h2>Learning actions</h2>
-              {selectedChunk ? <span className="pill gray">Selected chunk #{selectedChunk.id}</span> : <span className="pill gray">No chunk selected</span>}
+              <h2>学习材料</h2>
+              {selectedChunk ? <span className="pill gray">已选片段 #{selectedChunk.id}</span> : <span className="pill gray">尚未选择片段</span>}
             </div>
             <div className="row wrap">
               <button className="button" disabled={!selectedChunk || learningRunning} onClick={() => createLearningArtifacts(["knowledge_point"])} type="button">
-                {learningRunning ? <ButtonLoading label="Creating" /> : <BookOpenCheck size={16} />}
-                Knowledge point
+                {learningRunning ? <ButtonLoading label="生成中" /> : <BookOpenCheck size={16} />}
+                知识点
               </button>
               <button className="button secondary" disabled={!selectedChunk || learningRunning} onClick={() => createLearningArtifacts(["card"])} type="button">
                 <StickyNote size={16} />
-                Card
+                卡片
               </button>
               <button className="button secondary" disabled={!selectedChunk || learningRunning} onClick={() => createLearningArtifacts(["quiz"])} type="button">
                 <FileQuestion size={16} />
-                Quiz
+                测验
               </button>
               <button className="button secondary" disabled={!selectedChunk || learningRunning} onClick={() => createLearningArtifacts(["note"])} type="button">
                 <NotebookPen size={16} />
-                Note
+                笔记
               </button>
               <button
                 className="button secondary"
@@ -682,11 +683,11 @@ export default function MediaSourceDetailPage() {
                 type="button"
               >
                 <Layers3 size={16} />
-                Full set
+                完整学习包
               </button>
             </div>
             {selectedChunk && (
-              <TechnicalDetails title="Selected evidence">
+              <TechnicalDetails title="已选证据">
                 <pre className="pre-wrap">{selectedChunk.content_text}</pre>
               </TechnicalDetails>
             )}

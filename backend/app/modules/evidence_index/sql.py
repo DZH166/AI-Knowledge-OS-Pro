@@ -53,6 +53,7 @@ from app.modules.evidence_index.contracts import (
 )
 from app.modules.evidence_index.reconciler import IndexReconciler
 from app.modules.evidence_index.vector_adapter import VectorIndexPort, VectorPointWrite
+from app.services.lexical_retrieval import LexicalQuery
 
 
 def _canonical_json(value: Any) -> str:
@@ -809,9 +810,9 @@ class SqlEvidenceIndex:
         return self._receipt(operation, replayed=False)
 
     def _search_active(self, request: SearchEvidence) -> EvidenceSearchResult:
-        phrase = request.text.casefold().strip()
-        if not phrase:
+        if not request.text.strip():
             return EvidenceSearchResult(hits=())
+        lexical = LexicalQuery(request.text)
         limit = max(1, min(request.limit, 100))
         statement = (
             select(MultimodalChunk, Source, IndexRevision)
@@ -844,10 +845,8 @@ class SqlEvidenceIndex:
             statement = statement.where(Source.id.in_(request.scope.source_ids))
 
         scored: list[tuple[float, MultimodalChunk, Source, IndexRevision]] = []
-        tokens = tuple(token for token in phrase.split() if token)
         for chunk, source, index_revision in self._session.execute(statement):
-            haystack = (chunk.search_text or chunk.content_text).casefold()
-            score = 2.0 if phrase in haystack else float(sum(token in haystack for token in tokens))
+            score = lexical.score(chunk.search_text or chunk.content_text)
             if score > 0:
                 scored.append((score, chunk, source, index_revision))
         scored.sort(key=lambda item: (-item[0], item[1].chunk_index, item[1].id))
@@ -876,9 +875,9 @@ class SqlEvidenceIndex:
         return EvidenceSearchResult(hits=tuple(hits))
 
     def _search_pinned(self, request: SearchEvidence) -> EvidenceSearchResult:
-        phrase = request.text.casefold().strip()
-        if not phrase or not request.scope.revision_ids:
+        if not request.text.strip() or not request.scope.revision_ids:
             return EvidenceSearchResult(hits=())
+        lexical = LexicalQuery(request.text)
         limit = max(1, min(request.limit, 100))
         statement = (
             select(MultimodalChunk, Source, IndexRevision)
@@ -908,10 +907,8 @@ class SqlEvidenceIndex:
             )
         )
         scored: list[tuple[float, MultimodalChunk, Source, IndexRevision]] = []
-        tokens = tuple(token for token in phrase.split() if token)
         for chunk, source, index_revision in self._session.execute(statement):
-            haystack = (chunk.search_text or chunk.content_text).casefold()
-            score = 2.0 if phrase in haystack else float(sum(token in haystack for token in tokens))
+            score = lexical.score(chunk.search_text or chunk.content_text)
             if score > 0:
                 scored.append((score, chunk, source, index_revision))
         scored.sort(key=lambda item: (-item[0], item[1].chunk_index, item[1].id))

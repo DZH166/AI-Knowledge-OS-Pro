@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
@@ -17,6 +18,29 @@ from app.schemas.chat_schema import (
     ChatSessionUpdate,
 )
 from app.services.rag_service import rag_service
+
+_FOLLOW_UP_PATTERN = re.compile(
+    r"(?:它|他|她|这个|那个|这些|那些|上述|该|其|此|这|那|其"
+    r"|\b(?:it|its|they|them|this|that|these|those)\b)",
+    re.IGNORECASE,
+)
+_FOLLOW_UP_MAX_CHARS = 60
+
+
+def conversational_retrieval_query(question: str, previous_question: str | None) -> str:
+    """Carry prior-turn context into retrieval for short pronoun follow-ups.
+
+    This is deliberately conservative: long standalone questions and questions
+    without a referring expression are not rewritten. The original question is
+    still what gets answered, stored and shown in history.
+    """
+    current = question.strip()
+    previous = (previous_question or "").strip()
+    if not current or not previous or len(current) > _FOLLOW_UP_MAX_CHARS:
+        return current
+    if not _FOLLOW_UP_PATTERN.search(current):
+        return current
+    return f"{previous} {current}"[:4000]
 
 
 class ChatSessionService:
@@ -85,11 +109,24 @@ class ChatSessionService:
         db.add(user_message)
         db.flush()
 
+        previous_user = db.scalar(
+            select(ChatMessage)
+            .where(
+                ChatMessage.session_id == session.id,
+                ChatMessage.role == "user",
+                ChatMessage.id < user_message.id,
+            )
+            .order_by(ChatMessage.id.desc())
+        )
         response = rag_service.ask_question(
             db=db,
             space_id=session.space_id,
             question=payload.question,
             answer_mode=answer_mode,
+            retrieval_query=conversational_retrieval_query(
+                payload.question,
+                previous_user.content if previous_user is not None else None,
+            ),
         )
         assistant_message = self._message_from_response(session.id, response, answer_mode)
         db.add(assistant_message)

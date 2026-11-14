@@ -85,6 +85,9 @@ def follow_run(
     after: Annotated[int | None, Query(ge=0)] = None,
     last_event_id: Annotated[str | None, Header(alias="Last-Event-ID")] = None,
 ) -> StreamingResponse:
+    # StreamingResponse sends successful headers before iterating follow().
+    # Resolve missing runs while the normal HTTP error handler can still reply.
+    agent.inspect(GetRun(run_id))
     cursor = _cursor(last_event_id, after)
 
     async def stream():

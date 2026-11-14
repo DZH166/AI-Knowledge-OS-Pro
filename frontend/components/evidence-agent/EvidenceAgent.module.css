@@ -291,6 +291,10 @@
 .sourceStatus { color: var(--muted); font-size: 11px; font-weight: 650; }
 
 .formSubmitRow { grid-column: 1; align-self: end; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 8px; }
+.readinessReady, .readinessBlocked { grid-column: 1; margin: 0; padding: 8px 10px; border-radius: 6px; font-size: 12px; line-height: 1.55; }
+.readinessReady { background: var(--accent-soft); color: var(--accent-dark); }
+.readinessBlocked { background: var(--gold-soft); color: #6b4805; }
+.readinessReady a, .readinessBlocked a { font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
 .formAssurance { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 0; color: var(--muted); font-size: 11px; }
 .formAssurance span:not(:first-child)::before { margin-right: 10px; color: var(--line-strong); content: "·"; }
 .formSubmitRow .primaryAction { min-width: 140px; }
@@ -535,7 +539,9 @@
   .formSubmitRow { align-items: stretch; flex-direction: column; }
   .formSubmitRow .primaryAction { width: 100%; }
   .actionRow > * { width: 100%; }
-  .libraryStats { grid-template-columns: 1fr; }
+  .libraryStats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .sourceFacts { grid-template-columns: 76px minmax(0, 1fr); gap: 6px 8px; }
+  .sourceFacts dd { text-align: left; }
   .guardrailList { grid-template-columns: 1fr; gap: 16px; }
   .scopeSummary, .indexCardFooter { align-items: stretch; flex-direction: column; }
   .sourceOption { grid-template-columns: auto minmax(0, 1fr); }
@@ -548,4 +554,57 @@
 
 @media (prefers-reduced-motion: reduce) {
   .page *, .page *::before, .page *::after { animation: none !important; transition: none !important; }
+}
+
+/* Storage integrity panel keeps operational guarantees visible without
+   turning the evidence library into a developer dashboard. */
+.storagePanel {
+  display: grid;
+  gap: 16px;
+  padding: 20px 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-strong);
+}
+.storageHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
+.storageTitle { display: flex; align-items: flex-start; gap: 12px; min-width: 0; }
+.storageTitle h2 { margin: 0 0 4px; font-size: 17px; font-weight: 650; }
+.storageTitle p { margin: 0; max-width: 62ch; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.storageBadgeGood, .storageBadgeBad {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: 8px;
+}
+.storageBadgeGood { background: var(--accent-soft); color: var(--accent-dark); }
+.storageBadgeBad { background: var(--rose-soft); color: var(--rose); }
+.storageActions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+.storageToggle { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; white-space: nowrap; }
+.storageToggle input { accent-color: var(--accent); }
+.storageError { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--rose); font-size: 13px; }
+.storageMetrics { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1px; margin: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--line); }
+.storageMetrics div { display: grid; gap: 3px; padding: 10px 12px; background: var(--surface-soft); }
+.storageMetrics dt { color: var(--muted); font-size: 11px; letter-spacing: 0.03em; }
+.storageMetrics dd { margin: 0; font-size: 15px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.storageFindings { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.storageFindings li { display: grid; grid-template-columns: auto minmax(90px, auto) minmax(0, 1fr); align-items: baseline; gap: 10px; padding: 9px 12px; border-radius: 6px; font-size: 13px; }
+.storageFindings li > span { font-size: 11px; font-weight: 750; letter-spacing: 0.04em; }
+.storageFindings li > strong { font-weight: 650; overflow-wrap: anywhere; }
+.storageFindings li > p { margin: 0; color: var(--text-soft); overflow-wrap: anywhere; }
+.findingError { background: var(--rose-soft); color: #82223a; }
+.findingWarning { background: var(--gold-soft); color: #6b4805; }
+.findingMore { grid-template-columns: 1fr; color: var(--muted); background: var(--surface-soft); }
+.storageClear { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--accent-dark); font-size: 13px; }
+.storageDetails { color: var(--muted); font-size: 12px; }
+.storageDetails summary { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 650; color: var(--text-soft); }
+.storageDetails p { margin: 8px 0 0; line-height: 1.6; }
+
+@media (max-width: 860px) {
+  .storageHeader { flex-direction: column; }
+  .storageActions { justify-content: flex-start; }
+  .storageMetrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .storageFindings li { grid-template-columns: auto minmax(0, 1fr); }
+  .storageFindings li > p { grid-column: 1 / -1; }
 }

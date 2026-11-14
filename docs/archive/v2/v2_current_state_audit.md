@@ -3,7 +3,7 @@
 检查时间：2026-06-11
 
 ## 项目位置
-- 当前目录：`<LOCAL_PATH>
+- 当前目录：`<HOME>\Documents\AI Knowledge OS Pro`
 - 当前项目确认为 AI Knowledge OS Pro V1，不重新创建项目。
 
 ## Git 状态
@@ -13,8 +13,8 @@
 
 ## 运行环境
 - Python：`3.13.9`
-- 项目后端虚拟环境：`E:\AIKnowledgeOSProVenv`
-- Node：`E:\NodeJS`，版本 `v24.16.0`
+- 项目后端虚拟环境：`<VENV>`
+- Node：`<NODE_HOME>`，版本 `v24.16.0`
 - npm：`11.16.0`
 
 ## 当前数据库

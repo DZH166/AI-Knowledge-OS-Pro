@@ -9,6 +9,7 @@ import { CodeCitationViewer } from "@/components/CodeCitationViewer";
 import { ButtonLoading, EmptyState, ErrorState, PageHeader, StatusBadge } from "@/components/ui";
 import { listCodeLocations } from "@/modules/code-citation";
 import { parseImmutableEvidencePin } from "@/modules/evidence-agent/immutable-evidence";
+import { sourceTypeLabel } from "@/components/evidence-agent/source-presenter";
 import { api, formatDate, statusLabel } from "@/services/api";
 import type { KnowledgeSpace, SourceItem } from "@/types/api";
 
@@ -192,7 +193,7 @@ export function CodeSourceDetail({ source }: { source: SourceItem }) {
     <section className="panel stack" data-testid="code-source-detail">
       <div className="row between">
         <div>
-          <span className="pill">{source.source_type}</span>
+          <span className="pill">{sourceTypeLabel(source.source_type)}</span>
           <h2>{source.title || source.original_filename || `Source #${source.id}`}</h2>
         </div>
         <StatusBadge label={statusLabel(source.status)} status={source.status} />

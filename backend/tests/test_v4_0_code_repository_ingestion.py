@@ -29,7 +29,7 @@ def test_code_repository_ingestion_skips_sensitive_files_and_creates_code_locato
     (repo / "app").mkdir(parents=True)
     (repo / "node_modules").mkdir()
     (repo / "app" / "main.py").write_text(
-        "from fastapi import FastAPI\n\napp = FastAPI()\n\redacted1@example.invalid('/health')\ndef health():\n    return {'ok': True}\n",
+        "from fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get('/health')\ndef health():\n    return {'ok': True}\n",
         encoding="utf-8",
     )
     (repo / "README.md").write_text("# Sample\n\nThis project uses FastAPI routes.\n", encoding="utf-8")

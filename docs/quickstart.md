@@ -45,7 +45,7 @@ This file is ignored by Git and is not a user database.
 ## Start Backend
 
 ```powershell
-$env:DATABASE_URL="sqlite:///C:/Users/Lenovo/Documents/AI Knowledge OS Pro/backend/data/demo_showcase.db"
+$env:DATABASE_URL="sqlit<PROJECT_ROOT>/backend/data/demo_showcase.db"
 $env:DEMO_MODE="true"
 python -m uvicorn app.main:app --app-dir backend --reload --host 127.0.0.1 --port 8000
 ```

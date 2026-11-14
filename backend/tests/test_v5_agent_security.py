@@ -54,7 +54,7 @@ def test_protected_effect_requires_an_exact_single_proposal_digest() -> None:
     )
     intent = ToolIntent(
         name="export_report",
-        arguments={"destination": "redacted1@example.invalid", "artifact_id": "artifact-1"},
+        arguments={"destination": "review@example.com", "artifact_id": "artifact-1"},
     )
     proposal = registry.proposal_digest(intent)
 

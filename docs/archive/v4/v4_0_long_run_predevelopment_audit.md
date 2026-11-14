@@ -19,19 +19,19 @@ This audit records the real V3.7 baseline before the long-running V3.8 -> V3.9 -
 
 | Check | Command | Result |
 | --- | --- | --- |
-| Backend compile | `E:\python3.12.9\python.exe -m compileall backend/app scripts` | Passed |
-| Backend tests | `E:\python3.12.9\python.exe -m pytest` | Passed: 44 passed, 20 warnings in 107.91s |
-| Encoding check | `E:\python3.12.9\python.exe scripts/check_encoding.py` | Passed: 204 UTF-8 text files |
-| Secret check | `E:\python3.12.9\python.exe scripts/check_secrets.py` | Passed: scanned 202 tracked text files, findings 0 |
-| Repo clean check | `E:\python3.12.9\python.exe scripts/check_repo_clean.py` | Passed: forbidden tracked files 0 |
-| Version check | `E:\python3.12.9\python.exe scripts/check_version.py` | Passed: V3.7 / 3.7.0 |
-| Release dry-run | `E:\python3.12.9\python.exe scripts/release.py --version V3.7 --dry-run` | Passed: included_files 213, no secrets/databases/uploads/cache |
+| Backend compile | `python\python.exe -m compileall backend/app scripts` | Passed |
+| Backend tests | `python\python.exe -m pytest` | Passed: 44 passed, 20 warnings in 107.91s |
+| Encoding check | `python\python.exe scripts/check_encoding.py` | Passed: 204 UTF-8 text files |
+| Secret check | `python\python.exe scripts/check_secrets.py` | Passed: scanned 202 tracked text files, findings 0 |
+| Repo clean check | `python\python.exe scripts/check_repo_clean.py` | Passed: forbidden tracked files 0 |
+| Version check | `python\python.exe scripts/check_version.py` | Passed: V3.7 / 3.7.0 |
+| Release dry-run | `python\python.exe scripts/release.py --version V3.7 --dry-run` | Passed: included_files 213, no secrets/databases/uploads/cache |
 | Frontend typecheck | bundled Node + `node_modules/typescript/bin/tsc --noEmit` | Passed |
 | Frontend build | bundled Node + `node_modules/next/dist/bin/next build` | Passed: 15 app routes built |
-| Alembic heads | `E:\python3.12.9\python.exe -m alembic heads` | `0006_v3_6_unified_media_tasks (head)` |
+| Alembic heads | `python\python.exe -m alembic heads` | `0006_v3_6_unified_media_tasks (head)` |
 | Docker availability | `docker --version` | Docker 29.5.3 available |
 | Docker Compose config | `docker compose config --quiet` | Passed |
-| Demo readiness | `E:\python3.12.9\python.exe scripts/check_demo_ready.py --database-path backend/data/demo_showcase.db` | Passed on isolated demo database |
+| Demo readiness | `python\python.exe scripts/check_demo_ready.py --database-path backend/data/demo_showcase.db` | Passed on isolated demo database |
 
 GitHub CLI is not available on this machine, and the new V4.0 branch has not been pushed yet. Remote GitHub Actions status for this new branch is therefore not claimed in this audit.
 

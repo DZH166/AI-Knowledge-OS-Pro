@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from hashlib import sha256
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -92,6 +93,9 @@ def test_migrate_cli_defaults_to_read_only_preflight_and_apply_is_idempotent(
         ],
         cwd=ROOT,
         text=True,
+        encoding="utf-8",
+        errors="replace",
+        env={**os.environ, "PYTHONIOENCODING": "utf-8"},
         capture_output=True,
         check=False,
     )
@@ -119,6 +123,9 @@ def test_migrate_cli_defaults_to_read_only_preflight_and_apply_is_idempotent(
         ],
         cwd=ROOT,
         text=True,
+        encoding="utf-8",
+        errors="replace",
+        env={**os.environ, "PYTHONIOENCODING": "utf-8"},
         capture_output=True,
         check=False,
     )
@@ -135,6 +142,9 @@ def test_migrate_cli_defaults_to_read_only_preflight_and_apply_is_idempotent(
         ],
         cwd=ROOT,
         text=True,
+        encoding="utf-8",
+        errors="replace",
+        env={**os.environ, "PYTHONIOENCODING": "utf-8"},
         capture_output=True,
         check=False,
     )
@@ -230,6 +240,9 @@ def test_verify_script_is_directly_executable_from_repository_root() -> None:
         [sys.executable, "scripts/verify_v5_migration.py", "--roundtrip"],
         cwd=ROOT,
         text=True,
+        encoding="utf-8",
+        errors="replace",
+        env={**os.environ, "PYTHONIOENCODING": "utf-8"},
         capture_output=True,
         check=False,
     )

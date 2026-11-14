@@ -179,6 +179,26 @@ test.describe("V5 Evidence Agent product loop", () => {
     expect(Number(finalView?.last_event_cursor)).toBeGreaterThan(0);
   });
 
+  test("returns a structured 404 before starting a missing backend run stream", async ({ request }) => {
+    const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
+    expect(apiBase, "strict live E2E must expose the backend origin").toBeTruthy();
+    const requestId = `missing-stream-${crypto.randomUUID()}`;
+    const missingRunId = `missing-${crypto.randomUUID()}`;
+    const response = await request.get(`${apiBase}/api/v1/evidence-runs/${missingRunId}/stream`, {
+      headers: { "X-Request-ID": requestId }
+    });
+
+    expect(response.status()).toBe(404);
+    expect(response.headers()["content-type"]).toContain("application/json");
+    const envelope = await response.json();
+    expect(envelope.success).toBe(false);
+    expect(envelope.data).toBeNull();
+    expect(envelope.error.code).toBe("RUN_NOT_FOUND");
+    expect(response.headers()["x-request-id"]).toBe(requestId);
+    expect(envelope.request_id).toBe(requestId);
+    expect(envelope.error.request_id).toBe(requestId);
+  });
+
   test("replays a production plan and its final supported evidence relation into the workspace", async ({ page }) => {
     const runId = "run-production-projection";
     const runView = {

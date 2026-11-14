@@ -4,7 +4,7 @@
 阶段：A. V3 前审计和备份
 
 ## 结论摘要
-- 当前项目位于 `<LOCAL_PATH>
+- 当前项目位于 `<HOME>\Documents\AI Knowledge OS Pro`，已切换到 V3 分支 `feature/v3-multimodal-knowledge-hub`。
 - 当前仓库尚无任何 commit，所有项目文件仍是未跟踪状态；因此 V3 的真实 from-ref/to-ref 学习包无法基于 tag/commit 生成，必须先建立基线 commit 或 tag 后才能满足 V3 学习包要求。
 - SQLite 运行数据库存在，V2.5 head 为 `0003_v2_5_product_learning`，业务资料为空，学习系统数据存在。
 - V2.5 仍使用 daemon Thread 做后台处理，取消状态存在内存集合 `_cancelled_jobs`，Web 进程重启会丢失取消和运行状态。
@@ -23,7 +23,7 @@
 - 工作区：`.env.example`、`.gitignore`、`README.md`、`alembic.ini`、`backend/`、`docs/`、`frontend/`、`scripts/`、`releases/` 等均未跟踪。
 
 ## 2. 数据库版本和数据量
-- 数据库：`sqlite:///C:/Users/Lenovo/Documents/AI Knowledge OS Pro/backend/data/knowledge_os.db`
+- 数据库：`sqlit<PROJECT_ROOT>/backend/data/knowledge_os.db`
 - Alembic current：`0003_v2_5_product_learning (head)`
 - 表和数据量：
   - `alembic_version`: 1
@@ -55,9 +55,9 @@
 - FFmpeg/FFprobe：未进入 PATH；V3 应提供 `docs/local_setup_windows.md` 安装说明，并在系统能力检测中显示缺失。
 
 ## 5. Python、Node、npm
-- Python：3.13.9，虚拟环境位于 `E:\AIKnowledgeOSProVenv`。
-- Node：`E:\NodeJS\node.exe`，版本 v24.16.0。
-- npm：通过 `E:\NodeJS\corepack.cmd npm --version`，版本 11.16.0。
+- Python：3.13.9，虚拟环境位于 `<VENV>`。
+- Node：`<NODE_HOME>\node.exe`，版本 v24.16.0。
+- npm：通过 `<NODE_HOME>\corepack.cmd npm --version`，版本 11.16.0。
 
 ## 6. 当前验证结果
 - `python -m compileall backend/app`：通过。

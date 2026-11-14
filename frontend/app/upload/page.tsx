@@ -26,11 +26,11 @@ function metadataString(source: SourceItem, key: string, fallback = "not configu
 }
 
 const workflows = {
-  document: ["Upload file", "Parse text", "Split chunks", "Embed", "Index", "Ask with citations"],
-  image: ["Upload image", "Read metadata", "Run OCR or vision task", "Index chunks", "Create learning artifacts"],
-  audio: ["Upload audio", "Read duration", "Run transcription task", "Jump by timestamp", "Create cards or notes"],
-  video: ["Upload video", "Read metadata", "Extract keyframes", "Transcribe audio track", "Jump to evidence"],
-  code: ["Choose local repository", "Apply safety skip rules", "Create file/line chunks", "Embed", "Ask code questions"]
+  document: ["上传文件", "解析正文", "切分片段", "生成向量", "建立索引", "带引用提问"],
+  image: ["上传图片", "读取元数据", "执行 OCR / 视觉任务", "建立片段索引", "生成学习材料"],
+  audio: ["上传音频", "读取时长", "执行转写任务", "按时间戳跳转", "生成卡片或笔记"],
+  video: ["上传视频", "读取元数据", "抽取关键帧", "转写音轨", "跳转到证据"],
+  code: ["选择本地仓库", "应用安全跳过规则", "生成文件/行片段", "生成向量", "针对代码提问"]
 };
 
 function UploadContent() {
@@ -63,7 +63,7 @@ function UploadContent() {
       setAudioSpaceId(defaultSpaceId || spaceData[0]?.id || 0);
       setVideoSpaceId(defaultSpaceId || spaceData[0]?.id || 0);
     } catch (exc) {
-      setError(exc instanceof Error ? exc.message : "Failed to load upload center.");
+      setError(exc instanceof Error ? exc.message : "摄取中心加载失败。");
     }
   }, [defaultSpaceId]);
 
@@ -79,11 +79,11 @@ function UploadContent() {
     try {
       const result = await api.uploadImage(imageSpaceId, imageFile);
       setSources((old) => [result.source, ...old]);
-      setMessage(result.job_id ? `${result.message} Task #${result.job_id} was created.` : result.message);
+      setMessage(result.job_id ? `${result.message} 已创建任务 #${result.job_id}。` : result.message);
       setImageFile(null);
       await api.updateOnboarding({ steps: { upload_document: true } });
     } catch (exc) {
-      setError(exc instanceof Error ? exc.message : "Image upload failed.");
+      setError(exc instanceof Error ? exc.message : "图片上传失败。");
     } finally {
       setImageUploading(false);
     }
@@ -101,7 +101,7 @@ function UploadContent() {
       setAudioFile(null);
       await api.updateOnboarding({ steps: { upload_document: true } });
     } catch (exc) {
-      setError(exc instanceof Error ? exc.message : "Audio upload failed.");
+      setError(exc instanceof Error ? exc.message : "音频上传失败。");
     } finally {
       setAudioUploading(false);
     }
@@ -119,7 +119,7 @@ function UploadContent() {
       setVideoFile(null);
       await api.updateOnboarding({ steps: { upload_document: true } });
     } catch (exc) {
-      setError(exc instanceof Error ? exc.message : "Video upload failed.");
+      setError(exc instanceof Error ? exc.message : "视频上传失败。");
     } finally {
       setVideoUploading(false);
     }
@@ -136,9 +136,9 @@ function UploadContent() {
       <PageHeader
         description={returnToComparison
           ? "将三份技术资料上传到同一个知识空间。上传成功不代表已经可以引用，请等待处理任务完成。"
-          : "Upload documents, images, audio and video into the same knowledge workspace. Media files keep real metadata first, then provider-backed tasks can OCR, transcribe, analyze, index and turn evidence into learning material."}
-        eyebrow={returnToComparison ? "研究准备" : "Knowledge intake"}
-        title={returnToComparison ? "准备对比资料" : "Upload Center"}
+          : "把文档、图片、音频和视频接入同一个知识空间。系统先保存真实元数据和来源身份，再通过可观测任务完成解析、OCR、转写与索引；未配置真实模型时会明确提示，不生成假结果。"}
+        eyebrow={returnToComparison ? "研究准备" : "证据摄取"}
+        title={returnToComparison ? "准备对比资料" : "摄取与上传"}
       />
       {returnToComparison && (
         <section aria-label="返回对比研究" className="panel stack">
@@ -155,20 +155,20 @@ function UploadContent() {
         <EmptyState
           action={
             <Link className="button" href="/knowledge">
-              {returnToComparison ? "创建知识空间" : "Create a space"}
+              创建知识空间
             </Link>
           }
-          description={returnToComparison ? "每份资料都需要归属一个知识空间，创建后再上传。" : "Every source belongs to a knowledge space. Create one before uploading files."}
-          title={returnToComparison ? "先创建知识空间" : "Create a knowledge space first"}
+          description={returnToComparison ? "每份资料都需要归属一个知识空间，创建后再上传。" : "每个来源都必须归属一个知识空间。先创建空间，再上传文件。"}
+          title="先创建知识空间"
         />
       ) : (
         <>
-          {!returnToComparison && <section className="grid cols-4">
-            <WorkflowCard icon={<FileText size={18} />} steps={workflows.document} title="Documents" />
-            <WorkflowCard icon={<ImagePlus size={18} />} steps={workflows.image} title="Images" />
-            <WorkflowCard icon={<AudioLines size={18} />} steps={workflows.audio} title="Audio" />
-            <WorkflowCard icon={<Video size={18} />} steps={workflows.video} title="Video" />
-            <WorkflowCard icon={<Code2 size={18} />} steps={workflows.code} title="Code repositories" />
+          {!returnToComparison && <section aria-label="摄取工作流" className="grid cols-5">
+            <WorkflowCard icon={<FileText size={18} />} steps={workflows.document} title="文档" />
+            <WorkflowCard icon={<ImagePlus size={18} />} steps={workflows.image} title="图片" />
+            <WorkflowCard icon={<AudioLines size={18} />} steps={workflows.audio} title="音频" />
+            <WorkflowCard icon={<Video size={18} />} steps={workflows.video} title="视频" />
+            <WorkflowCard icon={<Code2 size={18} />} steps={workflows.code} title="代码仓库" />
           </section>}
 
           <section className={returnToComparison ? "grid cols-2" : "grid cols-4"}>
@@ -189,14 +189,14 @@ function UploadContent() {
               busy={imageUploading}
               file={imageFile}
               icon={<ImagePlus size={26} />}
-              label="Choose image"
-              note="OCR, visual description and screenshot analysis run as explicit media tasks. Missing providers return clear NOT_CONFIGURED errors."
+              label="选择图片"
+              note="OCR、视觉描述和截图分析都以显式媒体任务运行；缺少真实 Provider 时返回明确的 NOT_CONFIGURED 错误。"
               onFile={setImageFile}
               onSubmit={uploadImage}
               spaceId={imageSpaceId}
               spaces={spaces}
-              statusLabelText="Metadata first"
-              title="Image Source"
+              statusLabelText="元数据优先"
+              title="图片资料"
               updateSpace={setImageSpaceId}
             />
 
@@ -205,14 +205,14 @@ function UploadContent() {
               busy={audioUploading}
               file={audioFile}
               icon={<AudioLines size={26} />}
-              label="Choose audio"
-              note="The system reads real duration first. Transcription runs in Task Center and can later jump to exact timestamps."
+              label="选择音频"
+              note="系统先读取真实时长；转写在任务中心执行，完成后可按精确时间戳跳转。"
               onFile={setAudioFile}
               onSubmit={uploadAudio}
               spaceId={audioSpaceId}
               spaces={spaces}
-              statusLabelText="Duration"
-              title="Audio Source"
+              statusLabelText="时长"
+              title="音频资料"
               updateSpace={setAudioSpaceId}
             />
 
@@ -221,14 +221,14 @@ function UploadContent() {
               busy={videoUploading}
               file={videoFile}
               icon={<Video size={26} />}
-              label="Choose video"
-              note="The system reads real duration, size and audio-track metadata. Keyframes and transcription are handled by media tasks."
+              label="选择视频"
+              note="系统读取真实时长、尺寸和音轨元数据；关键帧与转写由媒体任务处理。"
               onFile={setVideoFile}
               onSubmit={uploadVideo}
               spaceId={videoSpaceId}
               spaces={spaces}
-              statusLabelText="Metadata"
-              title="Video Source"
+              statusLabelText="元数据"
+              title="视频资料"
               updateSpace={setVideoSpaceId}
             />
             </>}
@@ -238,9 +238,9 @@ function UploadContent() {
 
       {!returnToComparison && <section className="grid cols-4">
         <RecentDocuments documents={documents} />
-        <RecentSources sources={imageSources} title="Recent Images" />
-        <RecentSources sources={audioSources} title="Recent Audio" />
-        <RecentSources sources={videoSources} title="Recent Video" />
+        <RecentSources sources={imageSources} title="最近图片" />
+        <RecentSources sources={audioSources} title="最近音频" />
+        <RecentSources sources={videoSources} title="最近视频" />
       </section>}
     </div>
   );
@@ -299,7 +299,7 @@ function MediaUploadCard({
       </div>
       <p className="muted">{note}</p>
       <div className="field">
-        <label htmlFor={`${title}-space`}>Knowledge space</label>
+        <label htmlFor={`${title}-space`}>知识空间</label>
         <select className="select" id={`${title}-space`} onChange={(event) => updateSpace(Number(event.target.value))} value={spaceId}>
           {spaces.map((space) => (
             <option key={space.id} value={space.id}>
@@ -311,16 +311,16 @@ function MediaUploadCard({
       <label className="dropzone">
         {icon}
         <strong>{file ? file.name : label}</strong>
-        <span className="muted">{file ? formatFileSize(file.size) : "Select a file to create a traceable media source."}</span>
+        <span className="muted">{file ? formatFileSize(file.size) : "选择一个文件以建立可追溯的媒体来源。"}</span>
         <input accept={accept} onChange={(event) => onFile(event.target.files?.[0] || null)} style={{ display: "none" }} type="file" />
       </label>
       <button className="button" disabled={!spaceId || !file || busy} onClick={onSubmit} type="button">
         {busy ? (
-          <ButtonLoading label="Uploading" />
+          <ButtonLoading label="上传中" />
         ) : (
           <>
             <UploadCloud size={17} />
-            Upload
+            上传并创建任务
           </>
         )}
       </button>
@@ -331,19 +331,19 @@ function MediaUploadCard({
 function RecentDocuments({ documents, comparisonMode = false }: { documents: DocumentItem[]; comparisonMode?: boolean }) {
   return (
     <div className="panel stack">
-      <h2>{comparisonMode ? "本空间的文档" : "Recent Documents"}</h2>
+      <h2>{comparisonMode ? "本空间的文档" : "最近文档"}</h2>
       <div className="list">
         {documents.slice(0, 5).map((document) => (
           <Link className="list-item" href={`/documents/${document.id}`} key={document.id}>
             <strong>{document.original_filename}</strong>
             <span className="muted">
-              {comparisonMode ? `${document.chunk_count} 个片段 · 处理进度 ${document.processing_progress}%` : `${document.chunk_count} chunks / ${document.processing_progress}%`}
+              {comparisonMode ? `${document.chunk_count} 个片段 · 处理进度 ${document.processing_progress}%` : `${document.chunk_count} 个片段 · 处理进度 ${document.processing_progress}%`}
             </span>
           </Link>
         ))}
         {documents.length === 0 && <EmptyState
-          description={comparisonMode ? "上传三份 txt、md 或 pdf 文档；处理完成后再回工作台选择。" : "Upload txt, md or pdf files to start document RAG."}
-          title={comparisonMode ? "这里还没有文档" : "No documents"}
+          description={comparisonMode ? "上传三份 txt、md 或 pdf 文档；处理完成后再回工作台选择。" : "上传 txt、md 或 pdf 文件，建立可检索的文档证据。"}
+          title="这里还没有文档"
         />}
       </div>
     </div>
@@ -365,7 +365,7 @@ function RecentSources({ sources, title }: { sources: SourceItem[]; title: strin
             <span className="pill gray">{statusText(source)}</span>
           </Link>
         ))}
-        {sources.length === 0 && <EmptyState description="Uploaded media appears here with real metadata and task status." title="No sources" />}
+        {sources.length === 0 && <EmptyState description="上传后的媒体会连同真实元数据和任务状态显示在这里。" title="暂无来源" />}
       </div>
     </div>
   );
@@ -381,9 +381,9 @@ function sourceSummary(source: SourceItem) {
 }
 
 function statusText(source: SourceItem) {
-  if (source.source_type === "image") return `OCR: ${statusLabel(metadataString(source, "ocr_status"))}`;
+  if (source.source_type === "image") return `OCR：${statusLabel(metadataString(source, "ocr_status"))}`;
   if (source.source_type === "audio" || source.source_type === "video") {
-    return `Transcription: ${statusLabel(metadataString(source, "transcription_status"))}`;
+    return `转写：${statusLabel(metadataString(source, "transcription_status"))}`;
   }
   return statusLabel(source.status);
 }

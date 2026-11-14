@@ -349,6 +349,7 @@ export type ChatResponse = {
   retrieval_score: number | null;
   retrieval_status: string;
   runtime_mode: string;
+  retrieval_query?: string | null;
   qa_log_id: number;
 };
 
@@ -637,6 +638,24 @@ export type SystemStatus = {
   transcription: ComponentStatus;
   index: ComponentStatus;
   warnings: string[];
+};
+
+export type StorageHealthFinding = {
+  code: string;
+  severity: "error" | "warning" | "info";
+  entity: string;
+  message: string;
+};
+
+export type StorageHealth = {
+  ok: boolean;
+  checked_at: string;
+  database: Record<string, unknown>;
+  files: Record<string, unknown>;
+  evidence: Record<string, unknown>;
+  findings: StorageHealthFinding[];
+  metrics: Record<string, number>;
+  notes: string[];
 };
 
 export type SystemTestResponse = {

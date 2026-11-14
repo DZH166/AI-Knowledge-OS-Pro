@@ -264,6 +264,7 @@ npm run dev
 | 人工决定与取消 | `POST /api/v1/evidence-runs/{run_id}/commands` |
 | 可恢复事件流 | `GET /api/v1/evidence-runs/{run_id}/stream` |
 | 运行轨迹与投影重放 | `GET /api/v1/evidence-runs/{run_id}/trace` |
+| 存储完整性与版本台账自检 | `GET /api/system/storage-health` |
 | 启动/列出固定评测 | `POST/GET /api/v1/agent-evaluations` |
 | 评测详情与对比 | `GET /api/v1/agent-evaluations/{id}`、`/compare` |
 | Artifact catalog/detail | `GET /api/v1/artifacts`、`/{artifact_id}` |
@@ -273,6 +274,20 @@ npm run dev
 | Run 只读分享 | `POST /api/v1/agent-runs/{run_id}/share`、`DELETE /api/v1/agent-runs/shared/{token}` |
 
 SSE 只公开状态、计划、工具结果、证据关系与产物事件，不公开 chain-of-thought。
+
+## 存储完整性与备份
+
+`证据资料库` 页面直接显示存储自检结果：数据库完整性、外键、引用文件是否存在、大小/内容指纹、active revision 与 index 台账、孤儿上传文件。命令行入口同样可用：
+
+```powershell
+python scripts/check_storage_integrity.py --deep-hash
+python scripts/backup_storage.py --output backups/evidence-20261107.zip --label before-upgrade
+python scripts/restore_storage.py --archive backups/evidence-20261107.zip --force
+```
+
+备份使用 SQLite 在线备份 API，归档内包含逐文件 SHA-256 清单并在创建后立即复核；恢复前会完整验证，且把旧数据库和旧上传目录保留为 `.before-restore-<时间戳>` 副本。能力边界见 [存储完整性与备份](docs/storage_integrity.md)。
+
+最新全量审查（2026-11-10）与分优先级升级建议见 [审查报告](docs/v5_14_full_audit_20261110/audit_report.md) 和 [升级路线图](docs/v5_14_full_audit_20261110/upgrade_roadmap.md)。
 
 ## 验证
 
@@ -284,6 +299,7 @@ python -m alembic heads
 python -m alembic upgrade head
 python scripts/evaluate_agentic_rag.py --mode demo --output docs/v5_agentic_rag/evaluation_report.json
 python scripts/check_v5_acceptance.py
+python scripts/check_storage_integrity.py
 
 cd frontend
 npm ci
@@ -306,6 +322,11 @@ backend/app/modules/agent_control/    trace、replay、evaluation、comparison�
 backend/app/modules/agent_policy/     version、adaptive decision、simulation、activation、rollback
 backend/app/modules/agent_policy_optimizer/ offline experiment、observation-guided rounds、report、draft conversion
 backend/app/modules/agent_run_share/  expiring read-only Run Trace sharing
+backend/app/services/storage_integrity.py  read-only database/upload/revision audit
+backend/app/services/storage_backup.py     consistent SQLite + uploads backup/restore
+scripts/check_storage_integrity.py         CLI storage audit
+scripts/backup_storage.py                  create or verify a backup archive
+scripts/restore_storage.py                 verified restore with previous-state copies
 backend/app/api/                      command/query/SSE adapters
 backend/app/tasks/                    RQ one-slice workers
 frontend/modules/evidence-agent/      runtime contracts、HTTP/SSE/Recording adapters

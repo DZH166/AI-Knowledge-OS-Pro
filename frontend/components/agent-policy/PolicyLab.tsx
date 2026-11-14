@@ -122,7 +122,7 @@ export function PolicyLabContent({
     <div className={styles.page} data-testid="policy-lab-page">
       <header className={styles.hero}>
         <div>
-          <p className={styles.eyebrow}>Policy Lab · 策略实验室</p>
+          <p className={styles.eyebrow}>策略实验室</p>
           <h1>先评测，再让新策略影响任务</h1>
           <p className={styles.lead}>每个 Run 固定一份不可变策略。候选版本必须完成固定评测，才能启用；历史版本可以安全回滚。</p>
         </div>
@@ -153,7 +153,7 @@ export function PolicyLabContent({
 
       <form className={styles.form} onSubmit={onCreate}>
         <div className={styles.panelHeader}>
-          <div><p className={styles.sectionIndex}>01 / Draft</p><h2>创建不可变草稿</h2><p>这里只能修改固定数值参数，不能写 Prompt、代码、命令或路径。</p></div>
+          <div><p className={styles.sectionIndex}>01 / 草案</p><h2>创建不可变草稿</h2><p>这里只能修改固定数值参数，不能写 Prompt、代码、命令或路径。</p></div>
         </div>
         <div className={styles.field}>
           <label htmlFor="policy-label">候选策略名称</label>
@@ -178,12 +178,12 @@ export function PolicyLabContent({
         </div>
         <div className={styles.actions}>
           <button className={styles.button} disabled={submitting || !draftLabel.trim()} type="submit">{submitting ? "正在创建…" : "创建策略草稿"}</button>
-          <span className={styles.mono}>Base Policy v{active.version}</span>
+          <span className={styles.mono}>基准策略 v{active.version}</span>
         </div>
       </form>
 
       <section>
-        <div className={styles.panelHeader}><div><p className={styles.sectionIndex}>02 / History</p><h2>策略版本历史</h2><p>打开一个版本，查看差异、模拟、评测、启用或回滚。</p></div></div>
+        <div className={styles.panelHeader}><div><p className={styles.sectionIndex}>02 / 历史</p><h2>策略版本历史</h2><p>打开一个版本，查看差异、模拟、评测、启用或回滚。</p></div></div>
         <div className={styles.catalogGrid}>
           {items.map((item) => (
             <article className={styles.card} key={item.id}>

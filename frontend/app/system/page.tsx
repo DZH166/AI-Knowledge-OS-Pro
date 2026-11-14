@@ -250,7 +250,7 @@ export default function SystemPage() {
             <StatusCard title="Redis 任务队列" status={status.redis} />
             <StatusCard title="Worker 心跳" status={status.worker} />
             <StatusCard title="向量数据库" status={status.qdrant} action={() => runTest(api.testQdrant)} busy={testing} />
-            <StatusCard title="Collection" status={status.collection} />
+            <StatusCard title="向量集合" status={status.collection} />
             <StatusCard title="AI 回答服务" status={status.llm} action={() => runTest(api.testLlm)} busy={testing} />
             <StatusCard title="知识检索模型" status={status.embedding} action={() => runTest(api.testEmbedding)} busy={testing} />
             <StatusCard title="图片 OCR" status={status.ocr} />

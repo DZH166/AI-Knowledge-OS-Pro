@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { RECORDING_SOURCES, RECORDING_SPACES, comparisonReadySources, sourceAvailabilityLabel, sourceIndexSummary, sourceTypeLabel } from "./source-presenter";
+import { RECORDING_SOURCES, RECORDING_SPACES, activeRevisionCount, comparisonReadySources, modalityLabel, sourceAvailabilityLabel, sourceIndexSummary, sourceTypeLabel } from "./source-presenter";
 
 describe("source presenter", () => {
   it("uses the backend code_repository name and keeps compatibility with legacy code", () => {
@@ -29,6 +29,16 @@ describe("source presenter", () => {
     ])).toEqual([source]);
   });
 
+  it("counts active revisions even when a ready source is not literally named active", () => {
+    const source = RECORDING_SOURCES[0];
+    const readySource = { ...source, status: "ready" };
+    expect(activeRevisionCount([
+      readySource,
+      { ...source, id: 20, active_revision_id: null },
+      { ...source, id: 21, active_revision_id: 404, revisions: [] }
+    ])).toBe(1);
+  });
+
   it("does not mislabel retired or failed documents as still processing", () => {
     const source = RECORDING_SOURCES[0];
     expect(sourceAvailabilityLabel({ ...source, active_revision_id: null, status: "retired" })).toBe("已退役");
@@ -36,5 +46,10 @@ describe("source presenter", () => {
     expect(sourceAvailabilityLabel({ ...source, active_revision_id: null, status: "uploaded", revisions: [] }))
       .toBe("尚不可用");
     expect(sourceAvailabilityLabel(source)).toBe("可用");
+  });
+  it("presents internal chunk modalities in product language", () => {
+    expect(modalityLabel("audio_transcript")).toBe("音频转写");
+    expect(modalityLabel("video_frame_description")).toBe("关键帧描述");
+    expect(modalityLabel("custom_modality")).toBe("custom_modality");
   });
 });

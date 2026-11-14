@@ -114,7 +114,7 @@ export function EvaluationIndex() {
     <div className={styles.page} data-testid="evaluation-index-page">
       <header className={styles.hero}>
         <div>
-          <p className={styles.eyebrow}>Evaluation Studio · 智能体评测中心</p>
+          <p className={styles.eyebrow}>智能体评测中心</p>
           <h1>每次升级，先证明没有退步</h1>
           <p className={styles.lead}>运行固定 60 场景评测，保留历史快照，再比较策略、检索、引用和恢复能力的变化。</p>
         </div>
@@ -199,7 +199,7 @@ export function EvaluationCatalogView({
       <section className={styles.panel} data-testid="evaluation-comparison">
         <div className={styles.panelHeader}>
           <div>
-            <p className={styles.sectionIndex}>01 / Compare</p>
+            <p className={styles.sectionIndex}>01 / 对比</p>
             <h2>比较两次评测</h2>
             <p>左边是基线，右边是修改后。数据集不同会明确显示“不可比较”。</p>
           </div>
@@ -228,7 +228,7 @@ export function EvaluationCatalogView({
 
       <section>
         <div className={styles.panelHeader}>
-          <div><p className={styles.sectionIndex}>02 / History</p><h2>评测历史</h2><p>{items.length} 个符合当前条件的持久化快照。</p></div>
+          <div><p className={styles.sectionIndex}>02 / 历史</p><h2>评测历史</h2><p>{items.length} 个符合当前条件的持久化快照。</p></div>
           <div className={styles.filterField}>
             <label htmlFor="evaluation-status-filter">按状态筛选</label>
             <select

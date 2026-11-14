@@ -1,0 +1,66 @@
+{
+  "mode": "demo",
+  "database": "<PROJECT_ROOT>\\.controlled_browser_logs\\fresh_showcase_20261110.db",
+  "result": "passed",
+  "summary": {
+    "qa_logs": 2,
+    "grounded_answers": 1,
+    "refusal_answers": 1,
+    "retrieval_hit_rate": 0.5,
+    "citations": 1,
+    "valid_citations": 1,
+    "used_citations": 1,
+    "related_chunks": 1,
+    "timestamp_citations": 1,
+    "multimodal_chunks": 9,
+    "citation_locators": 9,
+    "valid_locators": 9,
+    "code_locators": 2
+  },
+  "coverage": {
+    "citation_source_type_counts": {
+      "video": 1
+    },
+    "multimodal_source_type_counts": {
+      "audio": 3,
+      "code_repository": 2,
+      "image": 1,
+      "video": 3
+    },
+    "locator_shape_counts": {
+      "code_file_line": 2,
+      "image_region": 1,
+      "media_timestamp": 6
+    },
+    "qa_traces": [
+      {
+        "qa_log_id": 1,
+        "question": "How does the system keep multimodal RAG answers traceable?",
+        "retrieval_status": "grounded",
+        "runtime_mode": "demo",
+        "citation_count": 1,
+        "used_citation_count": 1,
+        "related_chunk_count": 1,
+        "source_type_counts": {
+          "video": 1
+        },
+        "has_timestamp_citation": true,
+        "has_code_citation": false
+      },
+      {
+        "qa_log_id": 2,
+        "question": "What private API key is configured in the project?",
+        "retrieval_status": "insufficient_context",
+        "runtime_mode": "demo",
+        "citation_count": 0,
+        "used_citation_count": 0,
+        "related_chunk_count": 0,
+        "source_type_counts": {},
+        "has_timestamp_citation": false,
+        "has_code_citation": false
+      }
+    ]
+  },
+  "failures": [],
+  "boundary": "Demo evaluation checks deterministic seeded retrieval status, refusal behavior, citation validity and multimodal locator plumbing; it does not measure real LLM quality."
+}

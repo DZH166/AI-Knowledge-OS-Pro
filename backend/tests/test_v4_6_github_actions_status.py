@@ -65,7 +65,7 @@ def run_cli(payload_path: Path, *extra: str) -> subprocess.CompletedProcess[str]
 
 def test_parse_github_repo_accepts_https_and_ssh_remotes() -> None:
     assert parse_github_repo("https://github.com/DZH166/AI-Knowledge-OS-Pro.git") == REPO
-    assert parse_github_repo("redacted1@example.invalid:DZH166/AI-Knowledge-OS-Pro.git") == REPO
+    assert parse_github_repo("git@github.com:DZH166/AI-Knowledge-OS-Pro.git") == REPO
     assert parse_github_repo("https://example.com/DZH166/AI-Knowledge-OS-Pro.git") is None
 
 

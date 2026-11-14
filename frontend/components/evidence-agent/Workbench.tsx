@@ -427,6 +427,7 @@ function WorkbenchContent() {
 
       <ResearchJourneyPanel
         activeSourceCount={activeSources.length}
+        disabled={!draftReady}
         enabled={journeyEnabled}
         onToggle={toggleJourney}
         readiness={readiness}
@@ -466,7 +467,8 @@ function WorkbenchContent() {
       {draftNotice && <p aria-live="polite" role="status">{draftNotice}</p>}
 
       <div className={styles.workbenchGrid}>
-        <form className={styles.formCard} onSubmit={(event) => void submit(event)}>
+        <form onSubmit={(event) => void submit(event)}>
+          <fieldset aria-label="研究草稿编辑区" className={styles.formCard} disabled={!draftReady} style={{ margin: 0, minWidth: 0 }}>
           <div className={`${styles.sectionHeading} ${styles.formHeading}`}>
             <div>
               <p className={styles.stepLabel}>问题与资料</p>
@@ -488,12 +490,18 @@ function WorkbenchContent() {
               maxLength={4_000}
               name="goal"
               onChange={(event) => { setGoal(event.target.value); markDraftEdited(); }}
+              onKeyDown={(event) => {
+                if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+                  event.preventDefault();
+                  event.currentTarget.form?.requestSubmit();
+                }
+              }}
               placeholder="例如：比较 3 份方案，指出冲突证据，并产出决策简报…"
               ref={goalRef}
               required
               value={goal}
             />
-            <small id="goal-help">最多 4000 字；{journeyEnabled ? "还会加上比较维度和证据要求，合计不能超出上限。" : "描述需要验证的事实与最终决策。"}系统不会展示或保存模型的隐藏思维过程。</small>
+            <small id="goal-help">最多 4000 字；{journeyEnabled ? "还会加上比较维度和证据要求，合计不能超出上限。" : "描述需要验证的事实与最终决策。"}系统不会展示或保存模型的隐藏思维过程。按 <kbd>Ctrl</kbd> + <kbd>Enter</kbd> 直接提交。</small>
           </div>
 
           {journeyEnabled && (
@@ -657,6 +665,20 @@ function WorkbenchContent() {
           {!scopeLoading && spaceId > 0 && activeSources.length === 0 && (
             <p className={styles.errorMessage}><FileCheck2 aria-hidden="true" size={15} /> {journeyEnabled ? "当前空间没有处理完成的文档。" : "当前空间没有可用的来源版本。"}</p>
           )}
+          {!recording && readiness.state !== "checking" && (
+            <p
+              className={readiness.state === "blocked" ? styles.readinessBlocked : styles.readinessReady}
+              role="status"
+            >
+              {readiness.state === "blocked" ? (
+                <>真实研究暂不可用：{readiness.missing.join("、")}未就绪。<Link href="/system">查看配置</Link></>
+              ) : readiness.state === "ready" ? (
+                <>真实研究服务已就绪：语言模型、向量生成、向量库与任务队列均可使用。</>
+              ) : (
+                <>未能确认服务状态；提交前请先在<Link href="/system">模型与服务</Link>检查配置。</>
+              )}
+            </p>
+          )}
           <div className={styles.formSubmitRow}>
             <p className={styles.formAssurance}>
               <span>只读证据</span>
@@ -672,6 +694,7 @@ function WorkbenchContent() {
               {!submitting && <ArrowRight aria-hidden="true" size={17} />}
             </button>
           </div>
+          </fieldset>
         </form>
 
         <aside aria-label="研究护栏" className={styles.guardrailPanel}>

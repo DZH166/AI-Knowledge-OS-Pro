@@ -7,6 +7,7 @@ import { AudioLines, Image as ImageIcon, Search, UploadCloud, Video } from "luci
 import { EmptyState, ErrorState, PageHeader, SearchInput, StatusBadge } from "@/components/ui";
 import { api, formatDate, formatDuration, formatFileSize } from "@/services/api";
 import type { KnowledgeSpace, SourceItem } from "@/types/api";
+import { sourceTypeLabel } from "@/components/evidence-agent/source-presenter";
 
 function readMetadata(source: SourceItem): Record<string, unknown> {
   try {
@@ -156,7 +157,7 @@ export default function MediaLibraryPage() {
                     </div>
                     <span className="muted">{source.original_filename || "未记录文件名"}</span>
                     <div className="status-line">
-                      <span className="pill gray">{source.source_type}</span>
+                      <span className="pill gray">{sourceTypeLabel(source.source_type)}</span>
                       {source.width && source.height ? <span className="pill gray">{source.width} x {source.height}</span> : null}
                       {source.duration_ms ? <span className="pill gray">{formatDuration(source.duration_ms)}</span> : null}
                       <span className="pill gray">{formatFileSize(source.file_size)}</span>

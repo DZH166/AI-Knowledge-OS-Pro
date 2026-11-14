@@ -111,8 +111,8 @@ export function RunIndex() {
         <section className={styles.emptyCard}>
           <div>
             <CircleGauge aria-hidden="true" size={30} />
-            <h2>{recording ? "还没有本地演示 Run" : "生产环境还没有 Run"}</h2>
-            <p>{recording ? "回到研究工作台，开始一项示例研究。" : "从研究工作台提交目标后，运行记录会出现在这里。"}</p>
+            <h2>{recording ? "还没有本地演示 Run" : "还没有运行记录"}</h2>
+            <p>{recording ? "回到研究工作台，开始一项示例研究。演示运行不会调用真实模型。" : "从研究工作台提交目标后，运行记录会出现在这里；你可以暂停、审批、取消，或打开轨迹核对每一步。"}</p>
             <Link className={styles.primaryAction} href={`/workbench${recording ? "?demo=1" : ""}`}>
               开始第一项研究
             </Link>

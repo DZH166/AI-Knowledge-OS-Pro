@@ -33,7 +33,7 @@ export const navigationGroups: NavigationGroup[] = [
   },
   {
     kind: "developer",
-    title: "Developer Mode",
+    title: "开发者模式",
     collapsedByDefault: true,
     items: [
       { href: "/dashboard", label: "旧版总览", icon: "dashboard" },

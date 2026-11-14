@@ -69,7 +69,7 @@ def make_video_upload(tmp_path: Path, name: str = "lesson.mp4", content_type: st
     ]
     last_error = ""
     for command in commands:
-        result = subprocess.run(command, capture_output=True, text=True, timeout=60)
+        result = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60)
         if result.returncode == 0 and video_path.exists():
             return UploadFile(
                 filename=name,

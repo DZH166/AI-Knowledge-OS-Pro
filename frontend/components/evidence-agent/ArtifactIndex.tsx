@@ -134,7 +134,7 @@ export function ArtifactIndex() {
         <section className={styles.emptyCard}>
           <div>
             <FileCheck2 aria-hidden="true" size={30} />
-            <h2>{recording ? "还没有本地演示成果" : sourceId ? `Source ${sourceId} 还没有派生成果` : "生产环境还没有已发布成果"}</h2>
+            <h2>{recording ? "还没有本地演示成果" : sourceId ? `来源 ${sourceId} 还没有派生成果` : "还没有已发布成果"}</h2>
             <p>{recording ? "完成演示研究并批准发布后，示例成果会出现在这里。" : sourceId ? "当研究结论引用该来源后，相关成果会自动出现在这里。" : "研究完成或因证据不足正常结束后，成果会出现在这里。"}</p>
             <Link className={styles.primaryAction} href={`/workbench${recording ? "?demo=1" : ""}`}>开始研究</Link>
           </div>

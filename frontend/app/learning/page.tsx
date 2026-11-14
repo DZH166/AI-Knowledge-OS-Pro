@@ -85,33 +85,33 @@ export default function LearningPage() {
             ) : (
               <>
                 <Sparkles size={17} />
-                Generate package
+                生成学习包
               </>
             )}
           </button>
         }
-        description="Turn each project version and real source chunk into reviewable knowledge points, cards, quizzes, notes and interview-ready explanations."
-        eyebrow="Learning growth"
-        title="Learning Roadmap"
+        description="把每个项目版本和真实来源片段转化为可复习的知识点、卡片、测验、笔记与面试讲解。"
+        eyebrow="学习成长"
+        title="学习路线图"
       />
       {error && <ErrorState message={error} onRetry={load} />}
       {message && <span className="pill">{message}</span>}
       {dashboard && (
         <section className="grid cols-4">
           <article className="card">
-            <h3>Knowledge Points</h3>
+            <h3>知识点</h3>
             <p className="stat-value">{dashboard.total_knowledge_points}</p>
           </article>
           <article className="card">
-            <h3>Mastered</h3>
+            <h3>已掌握</h3>
             <p className="stat-value">{dashboard.mastered_count}</p>
           </article>
           <article className="card">
-            <h3>Review Needed</h3>
+            <h3>待复习</h3>
             <p className="stat-value">{dashboard.review_needed_count}</p>
           </article>
           <article className="card">
-            <h3>Notes</h3>
+            <h3>笔记</h3>
             <p className="stat-value">{dashboard.note_count}</p>
           </article>
         </section>
@@ -120,17 +120,17 @@ export default function LearningPage() {
         <div className="panel">
           <div className="row">
             <GraduationCap size={18} />
-            <h2>Version Timeline</h2>
+            <h2>版本时间线</h2>
           </div>
           <div className="timeline">
             {[...packages, ...logs].length === 0 ? (
-              <EmptyState description="Generate a package draft or append a version log to start the timeline." title="No versions yet" />
+              <EmptyState description="生成学习包草稿或追加版本日志后，时间线会从这里开始。" title="暂无版本" />
             ) : (
               [...packages, ...logs].map((item) => (
                 <button className="list-item timeline-item" key={`${item.slug}-${"status" in item ? item.status : "log"}`} onClick={() => setActive(item)} type="button">
                   <strong>{item.version_name}</strong>
                   <span className="muted">{formatDate(item.created_at)}</span>
-                  {"status" in item && <StatusBadge status={String(item.status)} label={item.status === "confirmed" ? "Archived" : "Draft"} />}
+                  {"status" in item && <StatusBadge status={String(item.status)} label={item.status === "confirmed" ? "已归档" : "草稿"} />}
                 </button>
               ))
             )}
@@ -139,11 +139,11 @@ export default function LearningPage() {
         <div className="panel">
           <div className="row">
             <BookOpenCheck size={18} />
-            <h2>Knowledge Points</h2>
+            <h2>知识点</h2>
           </div>
           <div className="list">
             {points.length === 0 ? (
-              <EmptyState description="Create learning artifacts from a real document or media chunk to add review material." title="No knowledge points" />
+              <EmptyState description="从真实文档或媒体片段生成学习材料后，知识点会出现在这里。" title="暂无知识点" />
             ) : (
               points.slice(0, 8).map((point) => (
                 <Link className="list-item" href={`/learning/knowledge-points/${point.id}`} key={point.id}>
@@ -162,7 +162,7 @@ export default function LearningPage() {
         <div className="panel">
           <div className="row">
             <NotebookPen size={18} />
-            <h2>Recent Notes</h2>
+            <h2>最近笔记</h2>
           </div>
           <div className="list">
             {notes.length ? (
@@ -173,23 +173,23 @@ export default function LearningPage() {
                 </article>
               ))
             ) : (
-              <EmptyState description="Notes can be created from knowledge points, documents, QA and media chunks." title="No notes yet" />
+              <EmptyState description="可以从知识点、文档、问答和媒体片段创建笔记。" title="暂无笔记" />
             )}
           </div>
         </div>
         <div className="panel stack">
-          <h2>Current Learning Package</h2>
+          <h2>当前学习包</h2>
           {active ? (
             <>
               {"status" in active && active.status !== "confirmed" && (
                 <button className="button secondary small" disabled={confirmingSlug === active.slug} onClick={() => confirm(active.slug)} type="button">
-                  {confirmingSlug === active.slug ? <ButtonLoading label="Confirming" /> : "Confirm archive"}
+                  {confirmingSlug === active.slug ? <ButtonLoading label="归档中" /> : "确认归档"}
                 </button>
               )}
               <LearningLogPanel log={active} />
             </>
           ) : (
-            <EmptyState description="Generate a draft to create a learning package from the current project changes." title="No learning package yet" />
+            <EmptyState description="生成草稿后，系统会把当前项目变更整理成学习包。" title="暂无学习包" />
           )}
         </div>
       </section>

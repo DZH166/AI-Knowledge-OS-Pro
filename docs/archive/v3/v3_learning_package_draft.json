@@ -1,0 +1,431 @@
+{
+  "version_name": "V3：稳定任务引擎与多模态知识中枢基础",
+  "slug": "v3-task-multimodal-foundation",
+  "summary": "稳定任务引擎驱动的多模态知识中枢基础",
+  "implemented_features": [
+    "上传中心支持 V3 后台任务轮询和任务中心跳转。",
+    "增加任务事件和任务中心可视化。",
+    "完善发布打包和 sha256 校验流程。",
+    "导航升级为 V3 多模态知识中枢结构。",
+    "建立多模态 Source 与索引 revision 基础模型。",
+    "引入 Redis/RQ Worker 任务引擎。",
+    "更新 .env.example。",
+    "更新 .gitignore。",
+    "更新 README.md。",
+    "更新 alembic.ini。",
+    "更新 backend/.env.example。",
+    "更新 backend/alembic/env.py。",
+    "更新 backend/alembic/script.py.mako。",
+    "更新 backend/alembic/versions/0001_v1_baseline.py。",
+    "更新 backend/alembic/versions/0002_v2_schema.py。",
+    "更新 backend/alembic/versions/0003_v2_5_product_learning.py。",
+    "更新 backend/app/__init__.py。",
+    "更新 backend/app/api/__init__.py。",
+    "更新 backend/app/api/router.py。",
+    "更新 backend/app/api/routes_chat.py。",
+    "更新 backend/app/api/routes_dashboard.py。",
+    "更新 backend/app/api/routes_documents.py。",
+    "更新 backend/app/api/routes_knowledge_spaces.py。",
+    "更新 backend/app/api/routes_learning.py。",
+    "更新 backend/app/api/routes_onboarding.py。",
+    "更新 backend/app/api/routes_system.py。",
+    "更新 backend/app/core/config.py。",
+    "更新 backend/app/core/errors.py。",
+    "更新 backend/app/core/logging.py。",
+    "更新 backend/app/core/responses.py。",
+    "更新 backend/app/db/session.py。",
+    "更新 backend/app/main.py。",
+    "更新 backend/app/models/__init__.py。",
+    "更新 backend/app/models/chat_session.py。",
+    "更新 backend/app/models/chunk.py。",
+    "更新 backend/app/models/document.py。",
+    "更新 backend/app/models/ingestion_job.py。",
+    "更新 backend/app/models/knowledge_space.py。",
+    "更新 backend/app/models/learning_note.py。",
+    "更新 backend/app/models/learning_system.py。",
+    "更新 backend/app/models/onboarding.py。",
+    "更新 backend/app/models/qa_log.py。",
+    "更新 backend/app/schemas/__init__.py。",
+    "更新 backend/app/schemas/chat_schema.py。",
+    "更新 backend/app/schemas/dashboard_schema.py。",
+    "更新 backend/app/schemas/document_schema.py。",
+    "更新 backend/app/schemas/knowledge_schema.py。",
+    "更新 backend/app/schemas/learning_schema.py。",
+    "更新 backend/app/schemas/onboarding_schema.py。",
+    "更新 backend/app/schemas/system_schema.py。",
+    "更新 backend/app/services/__init__.py。",
+    "更新 backend/app/services/chat_session_service.py。",
+    "更新 backend/app/services/chunker.py。",
+    "更新 backend/app/services/document_parser.py。",
+    "更新 backend/app/services/embedding_service.py。",
+    "更新 backend/app/services/ingestion_service.py。",
+    "更新 backend/app/services/learning_package_service.py。",
+    "更新 backend/app/services/llm_service.py。",
+    "更新 backend/app/services/onboarding_service.py。",
+    "更新 backend/app/services/prompt_builder.py。",
+    "更新 backend/app/services/providers.py。",
+    "更新 backend/app/services/rag_service.py。",
+    "更新 backend/app/services/vector_store.py。",
+    "更新 backend/requirements.txt。",
+    "更新 backend/tests/conftest.py。",
+    "更新 backend/tests/test_document_deduplication.py。",
+    "更新 backend/tests/test_document_delete.py。",
+    "更新 backend/tests/test_document_metadata.py。",
+    "更新 backend/tests/test_document_upload.py。",
+    "更新 backend/tests/test_embedding_batches.py。",
+    "更新 backend/tests/test_health.py。",
+    "更新 backend/tests/test_index_compatibility.py。",
+    "更新 backend/tests/test_knowledge_spaces.py。",
+    "更新 backend/tests/test_learning_cards.py。",
+    "更新 backend/tests/test_learning_packages.py。",
+    "更新 backend/tests/test_onboarding.py。",
+    "更新 backend/tests/test_rag_refusal.py。",
+    "更新 backend/tests/test_reindex.py。",
+    "更新 backend/tests/test_v2_5_citation_validation.py。",
+    "更新 backend/tests/test_v3_system_status.py。",
+    "更新 backend/tests/test_v3_task_engine.py。",
+    "更新 docker-compose.yml。",
+    "更新 docs/architecture.md。",
+    "更新 docs/citation_validation.md。",
+    "更新 docs/index_compatibility.md。",
+    "更新 docs/ingestion_job_flow.md。",
+    "更新 docs/learning_system.md。",
+    "更新 docs/local_setup_windows.md。",
+    "更新 docs/onboarding_flow.md。",
+    "更新 docs/rag_pipeline.md。",
+    "更新 docs/roadmap.md。",
+    "更新 docs/ui_information_architecture.md。",
+    "更新 docs/v2_5_acceptance_report.md。",
+    "更新 docs/v2_5_learning_package_draft.json。",
+    "更新 docs/v2_current_state_audit.md。",
+    "更新 docs/v3_acceptance_report.md。",
+    "更新 docs/v3_learning_package_draft.json。",
+    "更新 docs/v3_predevelopment_audit.md。",
+    "更新 docs/version_learning_package.md。",
+    "更新 frontend/.env.local.example。",
+    "更新 frontend/app/chat/page.tsx。",
+    "更新 frontend/app/dashboard/page.tsx。",
+    "更新 frontend/app/documents/[id]/page.tsx。",
+    "更新 frontend/app/documents/page.tsx。",
+    "更新 frontend/app/globals.css。",
+    "更新 frontend/app/knowledge/page.tsx。",
+    "更新 frontend/app/layout.tsx。",
+    "更新 frontend/app/learning/cards/page.tsx。",
+    "更新 frontend/app/learning/knowledge-points/[id]/page.tsx。",
+    "更新 frontend/app/learning/page.tsx。",
+    "更新 frontend/app/page.tsx。",
+    "更新 frontend/app/upload/page.tsx。",
+    "更新 frontend/components/AnswerModeSelector.tsx。",
+    "更新 frontend/components/CitationPanel.tsx。",
+    "更新 frontend/components/KnowledgeChat.tsx。",
+    "更新 frontend/components/KnowledgeSpaceList.tsx。",
+    "更新 frontend/components/LearningLogPanel.tsx。",
+    "更新 frontend/components/ui.tsx。",
+    "更新 frontend/next-env.d.ts。",
+    "更新 frontend/next.config.ts。",
+    "更新 frontend/package-lock.json。",
+    "更新 frontend/package.json。",
+    "更新 frontend/services/api.ts。",
+    "更新 frontend/tsconfig.json。",
+    "更新 frontend/types/api.ts。",
+    "更新 pytest.ini。",
+    "更新 scripts/generate_learning_package.py。",
+    "更新 scripts/smoke_test_real_services.py。",
+    "系统状态页增加 Redis、Worker 和密钥脱敏诊断。",
+    "追加版本学习档案和阶段交付记录。"
+  ],
+  "major_files": [
+    {
+      "path": "backend/alembic/env.py",
+      "responsibility": "数据库 schema 迁移、升级和回滚。"
+    },
+    {
+      "path": "backend/alembic/script.py.mako",
+      "responsibility": "数据库 schema 迁移、升级和回滚。"
+    },
+    {
+      "path": "backend/alembic/versions/0001_v1_baseline.py",
+      "responsibility": "数据库 schema 迁移、升级和回滚。"
+    },
+    {
+      "path": "backend/alembic/versions/0002_v2_schema.py",
+      "responsibility": "数据库 schema 迁移、升级和回滚。"
+    },
+    {
+      "path": "backend/alembic/versions/0003_v2_5_product_learning.py",
+      "responsibility": "数据库 schema 迁移、升级和回滚。"
+    },
+    {
+      "path": "backend/alembic/versions/0004_v3_task_multimodal_foundation.py",
+      "responsibility": "多模态资料统一建模和引用定位基础。"
+    },
+    {
+      "path": "backend/app/__init__.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/api/__init__.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/api/router.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/api/routes_chat.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/api/routes_dashboard.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/api/routes_documents.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/api/routes_ingestion_jobs.py",
+      "responsibility": "后台任务、文档处理流水线和任务状态管理。"
+    },
+    {
+      "path": "backend/app/api/routes_knowledge_spaces.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/api/routes_learning.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/api/routes_onboarding.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/api/routes_system.py",
+      "responsibility": "系统诊断、运行时状态和依赖探活。"
+    },
+    {
+      "path": "backend/app/core/config.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/core/errors.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/core/logging.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/core/responses.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/db/session.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/main.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/models/__init__.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/models/chat_session.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/models/chunk.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/models/document.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/models/ingestion_job.py",
+      "responsibility": "后台任务、文档处理流水线和任务状态管理。"
+    },
+    {
+      "path": "backend/app/models/knowledge_space.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/models/learning_log.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/models/learning_note.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/models/learning_system.py",
+      "responsibility": "系统诊断、运行时状态和依赖探活。"
+    },
+    {
+      "path": "backend/app/models/onboarding.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/models/qa_log.py",
+      "responsibility": "项目工程变更。"
+    },
+    {
+      "path": "backend/app/models/source.py",
+      "responsibility": "多模态资料统一建模和引用定位基础。"
+    },
+    {
+      "path": "backend/app/models/task_event.py",
+      "responsibility": "项目工程变更。"
+    }
+  ],
+  "knowledge_points": [
+    {
+      "name": "持久化任务队列",
+      "beginner_explanation": "耗时任务不要绑在一次 HTTP 请求里，而是放进队列，由独立 Worker 慢慢处理，并把状态写回数据库。",
+      "project_usage": "V3 使用 Redis/RQ 承接文档解析、切片、Embedding 和索引入库任务，上传接口快速返回 job_id。",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "复习 Redis、RQ、Worker、任务状态机、重试和取消语义。",
+      "interview_expression": "我把文档 ingestion 从请求内同步处理升级为 Redis/RQ 后台任务，支持状态持久化、重试、取消和 Worker 恢复。"
+    },
+    {
+      "name": "任务可观察性",
+      "beginner_explanation": "可观察性就是让用户和开发者看得见系统正在做哪一步、卡在哪里、为什么失败。",
+      "project_usage": "V3 增加 JobEvent、任务中心页面、进度、步骤、Worker、耗时、错误码和事件时间线。",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "复习日志、事件表、心跳、任务进度和前端轮询展示。",
+      "interview_expression": "我为后台任务增加事件流和状态看板，让长耗时 AI 处理过程可追踪、可诊断、可恢复。"
+    },
+    {
+      "name": "Alembic 迁移与回滚",
+      "beginner_explanation": "迁移脚本是数据库结构的版本记录，让项目能安全升级，也能在需要时回退。",
+      "project_usage": "V3 新增 0004 迁移，扩展 ingestion_jobs，并创建 Source、MediaAsset、TranscriptSegment、VisualFrame、MultimodalChunk 等表。",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "复习 revision、upgrade、downgrade、SQLite batch alter 和数据迁移。",
+      "interview_expression": "我用 Alembic 管理 V3 schema 演进，并验证空库、旧库升级和 downgrade/upgrade 链路。"
+    },
+    {
+      "name": "多模态统一数据模型",
+      "beginner_explanation": "多模态资料来自文档、图片、音频、视频，但系统需要用统一结构保存来源、片段和引用位置。",
+      "project_usage": "V3 先搭建 Source、SourceRevision、MediaAsset、TranscriptSegment、VisualFrame、MultimodalChunk、CitationLocator 和 IndexRevision 基础表。",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "复习实体建模、revision/staging/active 设计、引用定位和媒体元数据。",
+      "interview_expression": "我为后续 OCR、转写和视频时间轴引用设计统一多模态 schema，让不同资料能进入同一套 RAG 和学习沉淀流程。"
+    },
+    {
+      "name": "系统诊断与安全脱敏",
+      "beginner_explanation": "系统状态页像体检报告，告诉你数据库、Redis、Worker、Qdrant 和模型服务是否能正常工作。",
+      "project_usage": "V3 系统诊断加入 Redis 队列、Worker 心跳、模型和索引状态，并对数据库/Redis URL 做密钥脱敏。",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "复习健康检查、依赖探活、密钥脱敏和用户可理解的错误提示。",
+      "interview_expression": "我把关键依赖状态集中到诊断接口和前端状态页，并确保密钥不会泄露到 API 响应。"
+    },
+    {
+      "name": "产品级前端工作台",
+      "beginner_explanation": "产品级页面不只是能点，还要导航清晰、状态明确、错误能理解、任务能追踪。",
+      "project_usage": "V3 清理 AppShell、UI 组件、上传组件、任务中心和系统状态页，形成更清晰的学习操作系统外壳。",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "复习 React 组件拆分、状态轮询、空状态/错误状态/loading 状态和响应式导航。",
+      "interview_expression": "我把前端从页面堆叠整理为任务导向工作台，统一导航、状态反馈、任务中心和系统诊断体验。"
+    },
+    {
+      "name": "版本学习档案与发布归档",
+      "beginner_explanation": "每个阶段结束都要留下学习记录和 zip 包，未来复盘、回滚、面试表达才有依据。",
+      "project_usage": "V3 继续追加 learning_log 和 stage_delivery_log，并用 release.py 生成排除数据和密钥的发布包。",
+      "code_locations": [
+        ".env.example",
+        ".gitignore",
+        "README.md",
+        "alembic.ini",
+        "backend/.env.example",
+        "backend/alembic/env.py",
+        "backend/alembic/script.py.mako",
+        "backend/alembic/versions/0001_v1_baseline.py"
+      ],
+      "review_suggestion": "复习发布排除规则、sha256 校验、学习日志结构和阶段验收记录。",
+      "interview_expression": "我把版本交付流程标准化为测试、学习档案、阶段日志、release zip 和 sha256 校验，保证项目可复盘可交付。"
+    }
+  ],
+  "focus": "重点理解 V3 如何把文档处理从同步流程升级为可观察、可恢复的后台任务，并为多模态资料建立统一数据底座。",
+  "review_suggestions": "按 Redis/RQ Worker、任务事件、Alembic 迁移、多模态 schema、系统诊断、任务中心页面、发布归档的顺序复习。",
+  "interview_expression": "我在 AI Knowledge OS Pro V3 中引入 Redis/RQ Worker、任务事件和多模态 Source schema，把原先的文档 RAG 系统升级为可持久化任务驱动的多模态知识中枢基础。",
+  "next_version_suggestion": "下一步可以在 V3 基础上逐步接入真实 OCR、音频转写、视频关键帧和时间轴引用，避免一次性把多模态能力做成不可验证的假闭环。",
+  "metadata": {
+    "generated_at": "2026-06-18 17:21:27",
+    "from_ref": null,
+    "to_ref": "HEAD",
+    "dependency_changes": [
+      ".env.example",
+      "backend/.env.example",
+      "backend/requirements.txt",
+      "docker-compose.yml",
+      "frontend/package-lock.json",
+      "frontend/package.json"
+    ],
+    "migration_changes": [
+      "alembic.ini",
+      "backend/alembic/versions/0001_v1_baseline.py",
+      "backend/alembic/versions/0002_v2_schema.py",
+      "backend/alembic/versions/0003_v2_5_product_learning.py",
+      "backend/alembic/versions/0004_v3_task_multimodal_foundation.py"
+    ],
+    "route_count": 64,
+    "change_count": 141
+  },
+  "markdown_content": "## V3 学习包草稿\n\n- 生成时间：2026-06-18 17:21:27\n- 版本目标：稳定任务引擎驱动的多模态知识中枢基础\n- 生成依据：Git diff/status、后端 API 路由扫描、依赖文件、迁移文件和测试/构建报告。\n\n### 变更文件\n- `??` `.env.example`\n- `??` `.gitignore`\n- `??` `README.md`\n- `??` `alembic.ini`\n- `??` `backend/.env.example`\n- `??` `backend/alembic/env.py`\n- `??` `backend/alembic/script.py.mako`\n- `??` `backend/alembic/versions/0001_v1_baseline.py`\n- `??` `backend/alembic/versions/0002_v2_schema.py`\n- `??` `backend/alembic/versions/0003_v2_5_product_learning.py`\n- `??` `backend/alembic/versions/0004_v3_task_multimodal_foundation.py`\n- `??` `backend/app/__init__.py`\n- `??` `backend/app/api/__init__.py`\n- `??` `backend/app/api/router.py`\n- `??` `backend/app/api/routes_chat.py`\n- `??` `backend/app/api/routes_dashboard.py`\n- `??` `backend/app/api/routes_documents.py`\n- `??` `backend/app/api/routes_ingestion_jobs.py`\n- `??` `backend/app/api/routes_knowledge_spaces.py`\n- `??` `backend/app/api/routes_learning.py`\n- `??` `backend/app/api/routes_onboarding.py`\n- `??` `backend/app/api/routes_system.py`\n- `??` `backend/app/core/config.py`\n- `??` `backend/app/core/errors.py`\n- `??` `backend/app/core/logging.py`\n- `??` `backend/app/core/responses.py`\n- `??` `backend/app/db/session.py`\n- `??` `backend/app/main.py`\n- `??` `backend/app/models/__init__.py`\n- `??` `backend/app/models/chat_session.py`\n- `??` `backend/app/models/chunk.py`\n- `??` `backend/app/models/document.py`\n- `??` `backend/app/models/ingestion_job.py`\n- `??` `backend/app/models/knowledge_space.py`\n- `??` `backend/app/models/learning_log.py`\n- `??` `backend/app/models/learning_note.py`\n- `??` `backend/app/models/learning_system.py`\n- `??` `backend/app/models/onboarding.py`\n- `??` `backend/app/models/qa_log.py`\n- `??` `backend/app/models/source.py`\n- `??` `backend/app/models/task_event.py`\n- `??` `backend/app/schemas/__init__.py`\n- `??` `backend/app/schemas/chat_schema.py`\n- `??` `backend/app/schemas/dashboard_schema.py`\n- `??` `backend/app/schemas/document_schema.py`\n- `??` `backend/app/schemas/knowledge_schema.py`\n- `??` `backend/app/schemas/learning_schema.py`\n- `??` `backend/app/schemas/onboarding_schema.py`\n- `??` `backend/app/schemas/system_schema.py`\n- `??` `backend/app/services/__init__.py`\n- `??` `backend/app/services/chat_session_service.py`\n- `??` `backend/app/services/chunker.py`\n- `??` `backend/app/services/document_parser.py`\n- `??` `backend/app/services/embedding_service.py`\n- `??` `backend/app/services/ingestion_service.py`\n- `??` `backend/app/services/learning_log_service.py`\n- `??` `backend/app/services/learning_package_service.py`\n- `??` `backend/app/services/llm_service.py`\n- `??` `backend/app/services/onboarding_service.py`\n- `??` `backend/app/services/prompt_builder.py`\n- `??` `backend/app/services/providers.py`\n- `??` `backend/app/services/rag_service.py`\n- `??` `backend/app/services/system_service.py`\n- `??` `backend/app/services/task_broker.py`\n- `??` `backend/app/services/vector_store.py`\n- `??` `backend/app/tasks/__init__.py`\n- `??` `backend/app/tasks/ingestion_tasks.py`\n- `??` `backend/app/worker.py`\n- `??` `backend/requirements.txt`\n- `??` `backend/tests/conftest.py`\n- `??` `backend/tests/test_document_deduplication.py`\n- `??` `backend/tests/test_document_delete.py`\n- `??` `backend/tests/test_document_metadata.py`\n- `??` `backend/tests/test_document_upload.py`\n- `??` `backend/tests/test_embedding_batches.py`\n- `??` `backend/tests/test_health.py`\n- `??` `backend/tests/test_index_compatibility.py`\n- `??` `backend/tests/test_knowledge_spaces.py`\n- `??` `backend/tests/test_learning_cards.py`\n- `??` `backend/tests/test_learning_log_immutability.py`\n\n### Git 统计\n```text\n?? .env.example\n?? .gitignore\n?? README.md\n?? alembic.ini\n?? backend/\n?? docker-compose.yml\n?? docs/\n?? frontend/\n?? pytest.ini\n?? releases/\n?? scripts/\n```\n\n### Commit 范围\n- 当前仓库没有可用提交范围，脚本使用工作区变更生成草稿。\n\n### 依赖变化\n- `.env.example`\n- `backend/.env.example`\n- `backend/requirements.txt`\n- `docker-compose.yml`\n- `frontend/package-lock.json`\n- `frontend/package.json`\n\n### 迁移变化\n- `alembic.ini`\n- `backend/alembic/versions/0001_v1_baseline.py`\n- `backend/alembic/versions/0002_v2_schema.py`\n- `backend/alembic/versions/0003_v2_5_product_learning.py`\n- `backend/alembic/versions/0004_v3_task_multimodal_foundation.py`\n\n### API 路由快照\n- `backend/app/api/routes_chat.py::@router.post(\"/ask\", response_model=ChatResponse)`\n- `backend/app/api/routes_chat.py::@router.get(\"/history\", response_model=list[QALogRead])`\n- `backend/app/api/routes_chat.py::@router.post(\"/sessions\", response_model=ChatSessionRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_chat.py::@router.get(\"/sessions\", response_model=list[ChatSessionRead])`\n- `backend/app/api/routes_chat.py::@router.get(\"/sessions/{session_id}\", response_model=ChatSessionRead)`\n- `backend/app/api/routes_chat.py::@router.patch(\"/sessions/{session_id}\", response_model=ChatSessionRead)`\n- `backend/app/api/routes_chat.py::@router.delete(\"/sessions/{session_id}\", status_code=status.HTTP_204_NO_CONTENT)`\n- `backend/app/api/routes_chat.py::@router.post(\"/sessions/{session_id}/messages\", response_model=ChatResponse)`\n- `backend/app/api/routes_chat.py::@router.post(\"/messages/{message_id}/regenerate\", response_model=ChatResponse)`\n- `backend/app/api/routes_chat.py::@router.post(\"/messages/{message_id}/favorite\", response_model=ChatFavoriteResponse)`\n- `backend/app/api/routes_dashboard.py::@router.get(\"/summary\", response_model=DashboardSummary)`\n- `backend/app/api/routes_documents.py::@router.post(\"/upload\", response_model=DocumentUploadResponse, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_documents.py::@router.get(\"\", response_model=list[DocumentRead])`\n- `backend/app/api/routes_documents.py::@router.post(\"/bulk-delete\", response_model=BulkDocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/bulk-reindex\", response_model=BulkDocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/bulk-tags\", response_model=BulkDocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.get(\"/{document_id}\", response_model=DocumentRead)`\n- `backend/app/api/routes_documents.py::@router.patch(\"/{document_id}\", response_model=DocumentRead)`\n- `backend/app/api/routes_documents.py::@router.delete(\"/{document_id}\", response_model=DocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/{document_id}/retry\", response_model=DocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/{document_id}/reparse\", response_model=DocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.post(\"/{document_id}/reindex\", response_model=DocumentActionResponse)`\n- `backend/app/api/routes_documents.py::@router.get(\"/{document_id}/chunks\", response_model=list[ChunkRead])`\n- `backend/app/api/routes_ingestion_jobs.py::@router.get(\"\", response_model=list[IngestionJobRead])`\n- `backend/app/api/routes_ingestion_jobs.py::@router.get(\"/{job_id}\", response_model=IngestionJobRead)`\n- `backend/app/api/routes_ingestion_jobs.py::@router.get(\"/{job_id}/events\", response_model=list[JobEventRead])`\n- `backend/app/api/routes_ingestion_jobs.py::@router.post(\"/{job_id}/retry\", response_model=IngestionJobRead)`\n- `backend/app/api/routes_ingestion_jobs.py::@router.post(\"/{job_id}/cancel\", response_model=IngestionJobRead)`\n- `backend/app/api/routes_knowledge_spaces.py::@router.post(\"\", response_model=KnowledgeSpaceRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_knowledge_spaces.py::@router.get(\"\", response_model=list[KnowledgeSpaceDetail])`\n- `backend/app/api/routes_knowledge_spaces.py::@router.get(\"/{space_id}\", response_model=KnowledgeSpaceDetail)`\n- `backend/app/api/routes_learning.py::@router.get(\"/logs\", response_model=list[LearningLogRead])`\n- `backend/app/api/routes_learning.py::@router.get(\"/dashboard\", response_model=LearningDashboard)`\n- `backend/app/api/routes_learning.py::@router.get(\"/versions\", response_model=list[LearningLogRead])`\n- `backend/app/api/routes_learning.py::@router.get(\"/logs/{slug}\", response_model=LearningLogRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/logs\", response_model=LearningLogRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_learning.py::@router.post(\"/packages/generate-draft\", response_model=LearningPackageRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/packages\", response_model=LearningPackageRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_learning.py::@router.get(\"/packages\", response_model=list[LearningPackageRead])`\n- `backend/app/api/routes_learning.py::@router.get(\"/packages/{slug}\", response_model=LearningPackageRead)`\n- `backend/app/api/routes_learning.py::@router.patch(\"/packages/{slug}\", response_model=LearningPackageRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/packages/{slug}/confirm\", response_model=LearningPackageRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/packages/{slug}/export\", response_model=MarkdownExportResponse)`\n- `backend/app/api/routes_learning.py::@router.get(\"/knowledge-points\", response_model=list[KnowledgePointRead])`\n- `backend/app/api/routes_learning.py::@router.get(\"/knowledge-points/{point_id}\", response_model=KnowledgePointRead)`\n- `backend/app/api/routes_learning.py::@router.patch(\"/knowledge-points/{point_id}/progress\", response_model=KnowledgePointRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/knowledge-points/{point_id}/notes\", response_model=KnowledgePointRead)`\n- `backend/app/api/routes_learning.py::@router.get(\"/cards\", response_model=list[LearningCardRead])`\n- `backend/app/api/routes_learning.py::@router.patch(\"/cards/{card_id}/progress\", response_model=LearningCardRead)`\n- `backend/app/api/routes_learning.py::@router.post(\"/cards/{card_id}/review\", response_model=LearningCardRead)`\n- `backend/app/api/routes_learning.py::@router.get(\"/quizzes\", response_model=list[QuizQuestionRead])`\n- `backend/app/api/routes_learning.py::@router.post(\"/quizzes/{quiz_id}/answer\", response_model=QuizAnswerResponse)`\n- `backend/app/api/routes_learning.py::@router.post(\"/export-markdown\", response_model=MarkdownExportResponse)`\n- `backend/app/api/routes_learning.py::@router.get(\"/notes\", response_model=list[LearningNoteRead])`\n- `backend/app/api/routes_learning.py::@router.post(\"/notes\", response_model=LearningNoteRead, status_code=status.HTTP_201_CREATED)`\n- `backend/app/api/routes_learning.py::@router.patch(\"/notes/{note_id}\", response_model=LearningNoteRead)`\n- `backend/app/api/routes_learning.py::@router.delete(\"/notes/{note_id}\", status_code=status.HTTP_204_NO_CONTENT)`\n- `backend/app/api/routes_onboarding.py::@router.get(\"\", response_model=OnboardingRead)`\n- `backend/app/api/routes_onboarding.py::@router.patch(\"\", response_model=OnboardingRead)`\n- `backend/app/api/routes_onboarding.py::@router.post(\"/reset\", response_model=OnboardingRead)`\n- `backend/app/api/routes_system.py::@router.get(\"/status\", response_model=SystemStatusResponse)`\n- `backend/app/api/routes_system.py::@router.post(\"/test-llm\", response_model=SystemTestResponse)`\n- `backend/app/api/routes_system.py::@router.post(\"/test-embedding\", response_model=SystemTestResponse)`\n- `backend/app/api/routes_system.py::@router.post(\"/test-qdrant\", response_model=SystemTestResponse)`\n\n### 知识点草稿\n#### 持久化任务队列\n- 小白解释：耗时任务不要绑在一次 HTTP 请求里，而是放进队列，由独立 Worker 慢慢处理，并把状态写回数据库。\n- 项目用法：V3 使用 Redis/RQ 承接文档解析、切片、Embedding 和索引入库任务，上传接口快速返回 job_id。\n- 代码位置：`.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- 补课建议：复习 Redis、RQ、Worker、任务状态机、重试和取消语义。\n- 面试表达：我把文档 ingestion 从请求内同步处理升级为 Redis/RQ 后台任务，支持状态持久化、重试、取消和 Worker 恢复。\n\n#### 任务可观察性\n- 小白解释：可观察性就是让用户和开发者看得见系统正在做哪一步、卡在哪里、为什么失败。\n- 项目用法：V3 增加 JobEvent、任务中心页面、进度、步骤、Worker、耗时、错误码和事件时间线。\n- 代码位置：`.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- 补课建议：复习日志、事件表、心跳、任务进度和前端轮询展示。\n- 面试表达：我为后台任务增加事件流和状态看板，让长耗时 AI 处理过程可追踪、可诊断、可恢复。\n\n#### Alembic 迁移与回滚\n- 小白解释：迁移脚本是数据库结构的版本记录，让项目能安全升级，也能在需要时回退。\n- 项目用法：V3 新增 0004 迁移，扩展 ingestion_jobs，并创建 Source、MediaAsset、TranscriptSegment、VisualFrame、MultimodalChunk 等表。\n- 代码位置：`.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- 补课建议：复习 revision、upgrade、downgrade、SQLite batch alter 和数据迁移。\n- 面试表达：我用 Alembic 管理 V3 schema 演进，并验证空库、旧库升级和 downgrade/upgrade 链路。\n\n#### 多模态统一数据模型\n- 小白解释：多模态资料来自文档、图片、音频、视频，但系统需要用统一结构保存来源、片段和引用位置。\n- 项目用法：V3 先搭建 Source、SourceRevision、MediaAsset、TranscriptSegment、VisualFrame、MultimodalChunk、CitationLocator 和 IndexRevision 基础表。\n- 代码位置：`.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- 补课建议：复习实体建模、revision/staging/active 设计、引用定位和媒体元数据。\n- 面试表达：我为后续 OCR、转写和视频时间轴引用设计统一多模态 schema，让不同资料能进入同一套 RAG 和学习沉淀流程。\n\n#### 系统诊断与安全脱敏\n- 小白解释：系统状态页像体检报告，告诉你数据库、Redis、Worker、Qdrant 和模型服务是否能正常工作。\n- 项目用法：V3 系统诊断加入 Redis 队列、Worker 心跳、模型和索引状态，并对数据库/Redis URL 做密钥脱敏。\n- 代码位置：`.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- 补课建议：复习健康检查、依赖探活、密钥脱敏和用户可理解的错误提示。\n- 面试表达：我把关键依赖状态集中到诊断接口和前端状态页，并确保密钥不会泄露到 API 响应。\n\n#### 产品级前端工作台\n- 小白解释：产品级页面不只是能点，还要导航清晰、状态明确、错误能理解、任务能追踪。\n- 项目用法：V3 清理 AppShell、UI 组件、上传组件、任务中心和系统状态页，形成更清晰的学习操作系统外壳。\n- 代码位置：`.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- 补课建议：复习 React 组件拆分、状态轮询、空状态/错误状态/loading 状态和响应式导航。\n- 面试表达：我把前端从页面堆叠整理为任务导向工作台，统一导航、状态反馈、任务中心和系统诊断体验。\n\n#### 版本学习档案与发布归档\n- 小白解释：每个阶段结束都要留下学习记录和 zip 包，未来复盘、回滚、面试表达才有依据。\n- 项目用法：V3 继续追加 learning_log 和 stage_delivery_log，并用 release.py 生成排除数据和密钥的发布包。\n- 代码位置：`.env.example`, `.gitignore`, `README.md`, `alembic.ini`, `backend/.env.example`, `backend/alembic/env.py`, `backend/alembic/script.py.mako`, `backend/alembic/versions/0001_v1_baseline.py`\n- 补课建议：复习发布排除规则、sha256 校验、学习日志结构和阶段验收记录。\n- 面试表达：我把版本交付流程标准化为测试、学习档案、阶段日志、release zip 和 sha256 校验，保证项目可复盘可交付。\n\n### 测试报告\n```text\n未提供测试报告文件。\n```\n\n### 构建报告\n```text\n未提供构建报告文件。\n```\n\n### 迁移报告\n```text\n未提供迁移报告文件。\n```\n"
+}

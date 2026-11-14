@@ -108,12 +108,12 @@ export default function TasksPage() {
       <PageHeader
         action={
           <button className="button" disabled={refreshing} onClick={() => load(true)} type="button">
-            {refreshing ? <ButtonLoading label="Refreshing" /> : <><RefreshCw size={17} />Refresh</>}
+            {refreshing ? <ButtonLoading label="刷新中" /> : <><RefreshCw size={17} />刷新</>}
           </button>
         }
-        description="Track document parsing, image analysis, audio transcription, video keyframes and video transcription in one durable task center. Failed tasks can be retried, active tasks can be cancelled, and completed tasks link back to their result."
-        eyebrow="Observable task engine"
-        title="Task Center"
+        description="在一个可观测任务中心跟踪文档解析、图片分析、音频转写、视频关键帧和视频转写。失败任务可以重试，进行中的任务可以取消，完成的任务可以回到对应结果。"
+        eyebrow="可观测任务引擎"
+        title="任务中心"
       />
 
       {error && <ErrorState message={error} onRetry={load} />}
@@ -121,36 +121,36 @@ export default function TasksPage() {
 
       <section className="grid cols-3">
         <article className="card">
-          <span className="muted">Active</span>
+          <span className="muted">进行中</span>
           <p className="stat-value">{activeCount}</p>
         </article>
         <article className="card">
-          <span className="muted">Completed</span>
+          <span className="muted">已完成</span>
           <p className="stat-value">{completedCount}</p>
         </article>
         <article className="card">
-          <span className="muted">Needs Attention</span>
+          <span className="muted">需要处理</span>
           <p className="stat-value">{failedCount}</p>
         </article>
       </section>
 
       <section className="panel stack">
         <div className="row between wrap">
-          <SearchInput onChange={setQuery} placeholder="Search by task, source, step, message or error" value={query} />
+          <SearchInput onChange={setQuery} placeholder="搜索任务、来源或步骤…" value={query} />
           <div className="row wrap">
             <select className="select" onChange={(event) => setTargetType(event.target.value)} style={{ maxWidth: 170 }} value={targetType}>
-              <option value="">All targets</option>
-              <option value="document">Documents</option>
-              <option value="media">Media</option>
+              <option value="">全部对象</option>
+              <option value="document">文档</option>
+              <option value="media">媒体</option>
             </select>
             <select className="select" onChange={(event) => setStatus(event.target.value)} style={{ maxWidth: 190 }} value={status}>
-              <option value="">All statuses</option>
-              <option value="queued">Queued</option>
-              <option value="running">Running</option>
-              <option value="completed">Completed</option>
-              <option value="failed">Failed</option>
-              <option value="interrupted">Interrupted</option>
-              <option value="cancelled">Cancelled</option>
+              <option value="">全部状态</option>
+              <option value="queued">排队中</option>
+              <option value="running">进行中</option>
+              <option value="completed">已完成</option>
+              <option value="failed">失败</option>
+              <option value="interrupted">已中断</option>
+              <option value="cancelled">已取消</option>
             </select>
           </div>
         </div>
@@ -158,23 +158,23 @@ export default function TasksPage() {
         {loading ? (
           <LoadingSkeleton lines={6} />
         ) : filtered.length === 0 ? (
-          <EmptyState description="Upload a source or run a media processing action to create a task." title="No matching tasks" />
+          <EmptyState description="上传来源或执行媒体处理操作后，这里会出现可跟踪的任务。" title="没有匹配的任务" />
         ) : (
           <div className="split">
             <div className="list">
               {filtered.map((job) => (
                 <button className={`list-item task-row ${selectedJob?.id === job.id ? "active" : ""}`} key={job.id} onClick={() => setSelectedJobId(job.id)} type="button">
                   <div className="row between">
-                    <strong>Task #{job.id}</strong>
+                    <strong>任务 #{job.id}</strong>
                     <StatusBadge status={job.status} />
                   </div>
                   <span className="muted">
                     {targetLabel(job)} / {operationLabel(job.job_type)} / {stepLabel(job.current_step)}
                   </span>
-                  <div className="progress" aria-label={`Task progress ${job.progress}%`}>
+                  <div className="progress" aria-label={`任务进度 ${job.progress}%`}>
                     <span style={{ width: `${Math.max(0, Math.min(job.progress, 100))}%` }} />
                   </div>
-                  <span className="muted">{job.message || job.error_message || "Waiting for worker update."}</span>
+                  <span className="muted">{job.message || job.error_message || "等待 Worker 更新。"}</span>
                 </button>
               ))}
             </div>
@@ -183,14 +183,14 @@ export default function TasksPage() {
               <aside className="drawer stack">
                 <div className="row between">
                   <div>
-                    <h2>Task #{selectedJob.id}</h2>
+                    <h2>任务 #{selectedJob.id}</h2>
                     <p className="muted">
-                      Queue {selectedJob.queue_name} / attempt {selectedJob.attempt}/{selectedJob.max_attempts}
+                      队列 {selectedJob.queue_name} / 第 {selectedJob.attempt} 次尝试（上限 {selectedJob.max_attempts}）
                     </p>
                   </div>
                   <StatusBadge status={selectedJob.status} />
                 </div>
-                <div className="progress" aria-label={`Task progress ${selectedJob.progress}%`}>
+                <div className="progress" aria-label={`任务进度 ${selectedJob.progress}%`}>
                   <span style={{ width: `${Math.max(0, Math.min(selectedJob.progress, 100))}%` }} />
                 </div>
                 <div className="row wrap">
@@ -201,11 +201,11 @@ export default function TasksPage() {
                     type="button"
                   >
                     {pendingJobId === selectedJob.id && pendingAction === "retry" ? (
-                      <ButtonLoading label="Scheduling" />
+                      <ButtonLoading label="正在调度" />
                     ) : (
                       <>
                         <RotateCcw size={14} />
-                        {selectedJob.status === "completed" ? "Process Again" : "Retry"}
+                        {selectedJob.status === "completed" ? "重新处理" : "重试"}
                       </>
                     )}
                   </button>
@@ -216,30 +216,30 @@ export default function TasksPage() {
                     type="button"
                   >
                     {pendingJobId === selectedJob.id && pendingAction === "cancel" ? (
-                      <ButtonLoading label="Cancelling" />
+                      <ButtonLoading label="正在取消" />
                     ) : (
                       <>
                         <Ban size={14} />
-                        Cancel
+                        取消任务
                       </>
                     )}
                   </button>
                   {resultUrl(selectedJob) && (
                     <Link className="button small" href={resultUrl(selectedJob) || "/tasks"}>
-                      View Result
+                      查看结果
                     </Link>
                   )}
                 </div>
 
                 <div className="grid cols-2">
-                  <Metric label="Target" value={targetLabel(selectedJob)} />
-                  <Metric label="Operation" value={operationLabel(selectedJob.job_type)} />
-                  <Metric label="Current Step" value={stepLabel(selectedJob.current_step)} />
-                  <Metric label="Step Progress" value={`${selectedJob.step_index}/${selectedJob.step_total || 5}`} />
-                  <Metric label="Worker" value={selectedJob.worker_id || "not claimed"} />
-                  <Metric label="Duration" value={selectedJob.duration_ms ? `${selectedJob.duration_ms} ms` : "not finished"} />
-                  <Metric label="Created" value={formatDate(selectedJob.created_at)} />
-                  <Metric label="Heartbeat" value={formatDate(selectedJob.heartbeat_at)} />
+                  <Metric label="处理对象" value={targetLabel(selectedJob)} />
+                  <Metric label="操作" value={operationLabel(selectedJob.job_type)} />
+                  <Metric label="当前步骤" value={stepLabel(selectedJob.current_step)} />
+                  <Metric label="步骤进度" value={`${selectedJob.step_index}/${selectedJob.step_total || 5}`} />
+                  <Metric label="Worker" value={selectedJob.worker_id || "尚未领取"} />
+                  <Metric label="耗时" value={selectedJob.duration_ms ? `${selectedJob.duration_ms} ms` : "尚未完成"} />
+                  <Metric label="创建时间" value={formatDate(selectedJob.created_at)} />
+                  <Metric label="心跳" value={formatDate(selectedJob.heartbeat_at)} />
                 </div>
 
                 {selectedJob.error_message && <p className="quote">{selectedJob.error_message}</p>}
@@ -248,10 +248,10 @@ export default function TasksPage() {
                 <section className="stack">
                   <div className="row">
                     <TimerReset size={18} />
-                    <h3>Event Timeline</h3>
+                    <h3>事件时间线</h3>
                   </div>
                   {selectedEvents.length === 0 ? (
-                    <EmptyState description="Worker events appear here after the task is queued or starts running." title="No events loaded" />
+                    <EmptyState description="任务进入队列或开始运行后，Worker 事件会出现在这里。" title="暂无事件" />
                   ) : (
                     <div className="timeline">
                       {selectedEvents.map((event) => (
@@ -265,7 +265,7 @@ export default function TasksPage() {
                           </p>
                           {event.message && <p>{event.message}</p>}
                           {event.technical_message && (
-                            <TechnicalDetails title="Technical message">
+                            <TechnicalDetails title="技术信息">
                               <p className="pre-wrap">{event.technical_message}</p>
                             </TechnicalDetails>
                           )}
@@ -285,45 +285,45 @@ export default function TasksPage() {
 
 function operationLabel(value: string) {
   const labels: Record<string, string> = {
-    reparse: "Parse and index document",
-    reindex: "Rebuild document index",
-    retry: "Retry document processing",
-    image_ocr: "Image OCR",
-    image_visual_description: "Image visual description",
-    image_screenshot_analysis: "Screenshot error analysis",
-    image_full_analysis: "Full image analysis",
-    audio_transcription: "Audio transcription",
-    video_transcription: "Video transcription",
-    video_keyframes: "Video keyframes",
-    video_keyframe_ocr: "Keyframe OCR",
-    video_visual_description: "Keyframe visual description",
-    video_full_pipeline: "Full video pipeline"
+    reparse: "解析并建立文档索引",
+    reindex: "重建文档索引",
+    retry: "重试文档处理",
+    image_ocr: "图片 OCR",
+    image_visual_description: "图片视觉描述",
+    image_screenshot_analysis: "截图报错分析",
+    image_full_analysis: "完整图片分析",
+    audio_transcription: "音频转写",
+    video_transcription: "视频转写",
+    video_keyframes: "视频关键帧",
+    video_keyframe_ocr: "关键帧 OCR",
+    video_visual_description: "关键帧视觉描述",
+    video_full_pipeline: "完整视频流水线"
   };
   return labels[value] || value;
 }
 
 function stepLabel(value: string | null) {
-  if (!value) return "Waiting";
+  if (!value) return "等待中";
   const labels: Record<string, string> = {
-    queued: "Waiting for worker",
-    preflight: "Checking source",
-    parsing: "Parsing document",
-    chunking: "Splitting content",
-    embedding: "Generating embeddings",
-    indexing: "Writing index",
-    ocr: "Reading text",
-    screenshot_analysis: "Analyzing error evidence",
-    visual_description: "Analyzing visual content",
-    keyframes: "Extracting keyframes",
-    keyframe_ocr: "Reading keyframe text",
-    transcription: "Transcribing audio",
-    completed: "Completed"
+    queued: "等待 Worker",
+    preflight: "检查来源",
+    parsing: "解析文档",
+    chunking: "切分内容",
+    embedding: "生成向量",
+    indexing: "写入索引",
+    ocr: "识别文字",
+    screenshot_analysis: "分析报错证据",
+    visual_description: "分析视觉内容",
+    keyframes: "抽取关键帧",
+    keyframe_ocr: "识别关键帧文字",
+    transcription: "转写音频",
+    completed: "已完成"
   };
   return labels[value] || value;
 }
 
 function targetLabel(job: IngestionJob) {
-  return job.source_id ? `Media #${job.source_id}` : `Document #${job.document_id || "-"}`;
+  return job.source_id ? `媒体 #${job.source_id}` : `文档 #${job.document_id || "-"}`;
 }
 
 function resultUrl(job: IngestionJob) {

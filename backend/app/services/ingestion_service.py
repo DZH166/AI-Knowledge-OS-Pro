@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 from typing import Mapping, Sequence
@@ -756,18 +757,27 @@ class DocumentIngestionService:
         total_size = 0
 
         upload_file.file.seek(0)
-        with storage_path.open("wb") as buffer:
-            while True:
-                chunk = upload_file.file.read(1024 * 1024)
-                if not chunk:
-                    break
-                total_size += len(chunk)
-                if total_size > settings.max_upload_size_bytes:
-                    buffer.close()
-                    storage_path.unlink(missing_ok=True)
-                    raise ValueError(f"文件超过上传限制：{settings.max_upload_size_mb} MB。")
-                hasher.update(chunk)
-                buffer.write(chunk)
+        try:
+            with storage_path.open("wb") as buffer:
+                while True:
+                    chunk = upload_file.file.read(1024 * 1024)
+                    if not chunk:
+                        break
+                    total_size += len(chunk)
+                    if total_size > settings.max_upload_size_bytes:
+                        buffer.close()
+                        storage_path.unlink(missing_ok=True)
+                        raise ValueError(f"文件超过上传限制：{settings.max_upload_size_mb} MB。")
+                    hasher.update(chunk)
+                    buffer.write(chunk)
+                buffer.flush()
+                os.fsync(buffer.fileno())
+        except OSError as exc:
+            storage_path.unlink(missing_ok=True)
+            raise ValueError("文件未能安全写入磁盘；请检查磁盘空间和权限后重试。") from exc
+        if storage_path.stat().st_size != total_size:
+            storage_path.unlink(missing_ok=True)
+            raise ValueError("文件写入不完整；已删除残留文件，请重试上传。")
 
         return storage_path, hasher.hexdigest(), total_size
 

@@ -27,11 +27,13 @@ import { catalogSourceHref } from "@/modules/evidence-agent/source-locator";
 import { sourceCanBeSelected } from "@/modules/evidence-agent/workbench-session";
 import styles from "./EvidenceAgent.module.css";
 import { ProductTermHelp } from "./ProductTermHelp";
+import { StorageHealthPanel } from "./StorageHealthPanel";
 import { LoadingPlaceholder } from "./LoadingPlaceholder";
 import { libraryFiltersFromSearch, libraryFiltersHref, type LibraryFilters } from "./library-filters";
 import {
   RECORDING_SOURCES,
   RECORDING_SPACES,
+  activeRevisionCount,
   activeSourceRevision,
   sourceIndexSummary,
   sourceTitle,
@@ -115,14 +117,15 @@ function LibraryCatalogContent() {
   }, [deferredQuery, selectedSourceId, sourceType, sources, spaceId, spacesById]);
 
   const { activeCount, indexedCount } = useMemo(() => {
-    let activeCount = 0;
     let indexedCount = 0;
     for (const source of sources) {
-      const revision = activeSourceRevision(source);
-      if (source.status === "active" && revision?.status === "active" && revision.source_id === source.id) activeCount += 1;
       if (sourceCanBeSelected(source, source.space_id, false)) indexedCount += 1;
     }
-    return { activeCount, indexedCount };
+    // A source is "active" when it has an active revision, not when its own
+    // lifecycle status happens to equal the string "active". Real sources use
+    // status values such as ready; keying off source.status kept this panel at
+    // zero even while every source was selectable for research.
+    return { activeCount: activeRevisionCount(sources), indexedCount };
   }, [sources]);
 
   return (
@@ -176,6 +179,8 @@ function LibraryCatalogContent() {
             <CatalogStat label="活跃版本" value={activeCount} />
             <CatalogStat label="可用于研究" value={indexedCount} />
           </section>
+
+          {!recording && <StorageHealthPanel />}
 
           <section aria-labelledby="source-catalog-heading" className={styles.workspacePanel}>
             <div className={styles.sectionHeading}>

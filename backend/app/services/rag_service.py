@@ -46,7 +46,21 @@ class RAGService:
         )
         return document, job.id
 
-    def ask_question(self, db: Session, space_id: int, question: str, answer_mode: str) -> ChatResponse:
+    def ask_question(
+        self,
+        db: Session,
+        space_id: int,
+        question: str,
+        answer_mode: str,
+        *,
+        retrieval_query: str | None = None,
+    ) -> ChatResponse:
+        """Answer one question; retrieval_query may carry prior-turn context.
+
+        The user-visible question stays unchanged so citations and history never
+        pretend the follow-up was rewritten. Only embedding and keyword search
+        use the context-expanded query.
+        """
         space = db.get(KnowledgeSpace, space_id)
         if space is None:
             raise ValueError("知识库不存在。")
@@ -109,11 +123,12 @@ class RAGService:
                 },
             )
 
-        query_vector = self.embedding_service.embed_query(question)
+        effective_query = (retrieval_query or question).strip() or question
+        query_vector = self.embedding_service.embed_query(effective_query)
         hits = HybridRetriever(vector_store=self.vector_store, rerank_provider=self.rerank_provider).search(
             db,
             space_id=space.id,
-            query=question,
+            query=effective_query,
             query_vector=query_vector,
             limit=settings.retrieval_top_k,
             score_threshold=settings.retrieval_score_threshold,
@@ -278,6 +293,7 @@ class RAGService:
             retrieval_score=retrieval_score,
             retrieval_status=retrieval_status,
             runtime_mode=settings.runtime_mode,
+            retrieval_query=effective_query if effective_query != question else None,
             qa_log_id=0,
         )
         response.qa_log_id = self._save_qa_log(db, space.id, question, answer_mode, response)

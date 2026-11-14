@@ -18,8 +18,17 @@ class TextChunk:
 
 class Chunker:
     def __init__(self, chunk_size: int | None = None, overlap: int | None = None) -> None:
-        self.chunk_size = chunk_size or settings.chunk_size
-        self.overlap = overlap if overlap is not None else settings.chunk_overlap
+        self.chunk_size = settings.chunk_size if chunk_size is None else chunk_size
+        self.overlap = settings.chunk_overlap if overlap is None else overlap
+        # An overlap greater than or equal to the chunk size makes the
+        # sliding window non-advancing (or empty), which used to risk an
+        # infinite loop on a hand-edited configuration.
+        if self.chunk_size <= 0:
+            raise ValueError("chunk_size 必须大于 0。")
+        if self.overlap < 0:
+            raise ValueError("chunk_overlap 不能为负数。")
+        if self.overlap >= self.chunk_size:
+            raise ValueError("chunk_overlap 必须小于 chunk_size，否则切片无法前进。")
 
     def clean_text(self, text: str) -> str:
         text = text.replace("\r\n", "\n").replace("\r", "\n")

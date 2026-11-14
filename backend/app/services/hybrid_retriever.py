@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
-import math
-import re
 from typing import Any
 
 from sqlalchemy import and_, func, or_, select
@@ -21,6 +19,7 @@ from app.modules.evidence_index import (
     SqlEvidenceIndex,
 )
 from app.services.rerank_provider import RerankInput, RerankProvider, get_rerank_provider
+from app.services.lexical_retrieval import LexicalQuery
 from app.services.vector_store import VectorSearchResult, VectorStore
 
 
@@ -419,11 +418,21 @@ class HybridRetriever:
         revision_ids: tuple[int, ...] | None,
         limit: int,
     ) -> list[HybridSearchResult]:
-        tokens = self._tokens(query)
-        if not tokens:
+        if not query.strip():
             return []
+        lexical = LexicalQuery(query)
 
         results: list[HybridSearchResult] = []
+        if revision_ids is not None and source_ids:
+            # PinnedScope intentionally exposes revision IDs only. Intersect
+            # this adapter's additional source restriction before the public
+            # seam ranks/caps candidates, rather than dropping valid hits late.
+            revision_ids = tuple(db.scalars(
+                select(SourceRevision.id)
+                .join(Source, Source.id == SourceRevision.source_id)
+                .where(Source.space_id == space_id, Source.id.in_(source_ids),
+                       SourceRevision.id.in_(revision_ids))
+            ))
         scope = (
             PinnedScope(space_id=space_id, revision_ids=revision_ids)
             if revision_ids is not None
@@ -451,7 +460,7 @@ class HybridRetriever:
                 if source is None:
                     continue
                 sources[source.id] = source
-            score = self._keyword_score(tokens, evidence.excerpt)
+            score = hit.score
             if score <= 0:
                 continue
             locator = dict(evidence.locator)
@@ -509,10 +518,7 @@ class HybridRetriever:
                 chunk = candidate.chunk
                 if chunk.id in canonical_chunk_ids:
                     continue
-                score = self._keyword_score(
-                    tokens,
-                    chunk.search_text or chunk.content_text,
-                )
+                score = lexical.score(chunk.search_text or chunk.content_text)
                 if score <= 0:
                     continue
                 payload = self._canonical_payload({}, candidate)
@@ -550,7 +556,7 @@ class HybridRetriever:
                 )
             ).all()
             for chunk, document in document_chunks:
-                score = self._keyword_score(tokens, chunk.content)
+                score = lexical.score(chunk.content)
                 if score <= 0:
                     continue
                 payload = {
@@ -681,27 +687,6 @@ class HybridRetriever:
                 }
             )
         return sorted(fused, key=lambda item: (-item.final_score, self._position_sort_value(item.payload)))
-
-    def _keyword_score(self, tokens: list[str], content: str) -> float:
-        text = content.lower()
-        if not text:
-            return 0.0
-        matched = 0.0
-        for token in tokens:
-            count = text.count(token)
-            if count:
-                matched += 1.0 + min(2.0, math.log1p(count))
-        if matched <= 0:
-            return 0.0
-        coverage = matched / max(1.0, len(tokens) * 2.1)
-        return round(min(1.0, coverage), 4)
-
-    def _tokens(self, query: str) -> list[str]:
-        raw = query.lower().strip()
-        tokens = re.findall(r"[a-z0-9_]{2,}|[\u4e00-\u9fff]{2,}", raw)
-        if not tokens and raw:
-            tokens = [raw]
-        return list(dict.fromkeys(tokens))
 
     def _key(self, payload: dict[str, Any]) -> str:
         source_id = payload.get("source_id")

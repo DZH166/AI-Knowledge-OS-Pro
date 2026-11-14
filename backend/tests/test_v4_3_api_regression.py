@@ -1,4 +1,5 @@
 import json
+import os
 import subprocess
 import sys
 
@@ -34,12 +35,15 @@ def test_v4_3_static_quality_gate_scripts_pass(tmp_path) -> None:
         [sys.executable, "scripts/check_readme_assets.py"],
         [sys.executable, "scripts/check_all.py", "--quick", "--json-report", str(quality_report)],
     ]
+    child_env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
     for command in commands:
         completed = subprocess.run(
             command,
             cwd=release.ROOT,
             text=True,
             encoding="utf-8",
+            errors="replace",
+            env=child_env,
             capture_output=True,
             check=True,
         )
@@ -74,12 +78,15 @@ def test_v4_3_demo_walkthrough_scripts_pass_on_isolated_database(tmp_path, monke
         [sys.executable, "scripts/evaluate_rag.py", "--demo", "--database-path", str(database)],
         [sys.executable, "scripts/check_full_regression.py", "--database-path", str(database)],
     ]
+    child_env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
     for command in commands:
         completed = subprocess.run(
             command,
             cwd=release.ROOT,
             text=True,
             encoding="utf-8",
+            errors="replace",
+            env=child_env,
             capture_output=True,
             check=True,
         )

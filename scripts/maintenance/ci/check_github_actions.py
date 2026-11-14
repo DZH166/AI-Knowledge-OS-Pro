@@ -66,8 +66,8 @@ def parse_github_repo(remote: str) -> str | None:
         repo = value.removeprefix("https://github.com/")
     elif value.startswith("http://github.com/"):
         repo = value.removeprefix("http://github.com/")
-    elif value.startswith("redacted1@example.invalid:"):
-        repo = value.removeprefix("redacted2@example.invalid:")
+    elif value.startswith("git@github.com:"):
+        repo = value.removeprefix("git@github.com:")
     else:
         return None
     repo = repo.removesuffix(".git").strip("/")

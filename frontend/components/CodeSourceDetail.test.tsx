@@ -29,7 +29,7 @@ describe("CodeSourceDetail", () => {
     const markup = renderToStaticMarkup(createElement(CodeSourceDetail, { source }));
 
     expect(markup).toContain("Evidence Agent");
-    expect(markup).toContain("code_repository");
+    expect(markup).toContain("代码仓库");
     expect(markup).toContain("backend/app/worker.py");
     expect(markup).toContain("/code?source=44&amp;file=backend%2Fapp%2Fworker.py&amp;line=40&amp;line_end=41");
   });

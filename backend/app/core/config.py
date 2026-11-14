@@ -1,8 +1,10 @@
+import json
 from functools import lru_cache
 from pathlib import Path
+from typing import Annotated
 
 from pydantic import AliasChoices, Field, field_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 BACKEND_DIR = Path(__file__).resolve().parents[2]
 
@@ -14,7 +16,11 @@ class Settings(BaseSettings):
     app_semver: str = "5.8.0"
     demo_mode: bool = False
 
-    backend_cors_origins: list[str] = Field(
+    # Deployment docs and .env.example use a comma-separated value, while the
+    # demo E2E runner passes a JSON array. Disable pydantic-settings' implicit
+    # JSON decoding so both documented forms reach the validator below instead
+    # of crashing the whole process while settings load.
+    backend_cors_origins: Annotated[list[str], NoDecode] = Field(
         default_factory=lambda: ["http://localhost:3000", "http://127.0.0.1:3000"]
     )
     database_url: str = f"sqlite:///{(BACKEND_DIR / 'data' / 'knowledge_os.db').as_posix()}"
@@ -106,7 +112,18 @@ class Settings(BaseSettings):
     @classmethod
     def split_cors_origins(cls, value: str | list[str]) -> list[str]:
         if isinstance(value, str):
-            return [origin.strip() for origin in value.split(",") if origin.strip()]
+            raw = value.strip()
+            if raw.startswith("["):
+                try:
+                    decoded = json.loads(raw)
+                except json.JSONDecodeError as exc:
+                    raise ValueError(
+                        "BACKEND_CORS_ORIGINS must be a comma-separated list or a JSON array of origins"
+                    ) from exc
+                if not isinstance(decoded, list):
+                    raise ValueError("BACKEND_CORS_ORIGINS JSON value must be an array")
+                return [str(origin).strip() for origin in decoded if str(origin).strip()]
+            return [origin.strip() for origin in raw.split(",") if origin.strip()]
         return value
 
     @property

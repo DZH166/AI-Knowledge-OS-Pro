@@ -8,6 +8,7 @@ export type JourneyReadiness =
 
 export function ResearchJourneyPanel({
   activeSourceCount,
+  disabled = false,
   enabled,
   onToggle,
   readiness,
@@ -16,6 +17,7 @@ export function ResearchJourneyPanel({
   totalSourceCount = activeSourceCount
 }: {
   activeSourceCount: number;
+  disabled?: boolean;
   enabled: boolean;
   onToggle: () => void;
   readiness: JourneyReadiness;
@@ -36,7 +38,7 @@ export function ResearchJourneyPanel({
             ? "录制样例可练习查看引用；真实研究完成后才能提交错误反馈。"
             : "先确定资料和比较维度，再查看报告中的每条证据；发现错误可以直接反馈。"}</p>
         </div>
-        <button aria-pressed={enabled} className={styles.secondaryAction} onClick={onToggle} type="button">
+        <button aria-pressed={enabled} className={styles.secondaryAction} disabled={disabled} onClick={onToggle} type="button">
           {enabled ? "退出对比流程" : "开始三资料对比"}
         </button>
       </div>

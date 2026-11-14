@@ -49,6 +49,19 @@ export function sourceTypeLabel(sourceType: string): string {
   } as Record<string, string>)[sourceType] ?? sourceType;
 }
 
+export function modalityLabel(modality: string): string {
+  return ({
+    text: "文本",
+    image_text: "图片文字",
+    image_description: "图片描述",
+    audio_transcript: "音频转写",
+    video_transcript: "视频转写",
+    video_frame_text: "关键帧文字",
+    video_frame_description: "关键帧描述",
+    code_file: "代码文件"
+  } as Record<string, string>)[modality] ?? modality;
+}
+
 export function activeSourceRevision(source: SourceItem): SourceRevision | null {
   if (source.active_revision_id === null) return null;
   return source.revisions.find((revision) => revision.id === source.active_revision_id) ?? null;
@@ -56,6 +69,10 @@ export function activeSourceRevision(source: SourceItem): SourceRevision | null 
 
 export function comparisonReadySources(sources: readonly SourceItem[]): SourceItem[] {
   return sources.filter((source) => source.source_type === "document" && activeSourceRevision(source) !== null);
+}
+
+export function activeRevisionCount(sources: readonly SourceItem[]): number {
+  return sources.filter((source) => activeSourceRevision(source) !== null).length;
 }
 
 export function sourceAvailabilityLabel(source: SourceItem): string {

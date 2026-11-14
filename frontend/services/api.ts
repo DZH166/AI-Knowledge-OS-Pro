@@ -33,6 +33,7 @@ import type {
   QALog,
   QuizQuestion,
   SourceItem,
+  StorageHealth,
   SystemStatus,
   SystemTestResponse
 } from "@/types/api";
@@ -249,6 +250,13 @@ export const api = {
     }),
   resetOnboarding: () => request<OnboardingState>("/api/onboarding/reset", { method: "POST" }),
   systemStatus: (options?: ApiRequestOptions) => request<SystemStatus>("/api/system/status", undefined, { ttlMs: 10000, ...options }),
+  storageHealth: (options?: ApiRequestOptions & { deepHash?: boolean; scanOrphans?: boolean }) => {
+    const query = new URLSearchParams();
+    if (options?.deepHash) query.set("deep_hash", "true");
+    if (options?.scanOrphans === false) query.set("scan_orphans", "false");
+    const suffix = query.size ? `?${query.toString()}` : "";
+    return request<StorageHealth>(`/api/system/storage-health${suffix}`, undefined, { ttlMs: 0, ...options });
+  },
   observability: (options?: ApiRequestOptions) => request<ObservabilitySummary>("/api/system/observability", undefined, { ttlMs: 5000, ...options }),
   performance: (options?: ApiRequestOptions) => request<PerformanceSnapshot>("/api/system/performance", undefined, { ttlMs: 5000, ...options }),
   performanceRecent: (options?: ApiRequestOptions) => request<PerformanceRequestRecord[]>("/api/system/performance/recent", undefined, { ttlMs: 5000, ...options }),
@@ -491,6 +499,8 @@ export function statusLabel(status: string) {
     indexing: "写入索引",
     indexed: "已索引",
     ready: "可以使用",
+    active: "使用中",
+    retired: "已退役",
     completed: "\u5df2\u5b8c\u6210",
     failed: "\u5931\u8d25",
     cancelled: "\u5df2\u53d6\u6d88",

@@ -27,7 +27,7 @@ class VideoTooling:
             str(path),
         ]
         try:
-            result = subprocess.run(command, capture_output=True, text=True, check=True, timeout=30)
+            result = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace", check=True, timeout=30)
         except Exception as exc:
             return self._probe_with_ffmpeg(path, exc)
         try:
@@ -38,7 +38,7 @@ class VideoTooling:
     def _probe_with_ffmpeg(self, path: Path, original_exc: Exception) -> dict:
         command = [self.ffmpeg_path, "-i", str(path)]
         try:
-            result = subprocess.run(command, capture_output=True, text=True, timeout=30)
+            result = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30)
         except Exception as exc:
             raise ValueError(f"无法读取视频元数据：{original_exc}; ffmpeg fallback failed: {exc}") from exc
         output = result.stderr + "\n" + result.stdout
@@ -75,7 +75,7 @@ class VideoTooling:
             str(output_path),
         ]
         try:
-            subprocess.run(command, capture_output=True, text=True, check=True, timeout=300)
+            subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace", check=True, timeout=300)
         except Exception as exc:
             raise ValueError(f"无法从视频提取音频：{exc}") from exc
         return output_path
@@ -97,7 +97,7 @@ class VideoTooling:
             str(output_path),
         ]
         try:
-            subprocess.run(command, capture_output=True, text=True, check=True, timeout=60)
+            subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace", check=True, timeout=60)
         except Exception as exc:
             raise ValueError(f"无法提取视频关键帧：{exc}") from exc
         return output_path
