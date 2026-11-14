@@ -1,5 +1,10 @@
 # 校招项目竞争力审查：溯知 Evidence OS
 
+> **2026-11-15 状态更新**：仓库已脱敏并设为 public，`main` CI 已通过；本轮已提交/合并 6 个 PR（评测隔离、错误边界、ADR/Provider 文档、README 30 秒、CI 修复、证据日志清理），另有 1 个一键 Docker PR 和 1 个 chunking benchmark PR 待合并。下面保留审查时的原始判断，并在“已补”处标注。
+>
+> 已补：公开可见、脱敏、commit/PR 历史、CI 绿、评测隔离、错误边界、ADR、Provider 模板、3 分钟 demo 脚本、1k/10k chunking 基准。
+> 仍缺：真实 provider 20 题结果、3 分钟视频、端到端 1k/10k benchmark、Docker 构建验证。
+
 审查日期：2026-11-15
 审查对象：`<PROJECT_ROOT>`（HEAD `eac2253`，工作区 79 个未提交变更）
 用途：校招简历项目 / 面试深挖材料，不是生产上线评审。
@@ -21,10 +26,10 @@
 
 当前最大问题不是代码，而是**可见性**：
 
-- GitHub 仓库 `DZH166/AI-Knowledge-OS-Pro` 对未登录访问返回 **404**，当前是私有/不可见状态。
-- 远端 `main` 只有 **1 个 commit**：`7ac760e Redact personal data and replace repository history`。
-- 本地有 **155 个 commit**，但工作区还有 **79 个未提交变更**（58 修改 + 21 新增）。
-- 没有公开 demo URL，没有 Dockerfile，没有一键启动脚本；`docker-compose.yml` 只包含 Redis/Qdrant。
+- ~~GitHub 仓库对未登录访问返回 404~~ → **已设为 public，未登录可访问**。
+- ~~远端 main 只有 1 个 commit~~ → **已基于脱敏基线追加 8 个 commit，并有合并 PR 记录**。
+- ~~本地 155 commit / 79 未提交~~ → **工作区已提交并推送；公开历史为清洗后的 8 个 commit**。
+- 仍没有公开 demo URL；一键 Docker PR 已提交（待 Docker 构建验证），`docker-compose.yml` 已扩展 app/worker/frontend。
 - 没有 3 分钟演示视频/GIF；只有 12 张静态截图。
 
 也就是说：**面试官在简历上看到一个 GitHub 链接，点开是 404；即使拿到访问权，也只看到一条“重写历史”的提交。** 这会让项目在筛选阶段直接失去被深挖的机会。
