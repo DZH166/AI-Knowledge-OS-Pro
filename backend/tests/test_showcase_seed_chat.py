@@ -34,7 +34,10 @@ def test_showcase_chat_keeps_citations_when_qdrant_is_unavailable(
     monkeypatch,
 ) -> None:
     database_path = tmp_path / "chat-showcase.db"
-    monkeypatch.setattr(seed_showcase, "make_video", lambda _path, _cover: None)
+    def write_synthetic_video(path: Path, _cover: Path) -> None:
+        path.write_bytes(b"synthetic video fixture for the showcase seed")
+
+    monkeypatch.setattr(seed_showcase, "make_video", write_synthetic_video)
     monkeypatch.setattr(settings, "demo_mode", True)
     seed_showcase.seed(database_path, reset=True)
 
