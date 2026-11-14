@@ -56,3 +56,27 @@ def test_rag_evaluation_requires_demo_flag() -> None:
 
     assert completed.returncode == 1
     assert "Only --demo evaluation is implemented" in completed.stderr
+
+
+def test_demo_rag_evaluation_defaults_to_an_isolated_seed(tmp_path) -> None:
+    report = tmp_path / "isolated_rag_eval.json"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "scripts/evaluate_rag.py",
+            "--demo",
+            "--output",
+            str(report),
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    assert "database_source=isolated_seed" in completed.stdout
+    assert "qa_logs=2" in completed.stdout
+    assert "result=passed" in completed.stdout
+    payload = json.loads(report.read_text(encoding="utf-8"))
+    assert payload["database_source"] == "isolated_seed"
+    assert payload["summary"]["qa_logs"] == 2
+    assert payload["result"] == "passed"
