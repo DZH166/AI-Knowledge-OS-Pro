@@ -208,6 +208,20 @@ AgentRunShare.submit / inspect
 
 ## 五分钟本地启动
 
+### 一键 demo（Docker，推荐）
+
+Docker 可用时，从仓库根目录执行：
+
+```bash
+docker compose --profile demo up --build
+```
+
+首次启动会自动 seed 演示数据；打开 `http://127.0.0.1:3000`，API 在 `http://127.0.0.1:8000`。
+
+这个 profile 会启动 backend、worker、frontend、Redis 与 Qdrant。停止并保留数据用 `docker compose --profile demo down`；清空演示数据用 `docker compose --profile demo down -v`。
+
+### 手动启动（开发）
+
 要求：Python 3.12、Node.js 20、Docker。
 
 ```powershell
