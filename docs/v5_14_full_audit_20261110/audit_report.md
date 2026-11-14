@@ -62,8 +62,6 @@
 - [中文检索报告](evidence/chinese_retrieval.json)
 - [新种子库 RAG 报告](evidence/rag_fresh_seed.json)
 - [当前工作库 RAG 失败报告](evidence/rag_working_db_failure.json)
-- [后端测试摘要](evidence/pytest_summary.txt)
-- [浏览器回归摘要](evidence/playwright_summary.txt)
 
 ## 3. 关键发现
 
