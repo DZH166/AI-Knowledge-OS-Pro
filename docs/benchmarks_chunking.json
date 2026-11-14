@@ -1,0 +1,22 @@
+{
+  "mode": "synthetic_chunking",
+  "note": "Component benchmark only: measures Chunker CPU/memory, not end-to-end ingestion or retrieval.",
+  "results": [
+    {
+      "documents": 1000,
+      "chunks": 3000,
+      "elapsed_seconds": 1.007,
+      "documents_per_second": 992.9,
+      "chunks_per_second": 2978.6,
+      "peak_memory_mb": 0.1
+    },
+    {
+      "documents": 10000,
+      "chunks": 30000,
+      "elapsed_seconds": 37.596,
+      "documents_per_second": 266.0,
+      "chunks_per_second": 797.9,
+      "peak_memory_mb": 0.0
+    }
+  ]
+}
