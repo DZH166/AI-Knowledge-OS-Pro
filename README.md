@@ -11,6 +11,25 @@
 
 ![溯知 Evidence OS Workbench](docs/assets/screenshots/v5-workbench.png)
 
+## 30 秒看懂
+
+**一句话**：把 RAG 从“生成一段答案”做成“可回放、可恢复、可验证的证据流水线”。
+
+| 可验证结果 | 当前值 | 边界 |
+| --- | ---: | --- |
+| 后端回归 | 1014 passed / 4 skipped | 本机 + CI |
+| 前端单测 / 浏览器回归 | 206 / 59 | 生产构建 Chromium |
+| 固定 Agent 评测 | 60 / 60，citation completeness 1.0 | **合成固定集，不是真实模型质量** |
+| 中文检索（严格模式） | 24 题，Hit@1/5 = 1.0 | 小样本，不代表开放域 |
+
+快速入口：
+
+- [3 分钟 Demo 脚本](docs/portfolio/demo_script_3min.md)
+- [架构决策 ADR](docs/adr/README.md)
+- [真实 Provider 配置](docs/provider_setup.md)
+- [全量审查与升级路线图](docs/v5_14_full_audit_20261110/audit_report.md)
+- [本地启动](README.md#五分钟本地启动)
+
 ## 它解决什么问题
 
 传统 RAG 通常止步于“检索几段文本，再让模型生成答案”。一旦来源发生更新、任务跨越多份资料、执行中断，或者用户要求解释“这条结论究竟来自哪一版证据”，系统就很难给出可信回答。
