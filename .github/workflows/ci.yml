@@ -69,6 +69,35 @@ jobs:
       - run: npm audit --omit=dev --audit-level=high
         working-directory: frontend
 
+  docker-build:
+    name: Docker images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Validate compose config
+        run: docker compose --profile demo config > /dev/null
+      - name: Build backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: backend/Dockerfile
+          push: false
+          tags: ai-knowledge-os-backend:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Build frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: frontend/Dockerfile
+          push: false
+          tags: ai-knowledge-os-frontend:ci
+          build-args: |
+            NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
   browser-e2e:
     name: Live backend + Evidence Agent E2E / Chromium
     runs-on: ubuntu-latest
