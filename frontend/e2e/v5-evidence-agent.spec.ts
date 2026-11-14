@@ -783,7 +783,7 @@ test.describe("V5 Evidence Agent product loop", () => {
 
     await expect(page).toHaveURL(/\/code\?source=44$/);
     const detail = page.getByTestId("code-source-detail");
-    await expect(detail).toContainText("code_repository");
+    await expect(detail).toContainText("代码仓库");
     await expect(detail).toContainText("backend/app/worker.py");
     await detail.getByRole("link", { name: /backend\/app\/worker.py/ }).click();
     await expect(page).toHaveURL(/\/code\?source=44&file=backend%2Fapp%2Fworker\.py&line=40&line_end=41$/);
