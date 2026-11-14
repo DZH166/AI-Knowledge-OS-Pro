@@ -2,14 +2,20 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+from contextlib import closing, redirect_stdout
 from dataclasses import dataclass
+import io
 import json
 from pathlib import Path
 import sqlite3
+import sys
+import tempfile
 from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 DEFAULT_DEMO_DATABASE = ROOT / "backend" / "data" / "demo_showcase.db"
 
 
@@ -149,7 +155,7 @@ def evaluate_demo_database(database: Path) -> EvaluationResult:
         raise SystemExit(f"Demo database is missing: {database}")
 
     failures: list[str] = []
-    with sqlite3.connect(database) as connection:
+    with closing(sqlite3.connect(database)) as connection:
         connection.row_factory = sqlite3.Row
         qa_rows = list(connection.execute("select * from qa_logs order by id"))
         multimodal_chunk_count = count_table(connection, "multimodal_chunks")
@@ -344,10 +350,11 @@ def evaluate_demo_database(database: Path) -> EvaluationResult:
     )
 
 
-def to_report_dict(result: EvaluationResult, database: Path) -> dict[str, Any]:
+def to_report_dict(result: EvaluationResult, database: Path, *, database_source: str = "explicit") -> dict[str, Any]:
     return {
         "mode": "demo",
         "database": str(database),
+        "database_source": database_source,
         "result": "passed" if result.passed else "failed",
         "summary": {
             "qa_logs": result.qa_logs,
@@ -378,9 +385,10 @@ def to_report_dict(result: EvaluationResult, database: Path) -> dict[str, Any]:
     }
 
 
-def print_report(result: EvaluationResult, database: Path) -> None:
+def print_report(result: EvaluationResult, database: Path, *, database_source: str = "explicit") -> None:
     print("rag_evaluation_mode=demo")
     print(f"database={database}")
+    print(f"database_source={database_source}")
     print(f"qa_logs={result.qa_logs}")
     print(f"grounded_answers={result.grounded_answers}")
     print(f"refusal_answers={result.refusal_answers}")
@@ -412,22 +420,45 @@ def print_report(result: EvaluationResult, database: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Evaluate demo RAG citation and locator plumbing without provider calls.")
-    parser.add_argument("--demo", action="store_true", help="Evaluate the isolated synthetic demo database.")
-    parser.add_argument("--database-path", type=Path, default=DEFAULT_DEMO_DATABASE)
+    parser.add_argument("--demo", action="store_true", help="Evaluate a deterministic synthetic demo database.")
+    parser.add_argument(
+        "--database-path",
+        type=Path,
+        default=None,
+        help="Evaluate an explicit database path. Omit it to seed a temporary, isolated showcase database.",
+    )
+    parser.add_argument("--fresh", action="store_true", help="Force a temporary seeded database even when a path is provided.")
     parser.add_argument("--output", type=Path, help="Optional JSON evidence report path.")
     args = parser.parse_args()
 
     if not args.demo:
         raise SystemExit("Only --demo evaluation is implemented. Real provider quality evaluation requires configured providers.")
 
-    database = args.database_path.resolve()
-    result = evaluate_demo_database(database)
-    if args.output:
-        output = args.output.resolve()
-        output.parent.mkdir(parents=True, exist_ok=True)
-        output.write_text(json.dumps(to_report_dict(result, database), ensure_ascii=False, indent=2), encoding="utf-8")
-        print(f"report={output}")
-    print_report(result, database)
+    with tempfile.TemporaryDirectory(prefix="evidence-rag-eval-") as temp_raw:
+        if args.fresh or args.database_path is None:
+            database = Path(temp_raw) / "demo_showcase.db"
+            from scripts.seed_showcase import seed
+
+            with redirect_stdout(io.StringIO()):
+                seed(database, reset=True)
+            database_source = "isolated_seed"
+        else:
+            database = args.database_path.resolve()
+            database_source = "explicit"
+        result = evaluate_demo_database(database)
+        if args.output:
+            output = args.output.resolve()
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(
+                json.dumps(
+                    to_report_dict(result, database, database_source=database_source),
+                    ensure_ascii=False,
+                    indent=2,
+                ),
+                encoding="utf-8",
+            )
+            print(f"report={output}")
+        print_report(result, database, database_source=database_source)
 
 
 if __name__ == "__main__":

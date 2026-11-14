@@ -811,6 +811,7 @@ def seed(database_path: Path, reset: bool) -> None:
         db.commit()
         space_id = space.id
         video_source_id = video_source.id
+    engine.dispose()
     print(f"Showcase database seeded: {resolved}")
     print(f"Knowledge space id: {space_id}; video source id: {video_source_id}")
 

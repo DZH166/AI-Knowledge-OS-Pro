@@ -72,3 +72,5 @@ It returns a non-zero exit code when required checks fail.
 - Real provider quality scoring remains optional through `scripts/evaluate_providers.py --real-if-configured`; default CI does not require keys.
 - V5.13 reran the demo evidence-chain evaluator after the storage/chat changes: `result=passed`, with 1 grounded answer, 1 refusal, 1 valid citation and 9 valid locators. The fixed 60-case Agent matrix also stayed at 60/60 with all hard gates true.
 - Short pronoun follow-ups in chat sessions now pass a context-expanded retrieval query while answering, storing and citing the original question. This is a retrieval aid, not synonym inference; it is covered by public session tests.
+
+默认 `--demo` 会在临时目录重新 seed，避免运行态聊天记录污染评测；`--database-path` 用于显式检查某个数据库。
